@@ -4,9 +4,13 @@ AudioPlayer createAudioPlayer() {
   return const SilentAudioPlayer();
 }
 
+/// No-op player used on non-web targets and in tests.
 class SilentAudioPlayer implements AudioPlayer {
   const SilentAudioPlayer();
 
   @override
-  Future<void> play(AudioClipRequest request) async {}
+  Future<void> playTone(ToneRequest request) async {}
+
+  @override
+  Future<void> playChord(List<ToneRequest> requests) async {}
 }

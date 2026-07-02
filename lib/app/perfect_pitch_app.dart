@@ -1,13 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:perfect_pitch/app/app_controller.dart';
+import 'package:perfect_pitch/app/app_shell.dart';
 import 'package:perfect_pitch/app/app_theme.dart';
 import 'package:perfect_pitch/core/audio/audio_engine.dart';
-import 'package:perfect_pitch/core/storage/progress_repository.dart';
-import 'package:perfect_pitch/features/guided_path/guided_path_screen.dart';
-import 'package:perfect_pitch/features/home/home_screen.dart';
-import 'package:perfect_pitch/features/learn/learn_screen.dart';
-import 'package:perfect_pitch/features/training/session_summary_screen.dart';
-import 'package:perfect_pitch/features/training/training_screen.dart';
+import 'package:perfect_pitch/core/progress/interval_progress_repository.dart';
 
 class PerfectPitchApp extends StatefulWidget {
   const PerfectPitchApp({
@@ -17,19 +13,19 @@ class PerfectPitchApp extends StatefulWidget {
   });
 
   final AudioEngine audioEngine;
-  final ProgressRepository? progressRepository;
+  final IntervalProgressRepository? progressRepository;
 
   @override
   State<PerfectPitchApp> createState() => _PerfectPitchAppState();
 }
 
 class _PerfectPitchAppState extends State<PerfectPitchApp> {
-  late final PerfectPitchController _controller;
+  late final AppController _controller;
 
   @override
   void initState() {
     super.initState();
-    _controller = PerfectPitchController(
+    _controller = AppController(
       audioEngine: widget.audioEngine,
       progressRepository: widget.progressRepository,
     );
@@ -45,36 +41,9 @@ class _PerfectPitchAppState extends State<PerfectPitchApp> {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Perfect Pitch',
+      title: 'Intervals.pro',
       theme: PerfectPitchTheme.dark(),
-      home: AnimatedBuilder(
-        animation: _controller,
-        builder: (context, child) {
-          return _CurrentScreen(controller: _controller);
-        },
-      ),
+      home: AppShell(controller: _controller),
     );
-  }
-}
-
-class _CurrentScreen extends StatelessWidget {
-  const _CurrentScreen({required this.controller});
-
-  final PerfectPitchController controller;
-
-  @override
-  Widget build(BuildContext context) {
-    switch (controller.section) {
-      case AppSection.home:
-        return HomeScreen(controller: controller);
-      case AppSection.learn:
-        return LearnScreen(controller: controller);
-      case AppSection.training:
-        return TrainingScreen(controller: controller);
-      case AppSection.guidedPath:
-        return GuidedPathScreen(controller: controller);
-      case AppSection.summary:
-        return SessionSummaryScreen(controller: controller);
-    }
   }
 }

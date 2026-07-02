@@ -2,274 +2,121 @@ import 'dart:async';
 
 import 'package:flutter/foundation.dart';
 import 'package:perfect_pitch/core/audio/audio_engine.dart';
-import 'package:perfect_pitch/core/music/music_note.dart';
-import 'package:perfect_pitch/core/session/question_generator.dart';
-import 'package:perfect_pitch/core/session/session_result.dart';
-import 'package:perfect_pitch/core/session/session_settings.dart';
-import 'package:perfect_pitch/core/session/session_stats.dart';
-import 'package:perfect_pitch/core/storage/progress_repository.dart';
+import 'package:perfect_pitch/core/music/music_interval.dart';
+import 'package:perfect_pitch/core/progress/interval_progress.dart';
+import 'package:perfect_pitch/core/progress/interval_progress_repository.dart';
+import 'package:perfect_pitch/core/session/interval_outcome.dart';
+import 'package:perfect_pitch/features/guitar/guitar_controller.dart';
+import 'package:perfect_pitch/features/practice/practice_controller.dart';
 
-enum AppSection { home, learn, training, guidedPath, summary }
+/// The four primary destinations mirrored from the designer navigation.
+enum AppTab { home, practice, guitar, stats }
 
-class PerfectPitchController extends ChangeNotifier {
-  PerfectPitchController({
+/// Owns global app state: the active tab, the loaded progress snapshot, and the
+/// per-feature controllers. Feature controllers report their graded answers
+/// back here so mastery is persisted in one place.
+class AppController extends ChangeNotifier {
+  AppController({
     required this.audioEngine,
-    QuestionGenerator? questionGenerator,
-    SessionSettings? initialSettings,
-    ProgressRepository? progressRepository,
-  }) : _questionGenerator = questionGenerator ?? QuestionGenerator(),
-       _progressRepository = progressRepository ?? InMemoryProgressRepository(),
-       _settings = initialSettings ?? SessionSettings.beginner();
+    IntervalProgressRepository? progressRepository,
+  }) : _progressRepository =
+           progressRepository ?? InMemoryIntervalProgressRepository() {
+    practice = PracticeController(
+      audioEngine: audioEngine,
+      onSessionCompleted: _handlePracticeCompleted,
+    );
+    guitar = GuitarController(
+      audioEngine: audioEngine,
+      onAttemptRecorded: _handleGuitarAttempt,
+    );
+    unawaited(_loadProgress());
+  }
 
   final AudioEngine audioEngine;
-  final QuestionGenerator _questionGenerator;
-  final ProgressRepository _progressRepository;
+  final IntervalProgressRepository _progressRepository;
 
-  AppSection _section = AppSection.home;
-  SessionSettings _settings;
-  int _learnNoteIndex = 0;
-  List<TrainingQuestion> _questions = const [];
-  List<QuestionOutcome> _outcomes = const [];
-  int _currentQuestionIndex = 0;
-  int _currentReplayCount = 0;
-  DateTime? _questionStartedAt;
-  DateTime? _sessionStartedAt;
-  QuestionOutcome? _lastOutcome;
-  bool _isGuidedSession = false;
+  late final PracticeController practice;
+  late final GuitarController guitar;
 
-  AppSection get section {
-    return _section;
+  AppTab _tab = AppTab.home;
+  ProgressSnapshot _progress = ProgressSnapshot.empty();
+
+  AppTab get tab {
+    return _tab;
   }
 
-  SessionSettings get settings {
-    return _settings;
+  ProgressSnapshot get progress {
+    return _progress;
   }
 
-  MusicNote get learnNote {
-    return MusicNote.naturalNotes[_learnNoteIndex];
-  }
+  void selectTab(AppTab tab) {
+    _tab = tab;
 
-  TrainingQuestion? get currentQuestion {
-    if (_questions.isEmpty || _currentQuestionIndex >= _questions.length) {
-      return null;
+    if (tab == AppTab.practice) {
+      practice.ensureStarted();
     }
 
-    return _questions[_currentQuestionIndex];
-  }
-
-  QuestionOutcome? get lastOutcome {
-    return _lastOutcome;
-  }
-
-  SessionStats get sessionStats {
-    return SessionStats.fromOutcomes(_outcomes);
-  }
-
-  int get questionNumber {
-    return _currentQuestionIndex + 1;
-  }
-
-  int get totalQuestions {
-    return _questions.length;
-  }
-
-  bool get isShowingResult {
-    return _lastOutcome != null;
-  }
-
-  void showHome() {
-    _section = AppSection.home;
     notifyListeners();
   }
 
-  void showLearn() {
-    _section = AppSection.learn;
+  void startPractice() {
+    selectTab(AppTab.practice);
+  }
+
+  Future<void> _loadProgress() async {
+    _progress = await _progressRepository.load();
     notifyListeners();
   }
 
-  void showGuidedPath() {
-    _section = AppSection.guidedPath;
-    notifyListeners();
+  void _handlePracticeCompleted(List<IntervalOutcome> outcomes) {
+    final attempts = outcomes
+        .map(
+          (outcome) => IntervalAttempt(
+            interval: outcome.expected,
+            mode: _modeForDirection(outcome.direction),
+            correct: outcome.isCorrect,
+          ),
+        )
+        .toList();
+
+    unawaited(_record(attempts));
   }
 
-  void nextLearnNote() {
-    _learnNoteIndex = (_learnNoteIndex + 1) % MusicNote.naturalNotes.length;
-    notifyListeners();
-  }
-
-  void playLearnNote() {
-    final request = AudioClipRequest(
-      note: learnNote,
-      octave: _settings.enabledOctaves.first,
-      instrumentId: _settings.instrumentId,
-    );
-
-    unawaited(audioEngine.play(request));
-  }
-
-  void startTraining({SessionSettings? settings}) {
-    _settings = settings ?? _settings;
-    _section = AppSection.training;
-    _questions = _questionGenerator.generate(_settings);
-    _outcomes = const [];
-    _currentQuestionIndex = 0;
-    _currentReplayCount = 0;
-    _lastOutcome = null;
-    _sessionStartedAt = DateTime.now();
-    _questionStartedAt = DateTime.now();
-    notifyListeners();
-    playCurrentQuestion();
-  }
-
-  void startGuidedStep() {
-    _isGuidedSession = true;
-    startTraining(
-      settings: SessionSettings.beginner(notes: const [MusicNote.doNote]),
-    );
-  }
-
-  void playCurrentQuestion() {
-    final question = currentQuestion;
-
-    if (question == null) {
-      return;
-    }
-
-    final request = AudioClipRequest(
-      note: question.note,
-      octave: question.octave,
-      instrumentId: _settings.instrumentId,
-    );
-    _currentReplayCount += 1;
-
-    unawaited(audioEngine.play(request));
-    notifyListeners();
-  }
-
-  void answer(MusicNote selectedNote) {
-    final question = currentQuestion;
-    final startedAt = _questionStartedAt;
-
-    if (question == null || startedAt == null || _lastOutcome != null) {
-      return;
-    }
-
-    final responseTime = DateTime.now().difference(startedAt);
-    final outcome = _buildOutcome(
-      question: question,
-      selectedNote: selectedNote,
-      responseTime: responseTime,
-    );
-
-    _lastOutcome = outcome;
-    _outcomes = List.unmodifiable([..._outcomes, outcome]);
-    notifyListeners();
-  }
-
-  void nextQuestion() {
-    if (_currentQuestionIndex + 1 >= _questions.length) {
-      _completeSession();
-      return;
-    }
-
-    _currentQuestionIndex += 1;
-    _currentReplayCount = 0;
-    _lastOutcome = null;
-    _questionStartedAt = DateTime.now();
-    notifyListeners();
-    playCurrentQuestion();
-  }
-
-  void replayCorrectNote() {
-    final outcome = _lastOutcome;
-
-    if (outcome == null) {
-      return;
-    }
-
-    unawaited(audioEngine.play(_requestFor(outcome.note, outcome.octave)));
-  }
-
-  void replaySelectedNote() {
-    final outcome = _lastOutcome;
-
-    if (outcome == null) {
-      return;
-    }
-
-    unawaited(
-      audioEngine.play(_requestFor(outcome.selectedNote, outcome.octave)),
-    );
-  }
-
-  void compareLastAnswer() {
-    final outcome = _lastOutcome;
-
-    if (outcome == null) {
-      return;
-    }
-
-    final sequence = ComparisonSequence(
-      correct: _requestFor(outcome.note, outcome.octave),
-      selected: _requestFor(outcome.selectedNote, outcome.octave),
-    );
-
-    unawaited(audioEngine.playComparison(sequence));
-  }
-
-  AudioClipRequest _requestFor(MusicNote note, int octave) {
-    return AudioClipRequest(
-      note: note,
-      octave: octave,
-      instrumentId: _settings.instrumentId,
-    );
-  }
-
-  QuestionOutcome _buildOutcome({
-    required TrainingQuestion question,
-    required MusicNote selectedNote,
-    required Duration responseTime,
+  void _handleGuitarAttempt({
+    required MusicInterval interval,
+    required bool correct,
   }) {
-    if (question.note == selectedNote) {
-      return QuestionOutcome.correct(
-        note: question.note,
-        octave: question.octave,
-        responseTime: responseTime,
-        replayCount: _currentReplayCount,
-      );
-    }
-
-    return QuestionOutcome.incorrect(
-      note: question.note,
-      selectedNote: selectedNote,
-      octave: question.octave,
-      responseTime: responseTime,
-      replayCount: _currentReplayCount,
+    unawaited(
+      _record([
+        IntervalAttempt(
+          interval: interval,
+          mode: TrainingMode.guitar,
+          correct: correct,
+        ),
+      ]),
     );
   }
 
-  void _completeSession() {
-    final startedAt = _sessionStartedAt;
-    final trainingTime = startedAt == null
-        ? Duration.zero
-        : DateTime.now().difference(startedAt);
-
-    _section = AppSection.summary;
-    _lastOutcome = null;
+  Future<void> _record(List<IntervalAttempt> attempts) async {
+    _progress = await _progressRepository.recordAttempts(attempts);
     notifyListeners();
+  }
 
-    unawaited(
-      _progressRepository.recordSession(
-        outcomes: _outcomes,
-        trainingTime: trainingTime,
-      ),
-    );
-
-    if (!_isGuidedSession) {
-      return;
+  TrainingMode _modeForDirection(IntervalDirection direction) {
+    switch (direction) {
+      case IntervalDirection.ascending:
+        return TrainingMode.ascending;
+      case IntervalDirection.descending:
+        return TrainingMode.descending;
+      case IntervalDirection.harmonic:
+        return TrainingMode.harmonic;
     }
+  }
 
-    _isGuidedSession = false;
-    unawaited(_progressRepository.saveGuidedPathStep(2));
+  @override
+  void dispose() {
+    practice.dispose();
+    guitar.dispose();
+    super.dispose();
   }
 }

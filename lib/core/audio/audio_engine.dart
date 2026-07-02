@@ -1,86 +1,60 @@
-import 'package:perfect_pitch/core/music/music_note.dart';
-import 'package:perfect_pitch/core/session/session_settings.dart';
+import 'package:perfect_pitch/core/audio/instrument.dart';
+import 'package:perfect_pitch/core/music/music_interval.dart';
+import 'package:perfect_pitch/core/music/pitch.dart';
 
-class AudioClipRequest {
-  const AudioClipRequest({
-    required this.note,
-    required this.octave,
-    required this.instrumentId,
-    this.duration = const Duration(milliseconds: 900),
+/// How the two notes of an interval are presented to the ear.
+enum IntervalDirection { ascending, descending, harmonic }
+
+/// A single synthesized tone.
+class ToneRequest {
+  const ToneRequest({
+    required this.frequency,
+    required this.instrument,
+    this.duration = const Duration(milliseconds: 850),
   });
 
-  final MusicNote note;
-  final int octave;
-  final InstrumentId instrumentId;
+  factory ToneRequest.forPitch(
+    Pitch pitch, {
+    required Instrument instrument,
+    Duration duration = const Duration(milliseconds: 850),
+  }) {
+    return ToneRequest(
+      frequency: pitch.frequency,
+      instrument: instrument,
+      duration: duration,
+    );
+  }
+
+  final double frequency;
+  final Instrument instrument;
   final Duration duration;
+}
 
-  double get frequency {
-    return note.frequencyInOctave(octave);
+/// Describes an interval to play from a concrete root pitch.
+class IntervalPlayback {
+  const IntervalPlayback({
+    required this.root,
+    required this.interval,
+    required this.direction,
+    required this.instrument,
+  });
+
+  final Pitch root;
+  final MusicInterval interval;
+  final IntervalDirection direction;
+  final Instrument instrument;
+
+  Pitch get target {
+    return root.transposed(interval.semitones);
   }
 }
 
-class AudioSequenceStep {
-  const AudioSequenceStep._({required this.request, required this.pause});
-
-  factory AudioSequenceStep.play(AudioClipRequest request) {
-    return AudioSequenceStep._(request: request, pause: Duration.zero);
-  }
-
-  factory AudioSequenceStep.pause(Duration duration) {
-    return AudioSequenceStep._(request: null, pause: duration);
-  }
-
-  final AudioClipRequest? request;
-  final Duration pause;
-}
-
-class ComparisonSequence {
-  ComparisonSequence({
-    required AudioClipRequest correct,
-    required AudioClipRequest selected,
-  }) : steps = List.unmodifiable([
-         AudioSequenceStep.play(correct),
-         AudioSequenceStep.pause(const Duration(milliseconds: 350)),
-         AudioSequenceStep.play(selected),
-         AudioSequenceStep.pause(const Duration(milliseconds: 350)),
-         AudioSequenceStep.play(correct),
-       ]);
-
-  final List<AudioSequenceStep> steps;
-}
-
-class SampleAssetResolver {
-  const SampleAssetResolver();
-
-  String pathFor(AudioClipRequest request) {
-    final instrumentFolder = _instrumentFolder(request.instrumentId);
-    final noteName = request.note.internationalName.toLowerCase();
-
-    return 'assets/audio/$instrumentFolder/$noteName${request.octave}.mp3';
-  }
-
-  String _instrumentFolder(InstrumentId instrumentId) {
-    switch (instrumentId) {
-      case InstrumentId.sine:
-        return 'sine';
-      case InstrumentId.warmSynth:
-        return 'warm-synth';
-      case InstrumentId.piano:
-        return 'piano';
-      case InstrumentId.cleanElectricGuitar:
-        return 'clean-electric-guitar';
-      case InstrumentId.acousticGuitar:
-        return 'acoustic-guitar';
-      case InstrumentId.synthesizer:
-        return 'synthesizer';
-      case InstrumentId.random:
-        return 'random';
-    }
-  }
-}
-
+/// Platform-specific tone renderer.
 abstract class AudioPlayer {
-  Future<void> play(AudioClipRequest request);
+  Future<void> playTone(ToneRequest request);
+
+  /// Plays several tones simultaneously (used for harmonic intervals).
+  Future<void> playChord(List<ToneRequest> requests);
 }
 
 class AudioEngine {
@@ -88,20 +62,53 @@ class AudioEngine {
 
   final AudioPlayer player;
 
-  Future<void> play(AudioClipRequest request) {
-    return player.play(request);
+  static const Duration _gap = Duration(milliseconds: 120);
+  static const Duration _comparisonPause = Duration(milliseconds: 350);
+
+  Future<void> playPitch(Pitch pitch, {required Instrument instrument}) {
+    return player.playTone(ToneRequest.forPitch(pitch, instrument: instrument));
   }
 
-  Future<void> playComparison(ComparisonSequence sequence) async {
-    for (final step in sequence.steps) {
-      final request = step.request;
+  Future<void> playInterval(IntervalPlayback playback) async {
+    final root = ToneRequest.forPitch(
+      playback.root,
+      instrument: playback.instrument,
+    );
+    final target = ToneRequest.forPitch(
+      playback.target,
+      instrument: playback.instrument,
+    );
 
-      if (request != null) {
-        await player.play(request);
-        continue;
+    switch (playback.direction) {
+      case IntervalDirection.ascending:
+        await _playSequence([root, target]);
+      case IntervalDirection.descending:
+        await _playSequence([target, root]);
+      case IntervalDirection.harmonic:
+        await player.playChord([root, target]);
+    }
+  }
+
+  /// Plays the correct interval, the learner's interval, then the correct one
+  /// again so the ear can hear the difference (see the spec's comparison flow).
+  Future<void> playComparison({
+    required IntervalPlayback correct,
+    required IntervalPlayback selected,
+  }) async {
+    await playInterval(correct);
+    await Future<void>.delayed(_comparisonPause);
+    await playInterval(selected);
+    await Future<void>.delayed(_comparisonPause);
+    await playInterval(correct);
+  }
+
+  Future<void> _playSequence(List<ToneRequest> tones) async {
+    for (var index = 0; index < tones.length; index += 1) {
+      await player.playTone(tones[index]);
+
+      if (index < tones.length - 1) {
+        await Future<void>.delayed(_gap);
       }
-
-      await Future<void>.delayed(step.pause);
     }
   }
 }
