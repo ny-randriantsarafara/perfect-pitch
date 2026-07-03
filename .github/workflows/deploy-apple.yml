@@ -20,13 +20,58 @@ permissions:
 
 jobs:
   validate:
-    if: github.event_name == 'workflow_dispatch' || vars.ENABLE_TESTFLIGHT_DEPLOY == 'true'
     uses: ./.github/workflows/validate.yml
+
+  deployment-prerequisites:
+    name: Check deployment prerequisites
+    needs: validate
+    runs-on: ubuntu-latest
+    outputs:
+      deploy_ready: ${{ steps.prerequisites.outputs.deploy_ready }}
+    steps:
+      - name: Check required deployment secrets
+        id: prerequisites
+        shell: bash
+        env:
+          APP_STORE_CONNECT_API_KEY_ID: ${{ secrets.APP_STORE_CONNECT_API_KEY_ID }}
+          APP_STORE_CONNECT_ISSUER_ID: ${{ secrets.APP_STORE_CONNECT_ISSUER_ID }}
+          APP_STORE_CONNECT_API_KEY: ${{ secrets.APP_STORE_CONNECT_API_KEY }}
+          MATCH_GIT_PRIVATE_KEY: ${{ secrets.MATCH_GIT_PRIVATE_KEY }}
+          MATCH_GIT_URL: ${{ secrets.MATCH_GIT_URL }}
+          MATCH_PASSWORD: ${{ secrets.MATCH_PASSWORD }}
+        run: |
+          missing=()
+          required=(
+            APP_STORE_CONNECT_API_KEY_ID
+            APP_STORE_CONNECT_ISSUER_ID
+            APP_STORE_CONNECT_API_KEY
+            MATCH_GIT_PRIVATE_KEY
+            MATCH_GIT_URL
+            MATCH_PASSWORD
+          )
+
+          for name in "${required[@]}"; do
+            if [[ -z "${!name}" ]]; then
+              missing+=("$name")
+            fi
+          done
+
+          if (( ${#missing[@]} > 0 )); then
+            echo "deploy_ready=false" >> "$GITHUB_OUTPUT"
+            echo "Missing deployment prerequisites: ${missing[*]}"
+            exit 0
+          fi
+
+          echo "deploy_ready=true" >> "$GITHUB_OUTPUT"
+
+      - name: Skip deployment when prerequisites are missing
+        if: steps.prerequisites.outputs.deploy_ready != 'true'
+        run: echo "Required deployment secrets are missing; skipping TestFlight deployment."
 
   version:
     name: Bump version & tag
-    needs: validate
-    if: github.event_name == 'workflow_dispatch' || vars.ENABLE_TESTFLIGHT_DEPLOY == 'true'
+    needs: [validate, deployment-prerequisites]
+    if: needs.deployment-prerequisites.outputs.deploy_ready == 'true'
     runs-on: ubuntu-latest
     outputs:
       new_tag: ${{ steps.version.outputs.new_tag }}
@@ -140,8 +185,8 @@ jobs:
 
   deploy-ios:
     name: Deploy iOS to TestFlight
-    needs: version
-    if: needs.version.outputs.skipped != 'true'
+    needs: [deployment-prerequisites, version]
+    if: needs.deployment-prerequisites.outputs.deploy_ready == 'true' && needs.version.outputs.skipped != 'true'
     runs-on: macos-15
     steps:
       - uses: actions/checkout@v4

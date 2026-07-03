@@ -23,7 +23,6 @@ build-ios: ## Build iOS IPA via Fastlane
 	bundle exec fastlane ios build_ios
 
 deploy-testflight: ## Build and upload iOS to TestFlight
-	flutter build ios --release --config-only
 	bundle exec fastlane ios testflight_upload
 
 sync-signing: ## Sync iOS signing certificates via Match

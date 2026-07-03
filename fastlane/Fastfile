@@ -31,6 +31,11 @@ def flutter_xcargs
   parts.empty? ? nil : parts.join(" ")
 end
 
+def prepare_flutter_ios_release_artifacts
+  sh("rm -rf build/native_assets/ios")
+  sh("flutter build ios --release --no-codesign")
+end
+
 def app_store_connect_api_key_from_env
   key_id = first_present_env("APP_STORE_CONNECT_API_KEY_ID")
   issuer_id = first_present_env("APP_STORE_CONNECT_ISSUER_ID")
@@ -63,6 +68,7 @@ platform :ios do
   lane :build_ios do
     setup_ci
     sync_signing
+    prepare_flutter_ios_release_artifacts
 
     build_options = {
       workspace: "ios/Runner.xcworkspace",
