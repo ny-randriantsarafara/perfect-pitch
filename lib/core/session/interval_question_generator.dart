@@ -6,61 +6,87 @@ import 'package:perfect_pitch/core/music/music_interval.dart';
 import 'package:perfect_pitch/core/music/pitch.dart';
 import 'package:perfect_pitch/core/session/interval_question.dart';
 
+/// An interval paired with the way it will be played, the unit the generator
+/// varies so mixed-direction sessions cannot be answered by pattern.
+typedef _IntervalPair = ({MusicInterval interval, IntervalDirection direction});
+
 /// Builds interval questions while keeping the sequence unpredictable: it
-/// avoids repeating a recently asked interval so learners cannot answer by
-/// pattern rather than by ear.
+/// avoids repeating a recently asked interval-and-direction pair so learners
+/// cannot answer by pattern rather than by ear.
 class IntervalQuestionGenerator {
   IntervalQuestionGenerator({Random? random}) : _random = random ?? Random();
 
   final Random _random;
-  final List<MusicInterval> _recent = [];
+  final List<_IntervalPair> _recent = [];
 
   static const int _recentMemory = 2;
-  static const int _rootMidiMin = 55; // G3
-  static const int _rootMidiMax = 64; // E4
-  static const int _maxChoices = 4;
+  static const int _defaultRootMidiMin = 55; // G3
+  static const int _defaultRootMidiMax = 64; // E4
+  static const int _defaultChoiceCount = 4;
+  static const Set<IntervalDirection> _defaultDirections = {
+    IntervalDirection.ascending,
+  };
 
   IntervalQuestion next({
     required List<MusicInterval> pool,
     required Instrument instrument,
-    IntervalDirection direction = IntervalDirection.ascending,
+    Set<IntervalDirection> allowedDirections = _defaultDirections,
+    int choiceCount = _defaultChoiceCount,
+    int minimumRootMidi = _defaultRootMidiMin,
+    int maximumRootMidi = _defaultRootMidiMax,
   }) {
     if (pool.isEmpty) {
       throw ArgumentError.value(pool, 'pool', 'must not be empty');
     }
 
-    final interval = _pickInterval(pool);
-    _remember(interval);
+    if (allowedDirections.isEmpty) {
+      throw ArgumentError.value(
+        allowedDirections,
+        'allowedDirections',
+        'must not be empty',
+      );
+    }
+
+    final pair = _pickPair(pool, allowedDirections);
+    _remember(pair);
 
     return IntervalQuestion(
-      root: _pickRoot(interval),
-      interval: interval,
-      direction: direction,
+      root: _pickRoot(minimumRootMidi, maximumRootMidi),
+      interval: pair.interval,
+      direction: pair.direction,
       instrument: instrument,
-      choices: _buildChoices(pool, interval),
+      choices: _buildChoices(pool, pair.interval, choiceCount),
     );
   }
 
-  MusicInterval _pickInterval(List<MusicInterval> pool) {
-    final candidates = pool
-        .where((interval) => !_recent.contains(interval))
+  _IntervalPair _pickPair(
+    List<MusicInterval> pool,
+    Set<IntervalDirection> allowedDirections,
+  ) {
+    final allPairs = <_IntervalPair>[
+      for (final interval in pool)
+        for (final direction in allowedDirections)
+          (interval: interval, direction: direction),
+    ];
+    final candidates = allPairs
+        .where((pair) => !_recent.contains(pair))
         .toList();
-    final effectivePool = candidates.isEmpty ? pool : candidates;
+    final effectivePairs = candidates.isEmpty ? allPairs : candidates;
 
-    return effectivePool[_random.nextInt(effectivePool.length)];
+    return effectivePairs[_random.nextInt(effectivePairs.length)];
   }
 
-  void _remember(MusicInterval interval) {
-    _recent.add(interval);
+  void _remember(_IntervalPair pair) {
+    _recent.add(pair);
 
     while (_recent.length > _recentMemory) {
       _recent.removeAt(0);
     }
   }
 
-  Pitch _pickRoot(MusicInterval interval) {
-    final span = _rootMidiMax - _rootMidiMin;
-    final rootMidi = _rootMidiMin + _random.nextInt(span + 1);
+  Pitch _pickRoot(int minimumRootMidi, int maximumRootMidi) {
+    final span = maximumRootMidi - minimumRootMidi;
+    final rootMidi = minimumRootMidi + _random.nextInt(span + 1);
 
     return Pitch(rootMidi);
   }
@@ -68,13 +94,14 @@ class IntervalQuestionGenerator {
   List<MusicInterval> _buildChoices(
     List<MusicInterval> pool,
     MusicInterval correct,
+    int choiceCount,
   ) {
     final distractors = pool.where((interval) => interval != correct).toList()
       ..shuffle(_random);
-    final choiceCount = min(_maxChoices, pool.length);
+    final count = min(choiceCount, pool.length);
     final choices = <MusicInterval>[
       correct,
-      ...distractors.take(choiceCount - 1),
+      ...distractors.take(count - 1),
     ]..sort((a, b) => a.semitones.compareTo(b.semitones));
 
     return List.unmodifiable(choices);

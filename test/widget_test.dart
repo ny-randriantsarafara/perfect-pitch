@@ -20,7 +20,7 @@ void _setSurface(WidgetTester tester, Size size) {
 }
 
 void main() {
-  testWidgets('mobile layout starts practice from the home session card', (
+  testWidgets('mobile home session card opens the exercises catalogue', (
     tester,
   ) async {
     _setSurface(tester, const Size(500, 1000));
@@ -34,7 +34,8 @@ void main() {
     await tester.pump();
     await tester.pump(const Duration(milliseconds: 500));
 
-    expect(find.text('Quel est cet intervalle ?'), findsOneWidget);
+    expect(find.text('Intervalles ascendants'), findsOneWidget);
+    expect(find.text('Intervalles mixtes'), findsOneWidget);
   });
 
   testWidgets('mobile bottom navigation switches tabs', (tester) async {

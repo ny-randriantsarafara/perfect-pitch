@@ -2,10 +2,10 @@ import 'dart:async';
 
 import 'package:flutter/foundation.dart';
 import 'package:perfect_pitch/core/audio/audio_engine.dart';
+import 'package:perfect_pitch/core/exercises/exercise_attempt.dart';
 import 'package:perfect_pitch/core/music/music_interval.dart';
 import 'package:perfect_pitch/core/progress/interval_progress.dart';
 import 'package:perfect_pitch/core/progress/interval_progress_repository.dart';
-import 'package:perfect_pitch/core/session/interval_outcome.dart';
 import 'package:perfect_pitch/features/guitar/guitar_controller.dart';
 import 'package:perfect_pitch/features/practice/practice_controller.dart';
 
@@ -51,15 +51,12 @@ class AppController extends ChangeNotifier {
 
   void selectTab(AppTab tab) {
     _tab = tab;
-
-    if (tab == AppTab.practice) {
-      practice.ensureStarted();
-    }
-
     notifyListeners();
   }
 
+  /// Opens the Exercises tab on its catalogue (no session starts implicitly).
   void startPractice() {
+    practice.returnToExercises();
     selectTab(AppTab.practice);
   }
 
@@ -68,18 +65,8 @@ class AppController extends ChangeNotifier {
     notifyListeners();
   }
 
-  void _handlePracticeCompleted(List<IntervalOutcome> outcomes) {
-    final attempts = outcomes
-        .map(
-          (outcome) => IntervalAttempt(
-            interval: outcome.expected,
-            mode: _modeForDirection(outcome.direction),
-            correct: outcome.isCorrect,
-          ),
-        )
-        .toList();
-
-    unawaited(_record(attempts));
+  void _handlePracticeCompleted(List<ExerciseAttempt> exerciseAttempts) {
+    unawaited(_recordExerciseAttempts(exerciseAttempts));
   }
 
   void _handleGuitarAttempt({
@@ -102,15 +89,9 @@ class AppController extends ChangeNotifier {
     notifyListeners();
   }
 
-  TrainingMode _modeForDirection(IntervalDirection direction) {
-    switch (direction) {
-      case IntervalDirection.ascending:
-        return TrainingMode.ascending;
-      case IntervalDirection.descending:
-        return TrainingMode.descending;
-      case IntervalDirection.harmonic:
-        return TrainingMode.harmonic;
-    }
+  Future<void> _recordExerciseAttempts(List<ExerciseAttempt> attempts) async {
+    _progress = await _progressRepository.recordExerciseAttempts(attempts);
+    notifyListeners();
   }
 
   @override

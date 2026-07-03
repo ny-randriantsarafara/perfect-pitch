@@ -42,7 +42,11 @@ Widget _buildTabContent(AppController controller, LayoutMode mode) {
     case AppTab.home:
       child = HomeTab(controller: controller, mode: mode);
     case AppTab.practice:
-      child = PracticeTab(controller: controller.practice, mode: mode);
+      child = PracticeTab(
+        controller: controller.practice,
+        progress: controller.progress,
+        mode: mode,
+      );
     case AppTab.guitar:
       child = GuitarTab(controller: controller.guitar, mode: mode);
     case AppTab.stats:

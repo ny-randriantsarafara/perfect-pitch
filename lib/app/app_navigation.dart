@@ -18,7 +18,7 @@ const List<_NavItem> _navItems = [
   _NavItem(
     tab: AppTab.practice,
     icon: Icons.headphones_rounded,
-    label: 'Écoute',
+    label: 'Exercices',
   ),
   _NavItem(tab: AppTab.guitar, icon: Icons.music_note_rounded, label: 'Guitare'),
   _NavItem(tab: AppTab.stats, icon: Icons.auto_awesome_rounded, label: 'Progrès'),

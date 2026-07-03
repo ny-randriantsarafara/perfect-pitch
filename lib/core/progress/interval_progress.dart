@@ -1,3 +1,5 @@
+import 'package:perfect_pitch/core/audio/audio_engine.dart';
+import 'package:perfect_pitch/core/exercises/exercise_type.dart';
 import 'package:perfect_pitch/core/music/music_interval.dart';
 
 /// A context in which an interval can be practiced. These map directly to the
@@ -95,6 +97,124 @@ class IntervalProgress {
 
   bool get isMastered {
     return totalAttempts >= 4 && overallSuccessRate >= 0.9;
+  }
+}
+
+/// Rolling totals for a slice of attempts (one interval, one direction, or one
+/// exercise type). Rich enough to derive success rate, replay usage, skip
+/// count, and average response time.
+class AttemptTotals {
+  const AttemptTotals({
+    this.total = 0,
+    this.correct = 0,
+    this.skipped = 0,
+    this.replays = 0,
+    this.responseMillis = 0,
+  });
+
+  final int total;
+  final int correct;
+  final int skipped;
+  final int replays;
+  final int responseMillis;
+
+  double get successRate {
+    if (total == 0) {
+      return 0;
+    }
+
+    return correct / total;
+  }
+
+  int get percentage {
+    return (successRate * 100).round();
+  }
+
+  double get averageReplays {
+    if (total == 0) {
+      return 0;
+    }
+
+    return replays / total;
+  }
+
+  Duration get averageResponseTime {
+    if (total == 0) {
+      return Duration.zero;
+    }
+
+    return Duration(milliseconds: responseMillis ~/ total);
+  }
+
+  AttemptTotals add({
+    required bool correct,
+    required bool skipped,
+    required int replays,
+    required int responseMillis,
+  }) {
+    return AttemptTotals(
+      total: total + 1,
+      correct: this.correct + (correct ? 1 : 0),
+      skipped: this.skipped + (skipped ? 1 : 0),
+      replays: this.replays + replays,
+      responseMillis: this.responseMillis + responseMillis,
+    );
+  }
+}
+
+/// How often one interval was mistaken for another (expected vs. selected).
+class IntervalConfusion {
+  const IntervalConfusion({
+    required this.expected,
+    required this.selected,
+    required this.count,
+  });
+
+  final MusicInterval expected;
+  final MusicInterval selected;
+  final int count;
+}
+
+/// The persisted breakdown of every recorded [attempt], sliced along the
+/// dimensions the progress screen needs.
+class ExerciseStatsSnapshot {
+  const ExerciseStatsSnapshot({
+    required this.byInterval,
+    required this.byDirection,
+    required this.byExerciseType,
+    required this.confusions,
+  });
+
+  factory ExerciseStatsSnapshot.empty() {
+    return const ExerciseStatsSnapshot(
+      byInterval: {},
+      byDirection: {},
+      byExerciseType: {},
+      confusions: [],
+    );
+  }
+
+  final Map<MusicInterval, AttemptTotals> byInterval;
+  final Map<IntervalDirection, AttemptTotals> byDirection;
+  final Map<ExerciseType, AttemptTotals> byExerciseType;
+  final List<IntervalConfusion> confusions;
+
+  int get skippedCount {
+    return byInterval.values.fold(0, (total, entry) => total + entry.skipped);
+  }
+
+  AttemptTotals totalsForDirection(IntervalDirection direction) {
+    return byDirection[direction] ?? const AttemptTotals();
+  }
+
+  IntervalConfusion? get mostCommonConfusion {
+    if (confusions.isEmpty) {
+      return null;
+    }
+
+    return confusions.reduce(
+      (best, candidate) => candidate.count > best.count ? candidate : best,
+    );
   }
 }
 
