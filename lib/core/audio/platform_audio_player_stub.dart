@@ -4,7 +4,7 @@ AudioPlayer createAudioPlayer() {
   return const SilentAudioPlayer();
 }
 
-/// No-op player used on non-web targets and in tests.
+/// No-op player used in tests and unsupported targets.
 class SilentAudioPlayer implements AudioPlayer {
   const SilentAudioPlayer();
 

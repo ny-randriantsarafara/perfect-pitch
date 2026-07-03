@@ -23,6 +23,21 @@ PracticeController _buildController({
 
 void main() {
   group('PracticeController', () {
+    test('clears the playing state when audio playback fails', () async {
+      final controller = PracticeController(
+        audioEngine: const AudioEngine(player: _ThrowingAudioPlayer()),
+        onSessionCompleted: (_) {},
+        generator: IntervalQuestionGenerator(random: Random(7)),
+        pool: MusicInterval.upToStage(3),
+        questionCount: 1,
+      );
+      controller.startSession();
+
+      await controller.playCurrent();
+
+      expect(controller.isPlaying, isFalse);
+    });
+
     test('reveals the result after answering', () {
       final controller = _buildController(onCompleted: (_) {});
       controller.startSession();
@@ -90,4 +105,18 @@ void main() {
       expect(controller.questionNumber, 1);
     });
   });
+}
+
+class _ThrowingAudioPlayer implements AudioPlayer {
+  const _ThrowingAudioPlayer();
+
+  @override
+  Future<void> playChord(List<ToneRequest> requests) {
+    throw StateError('audio failed');
+  }
+
+  @override
+  Future<void> playTone(ToneRequest request) {
+    throw StateError('audio failed');
+  }
 }

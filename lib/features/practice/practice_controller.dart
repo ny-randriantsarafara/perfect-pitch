@@ -9,7 +9,8 @@ import 'package:perfect_pitch/core/session/interval_question.dart';
 import 'package:perfect_pitch/core/session/interval_question_generator.dart';
 
 /// Reports the outcomes of a finished practice run so mastery can be persisted.
-typedef PracticeSessionCompleted = void Function(List<IntervalOutcome> outcomes);
+typedef PracticeSessionCompleted =
+    void Function(List<IntervalOutcome> outcomes);
 
 /// Drives the ear-recognition loop of the Practice tab: play an interval,
 /// collect an answer, reveal the result, then move on. Sessions roll over
@@ -103,10 +104,14 @@ class PracticeController extends ChangeNotifier {
     _isPlaying = true;
     notifyListeners();
 
-    await audioEngine.playInterval(question.playback);
-
-    _isPlaying = false;
-    notifyListeners();
+    try {
+      await audioEngine.playInterval(question.playback);
+    } catch (error) {
+      debugPrint('Audio playback failed: $error');
+    } finally {
+      _isPlaying = false;
+      notifyListeners();
+    }
   }
 
   void selectAnswer(MusicInterval choice) {
