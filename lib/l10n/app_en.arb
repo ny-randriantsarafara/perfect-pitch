@@ -1,0 +1,50 @@
+{
+  "@@locale": "en",
+  "appTitle": "Intervals.pro",
+  "navHome": "Home",
+  "navExercises": "Exercises",
+  "navGuitar": "Guitar",
+  "navProgress": "Progress",
+  "streakDays": "{days} days",
+  "@streakDays": {
+    "placeholders": {
+      "days": {"type": "int"}
+    }
+  },
+  "streakLabel": "Current streak",
+  "streakDaysUppercase": "{days} Days",
+  "@streakDaysUppercase": {
+    "placeholders": {
+      "days": {"type": "int"}
+    }
+  },
+  "homeGreeting": "Hello!",
+  "homeSubtitle": "Your ear training is waiting.",
+  "homeTodaySession": "TODAY'S SESSION",
+  "homeSessionTitle": "Perfect Fifth\n& Comparison",
+  "homeSessionSubtitle": "Warm-up, new interval, and practice.",
+  "homeStartFiveMinutes": "Start (5 min)",
+  "homeRepertoire": "Your repertoire",
+  "homeSeeAll": "SEE ALL",
+  "discover": "Not started",
+  "learning": "Learning",
+  "masteredAt": "Mastered at {percentage}%",
+  "@masteredAt": {
+    "placeholders": {
+      "percentage": {"type": "int"}
+    }
+  },
+  "repertoireUnisonOctave": "Unison\n& Octave",
+  "repertoirePerfectFifth": "Perfect\nFifth",
+  "practiceMode": "PRACTICE MODE",
+  "guitarTitle": "Fretboard",
+  "guitarPromptPrefix": "Find the ",
+  "guitarPromptSuffix": " from the glowing root note.",
+  "guitarNextInterval": "Next interval",
+  "exercisesTitle": "Exercises",
+  "exercisesSubtitle": "Choose an ear-training exercise.",
+  "startSession": "Start session",
+  "settings": "SETTINGS",
+  "intervalQuestionPrompt": "What interval is this?",
+  "languagePickerTooltip": "Choose language"
+}

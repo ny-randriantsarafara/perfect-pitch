@@ -28,9 +28,9 @@ void main() {
     await tester.pumpWidget(_buildApp());
     await tester.pump();
 
-    expect(find.text('Bonjour !'), findsOneWidget);
+    expect(find.text('Hello!'), findsOneWidget);
 
-    await tester.tap(find.text('Démarrer (5 min)'));
+    await tester.tap(find.text('Start (5 min)'));
     await tester.pump();
     await tester.pump(const Duration(milliseconds: 500));
 
@@ -46,7 +46,7 @@ void main() {
 
     await tester.tap(find.byIcon(Icons.music_note_rounded));
     await tester.pump();
-    expect(find.text('Le Manche'), findsOneWidget);
+    expect(find.text('Fretboard'), findsOneWidget);
 
     await tester.tap(find.byIcon(Icons.auto_awesome_rounded));
     await tester.pump();
@@ -60,6 +60,29 @@ void main() {
     await tester.pump();
 
     expect(find.text('Intervals'), findsOneWidget);
-    expect(find.text('Bonjour !'), findsOneWidget);
+    expect(find.text('Hello!'), findsOneWidget);
+  });
+
+  testWidgets('mobile home recommendation card opens an existing exercise setup', (
+    tester,
+  ) async {
+    _setSurface(tester, const Size(500, 1000));
+
+    await tester.pumpWidget(_buildApp());
+    await tester.pump();
+
+    expect(
+      find.byKey(const ValueKey('home-exercise-recommendation-0')),
+      findsOneWidget,
+    );
+
+    await tester.tap(
+      find.byKey(const ValueKey('home-exercise-recommendation-0')),
+    );
+    await tester.pump();
+    await tester.pump(const Duration(milliseconds: 500));
+
+    expect(find.byKey(const ValueKey('practice-setup-start')), findsOneWidget);
+    expect(find.text('SETTINGS'), findsOneWidget);
   });
 }

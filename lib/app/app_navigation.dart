@@ -1,27 +1,36 @@
 import 'package:flutter/material.dart';
 import 'package:perfect_pitch/app/app_controller.dart';
 import 'package:perfect_pitch/app/app_palette.dart';
+import 'package:perfect_pitch/l10n/app_localizations.dart';
 import 'package:perfect_pitch/ui/glass_panel.dart';
 import 'package:perfect_pitch/ui/gradient_text.dart';
 import 'package:perfect_pitch/ui/pressable.dart';
 
 class _NavItem {
-  const _NavItem({required this.tab, required this.icon, required this.label});
+  const _NavItem({required this.tab, required this.icon});
 
   final AppTab tab;
   final IconData icon;
-  final String label;
+
+  String label(AppLocalizations l10n) {
+    switch (tab) {
+      case AppTab.home:
+        return l10n.navHome;
+      case AppTab.practice:
+        return l10n.navExercises;
+      case AppTab.guitar:
+        return l10n.navGuitar;
+      case AppTab.stats:
+        return l10n.navProgress;
+    }
+  }
 }
 
 const List<_NavItem> _navItems = [
-  _NavItem(tab: AppTab.home, icon: Icons.home_rounded, label: 'Accueil'),
-  _NavItem(
-    tab: AppTab.practice,
-    icon: Icons.headphones_rounded,
-    label: 'Exercices',
-  ),
-  _NavItem(tab: AppTab.guitar, icon: Icons.music_note_rounded, label: 'Guitare'),
-  _NavItem(tab: AppTab.stats, icon: Icons.auto_awesome_rounded, label: 'Progrès'),
+  _NavItem(tab: AppTab.home, icon: Icons.home_rounded),
+  _NavItem(tab: AppTab.practice, icon: Icons.headphones_rounded),
+  _NavItem(tab: AppTab.guitar, icon: Icons.music_note_rounded),
+  _NavItem(tab: AppTab.stats, icon: Icons.auto_awesome_rounded),
 ];
 
 /// Floating pill navigation shown at the bottom of the mobile phone frame.
@@ -79,6 +88,8 @@ class _MobileNavButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
+
     return Pressable(
       onTap: onTap,
       child: AnimatedContainer(
@@ -115,7 +126,7 @@ class _MobileNavButton extends StatelessWidget {
             if (isActive) ...[
               const SizedBox(height: 4),
               Text(
-                item.label.toUpperCase(),
+                item.label(l10n).toUpperCase(),
                 style: const TextStyle(
                   fontSize: 9,
                   fontWeight: FontWeight.w700,
@@ -219,6 +230,8 @@ class _DesktopNavButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
+
     return Pressable(
       onTap: onTap,
       pressedScale: 0.98,
@@ -249,7 +262,7 @@ class _DesktopNavButton extends StatelessWidget {
             ),
             const SizedBox(width: 16),
             Text(
-              item.label.toUpperCase(),
+              item.label(l10n).toUpperCase(),
               style: TextStyle(
                 fontSize: 14,
                 fontWeight: FontWeight.w700,
@@ -273,6 +286,8 @@ class _StreakCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
+
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
@@ -287,9 +302,9 @@ class _StreakCard extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text(
-            'Série en cours',
-            style: TextStyle(
+          Text(
+            l10n.streakLabel,
+            style: const TextStyle(
               fontSize: 12,
               fontWeight: FontWeight.w700,
               color: AppPalette.white,
@@ -306,7 +321,7 @@ class _StreakCard extends StatelessWidget {
               const SizedBox(width: 8),
               Flexible(
                 child: Text(
-                  '$streakDays Jours',
+                  l10n.streakDaysUppercase(streakDays),
                   overflow: TextOverflow.ellipsis,
                   style: const TextStyle(
                     fontSize: 15,

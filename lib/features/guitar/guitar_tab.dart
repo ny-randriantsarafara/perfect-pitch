@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:perfect_pitch/app/app_palette.dart';
 import 'package:perfect_pitch/core/music/music_interval.dart';
 import 'package:perfect_pitch/features/guitar/guitar_controller.dart';
+import 'package:perfect_pitch/l10n/app_localizations.dart';
 import 'package:perfect_pitch/ui/layout_mode.dart';
 import 'package:perfect_pitch/ui/pressable.dart';
 
@@ -53,6 +54,8 @@ class _Header extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -65,9 +68,9 @@ class _Header extends StatelessWidget {
               color: AppPalette.fuchsia500.withValues(alpha: 0.2),
             ),
           ),
-          child: const Text(
-            'MODE PRATIQUE',
-            style: TextStyle(
+          child: Text(
+            l10n.practiceMode,
+            style: const TextStyle(
               fontSize: 12,
               fontWeight: FontWeight.w700,
               letterSpacing: 1.5,
@@ -77,7 +80,7 @@ class _Header extends StatelessWidget {
         ),
         const SizedBox(height: 16),
         Text(
-          'Le Manche',
+          l10n.guitarTitle,
           style: TextStyle(
             fontSize: isDesktop ? 48 : 30,
             fontWeight: FontWeight.w800,
@@ -94,7 +97,7 @@ class _Header extends StatelessWidget {
               color: AppPalette.violet200.withValues(alpha: 0.6),
             ),
             children: [
-              const TextSpan(text: 'Trouve la '),
+              TextSpan(text: l10n.guitarPromptPrefix),
               TextSpan(
                 text: interval.labelFr,
                 style: const TextStyle(
@@ -102,9 +105,7 @@ class _Header extends StatelessWidget {
                   color: AppPalette.fuchsia400,
                 ),
               ),
-              const TextSpan(
-                text: ' par rapport à la note fondamentale lumineuse.',
-              ),
+              TextSpan(text: l10n.guitarPromptSuffix),
             ],
           ),
         ),
@@ -130,8 +131,6 @@ class _Fretboard extends StatelessWidget {
     final boardWidth = isDesktop ? 860.0 : 600.0;
     final boardHeight = isDesktop ? 360.0 : 280.0;
     final nutWidth = isDesktop ? 24.0 : 16.0;
-    final fretWidth = (boardWidth - nutWidth) / _fretCount;
-    final stringSpacing = boardHeight / GuitarController.openStringMidi.length;
     final revealed = controller.showResult
         ? controller.revealedTarget(fretCount: _fretCount)
         : null;
@@ -156,20 +155,16 @@ class _Fretboard extends StatelessWidget {
           _FretsLayer(
             fretCount: _fretCount,
             nutWidth: nutWidth,
-            fretWidth: fretWidth,
             inlayFrets: _inlayFrets,
             isDesktop: isDesktop,
           ),
           _StringsLayer(
-            stringSpacing: stringSpacing,
             stringCount: GuitarController.openStringMidi.length,
           ),
           _DotsLayer(
             controller: controller,
             fretCount: _fretCount,
             nutWidth: nutWidth,
-            fretWidth: fretWidth,
-            stringSpacing: stringSpacing,
             isDesktop: isDesktop,
             revealed: revealed,
           ),
@@ -183,14 +178,12 @@ class _FretsLayer extends StatelessWidget {
   const _FretsLayer({
     required this.fretCount,
     required this.nutWidth,
-    required this.fretWidth,
     required this.inlayFrets,
     required this.isDesktop,
   });
 
   final int fretCount;
   final double nutWidth;
-  final double fretWidth;
   final List<int> inlayFrets;
   final bool isDesktop;
 
@@ -209,8 +202,7 @@ class _FretsLayer extends StatelessWidget {
           ),
         ),
         for (var fret = 0; fret < fretCount; fret += 1)
-          SizedBox(
-            width: fretWidth,
+          Expanded(
             child: DecoratedBox(
               decoration: BoxDecoration(
                 border: Border(
@@ -243,12 +235,8 @@ class _FretsLayer extends StatelessWidget {
 }
 
 class _StringsLayer extends StatelessWidget {
-  const _StringsLayer({
-    required this.stringSpacing,
-    required this.stringCount,
-  });
+  const _StringsLayer({required this.stringCount});
 
-  final double stringSpacing;
   final int stringCount;
 
   @override
@@ -257,8 +245,7 @@ class _StringsLayer extends StatelessWidget {
       child: Column(
         children: [
           for (var i = 0; i < stringCount; i += 1)
-            SizedBox(
-              height: stringSpacing,
+            Expanded(
               child: Center(
                 child: Container(
                   height: 1 + i * 0.7,
@@ -285,8 +272,6 @@ class _DotsLayer extends StatelessWidget {
     required this.controller,
     required this.fretCount,
     required this.nutWidth,
-    required this.fretWidth,
-    required this.stringSpacing,
     required this.isDesktop,
     required this.revealed,
   });
@@ -294,8 +279,6 @@ class _DotsLayer extends StatelessWidget {
   final GuitarController controller;
   final int fretCount;
   final double nutWidth;
-  final double fretWidth;
-  final double stringSpacing;
   final bool isDesktop;
   final FretPosition? revealed;
 
@@ -306,14 +289,12 @@ class _DotsLayer extends StatelessWidget {
         for (var string = 0;
             string < GuitarController.openStringMidi.length;
             string += 1)
-          SizedBox(
-            height: stringSpacing,
+          Expanded(
             child: Row(
               children: [
                 SizedBox(width: nutWidth),
                 for (var fret = 0; fret < fretCount; fret += 1)
-                  SizedBox(
-                    width: fretWidth,
+                  Expanded(
                     child: _FretCell(
                       controller: controller,
                       position: FretPosition(string: string, fret: fret),
@@ -471,6 +452,8 @@ class _NextAction extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
+
     return SizedBox(
       height: 64,
       child: Center(
@@ -510,7 +493,7 @@ class _NextAction extends StatelessWidget {
                       ],
                     ),
                     child: Text(
-                      'Intervalle suivant',
+                      l10n.guitarNextInterval,
                       style: TextStyle(
                         fontSize: isDesktop ? 18 : 16,
                         fontWeight: FontWeight.w700,

@@ -1,8 +1,10 @@
 import 'dart:async';
+import 'dart:math';
 
-import 'package:flutter/foundation.dart';
+import 'package:flutter/widgets.dart';
 import 'package:perfect_pitch/core/audio/audio_engine.dart';
 import 'package:perfect_pitch/core/exercises/exercise_attempt.dart';
+import 'package:perfect_pitch/core/exercises/exercise_type.dart';
 import 'package:perfect_pitch/core/music/music_interval.dart';
 import 'package:perfect_pitch/core/progress/interval_progress.dart';
 import 'package:perfect_pitch/core/progress/interval_progress_repository.dart';
@@ -40,6 +42,9 @@ class AppController extends ChangeNotifier {
 
   AppTab _tab = AppTab.home;
   ProgressSnapshot _progress = ProgressSnapshot.empty();
+  Locale? _locale;
+  late final List<ExerciseType> _homeRecommendations =
+      _pickHomeRecommendations();
 
   AppTab get tab {
     return _tab;
@@ -49,14 +54,43 @@ class AppController extends ChangeNotifier {
     return _progress;
   }
 
+  Locale? get locale {
+    return _locale;
+  }
+
+  /// Two random existing catalogue exercises to feature on Home. The list is
+  /// stable for the lifetime of this controller so it does not reroll on every
+  /// Flutter rebuild.
+  List<ExerciseType> get homeRecommendations {
+    return List.unmodifiable(_homeRecommendations);
+  }
+
+  List<ExerciseType> _pickHomeRecommendations() {
+    final types = ExerciseType.values.toList()..shuffle(Random());
+    return types.take(2).toList();
+  }
+
   void selectTab(AppTab tab) {
     _tab = tab;
+    notifyListeners();
+  }
+
+  void changeLocale(Locale? locale) {
+    _locale = locale;
     notifyListeners();
   }
 
   /// Opens the Exercises tab on its catalogue (no session starts implicitly).
   void startPractice() {
     practice.returnToExercises();
+    selectTab(AppTab.practice);
+  }
+
+  /// Opens the shared exercise setup for [type] with the standard catalogue
+  /// defaults. Mirrors tapping the matching card on the Exercises tab; no
+  /// interval overrides are applied here.
+  void openExerciseSetup(ExerciseType type) {
+    practice.configureExercise(type);
     selectTab(AppTab.practice);
   }
 

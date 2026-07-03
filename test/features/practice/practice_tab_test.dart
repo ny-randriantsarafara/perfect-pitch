@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:perfect_pitch/app/app_palette.dart';
 import 'package:perfect_pitch/core/audio/audio_engine.dart';
@@ -6,6 +7,7 @@ import 'package:perfect_pitch/core/audio/platform_audio_player_stub.dart';
 import 'package:perfect_pitch/core/progress/interval_progress.dart';
 import 'package:perfect_pitch/features/practice/practice_controller.dart';
 import 'package:perfect_pitch/features/practice/practice_tab.dart';
+import 'package:perfect_pitch/l10n/app_localizations.dart';
 import 'package:perfect_pitch/ui/layout_mode.dart';
 
 PracticeController _controller() {
@@ -17,6 +19,14 @@ PracticeController _controller() {
 
 Widget _host(PracticeController controller) {
   return MaterialApp(
+    locale: const Locale('fr'),
+    localizationsDelegates: const [
+      AppLocalizations.delegate,
+      GlobalMaterialLocalizations.delegate,
+      GlobalCupertinoLocalizations.delegate,
+      GlobalWidgetsLocalizations.delegate,
+    ],
+    supportedLocales: AppLocalizations.supportedLocales,
     home: Scaffold(
       backgroundColor: AppPalette.canvas,
       body: PracticeTab(

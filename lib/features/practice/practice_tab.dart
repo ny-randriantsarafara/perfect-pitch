@@ -9,6 +9,7 @@ import 'package:perfect_pitch/core/music/music_interval.dart';
 import 'package:perfect_pitch/core/progress/interval_progress.dart';
 import 'package:perfect_pitch/core/session/interval_session_stats.dart';
 import 'package:perfect_pitch/features/practice/practice_controller.dart';
+import 'package:perfect_pitch/l10n/app_localizations.dart';
 import 'package:perfect_pitch/ui/glass_panel.dart';
 import 'package:perfect_pitch/ui/layout_mode.dart';
 import 'package:perfect_pitch/ui/pressable.dart';
@@ -139,13 +140,15 @@ class _CatalogueView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
+
     return SingleChildScrollView(
       padding: EdgeInsets.fromLTRB(24, isDesktop ? 32 : 16, 24, isDesktop ? 48 : 128),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            'Exercices',
+            l10n.exercisesTitle,
             style: TextStyle(
               fontSize: isDesktop ? 48 : 30,
               fontWeight: FontWeight.w800,
@@ -155,7 +158,7 @@ class _CatalogueView extends StatelessWidget {
           ),
           const SizedBox(height: 8),
           Text(
-            'Choisis un entraînement de reconnaissance.',
+            l10n.exercisesSubtitle,
             style: TextStyle(
               fontSize: isDesktop ? 18 : 14,
               fontWeight: FontWeight.w500,
@@ -373,6 +376,7 @@ class _SetupViewState extends State<_SetupView> {
   @override
   Widget build(BuildContext context) {
     final config = _config;
+    final l10n = AppLocalizations.of(context);
 
     return SingleChildScrollView(
       padding: EdgeInsets.fromLTRB(24, widget.isDesktop ? 32 : 16, 24, widget.isDesktop ? 48 : 128),
@@ -384,7 +388,7 @@ class _SetupViewState extends State<_SetupView> {
             onBack: widget.controller.returnToExercises,
           ),
           const SizedBox(height: 24),
-          _SetupSectionTitle('Réglages'),
+          _SetupSectionTitle(l10n.settings, alreadyUppercase: true),
           const SizedBox(height: 12),
           _DifficultySelector(
             selected: _difficulty,
@@ -427,7 +431,8 @@ class _SetupViewState extends State<_SetupView> {
           ],
           const SizedBox(height: 28),
           _PrimaryButton(
-            label: 'Démarrer la session',
+            key: const ValueKey('practice-setup-start'),
+            label: l10n.startSession,
             onTap: () => widget.controller.startExercise(config),
           ),
         ],
@@ -481,14 +486,15 @@ class _SetupHeader extends StatelessWidget {
 }
 
 class _SetupSectionTitle extends StatelessWidget {
-  const _SetupSectionTitle(this.label);
+  const _SetupSectionTitle(this.label, {this.alreadyUppercase = false});
 
   final String label;
+  final bool alreadyUppercase;
 
   @override
   Widget build(BuildContext context) {
     return Text(
-      label.toUpperCase(),
+      alreadyUppercase ? label : label.toUpperCase(),
       style: TextStyle(
         fontSize: 12,
         fontWeight: FontWeight.w700,
@@ -1294,11 +1300,12 @@ class _Prompt extends StatelessWidget {
     final config = controller.config;
     final reveal =
         controller.showResult || (config?.showDirectionBeforeAnswer ?? true);
+    final l10n = AppLocalizations.of(context);
 
     return Column(
       children: [
         Text(
-          'Quel est cet intervalle ?',
+          l10n.intervalQuestionPrompt,
           textAlign: TextAlign.center,
           style: TextStyle(
             fontSize: isDesktop ? 36 : 24,
@@ -1781,7 +1788,7 @@ class _SummaryStat extends StatelessWidget {
 // --- Shared buttons ---
 
 class _PrimaryButton extends StatelessWidget {
-  const _PrimaryButton({required this.label, required this.onTap});
+  const _PrimaryButton({required this.label, required this.onTap, super.key});
 
   final String label;
   final VoidCallback onTap;
