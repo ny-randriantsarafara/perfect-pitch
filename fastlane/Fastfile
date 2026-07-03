@@ -1,0 +1,95 @@
+require "shellwords"
+
+default_platform(:ios)
+
+def first_present_env(*names)
+  names.each do |name|
+    value = ENV[name].to_s.strip
+    return value unless value.empty?
+  end
+
+  nil
+end
+
+def resolved_testflight_build_number
+  first_present_env("IOS_BUILD_NUMBER", "GITHUB_RUN_NUMBER") || Time.now.utc.strftime("%Y%m%d%H%M%S")
+end
+
+def resolved_build_name
+  first_present_env("FLUTTER_BUILD_NAME")
+end
+
+def flutter_xcargs
+  parts = []
+
+  build_number = first_present_env("FLUTTER_BUILD_NUMBER")
+  parts << "FLUTTER_BUILD_NUMBER=#{build_number.shellescape}" if build_number
+
+  build_name = resolved_build_name
+  parts << "FLUTTER_BUILD_NAME=#{build_name.shellescape}" if build_name
+
+  parts.empty? ? nil : parts.join(" ")
+end
+
+def app_store_connect_api_key_from_env
+  key_id = first_present_env("APP_STORE_CONNECT_API_KEY_ID")
+  issuer_id = first_present_env("APP_STORE_CONNECT_ISSUER_ID")
+  key_content = first_present_env("APP_STORE_CONNECT_API_KEY_CONTENT")
+  return nil unless key_id && issuer_id && key_content
+
+  app_store_connect_api_key(
+    key_id: key_id,
+    issuer_id: issuer_id,
+    key_content: key_content,
+    is_key_content_base64: true
+  )
+end
+
+platform :ios do
+  desc "Sync signing certificates and profiles via Match"
+  lane :sync_signing do
+    api_key = app_store_connect_api_key_from_env
+
+    match(
+      type: "appstore",
+      git_url: ENV["MATCH_GIT_URL"],
+      app_identifier: ENV["MATCH_APP_IDENTIFIER"] || "com.nyhasinavalona.perfectpitch",
+      api_key: api_key,
+      readonly: is_ci
+    )
+  end
+
+  desc "Build iOS release IPA"
+  lane :build_ios do
+    setup_ci
+    sync_signing
+
+    build_options = {
+      workspace: "ios/Runner.xcworkspace",
+      scheme: "Runner",
+      export_method: "app-store",
+      output_directory: "build/ios",
+      output_name: "PerfectPitch.ipa"
+    }
+
+    xcargs = flutter_xcargs
+    build_options[:xcargs] = xcargs if xcargs
+
+    build_app(**build_options)
+  end
+
+  desc "Build and upload to TestFlight"
+  lane :testflight_upload do
+    ENV["FLUTTER_BUILD_NUMBER"] = first_present_env("FLUTTER_BUILD_NUMBER") || resolved_testflight_build_number
+
+    build_ios
+
+    api_key = app_store_connect_api_key_from_env
+    UI.user_error!("Missing App Store Connect API key environment variables") unless api_key
+
+    upload_to_testflight(
+      api_key: api_key,
+      skip_waiting_for_build_processing: true
+    )
+  end
+end

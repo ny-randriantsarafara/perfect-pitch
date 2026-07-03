@@ -1,0 +1,3 @@
+git_url("git@github.com:ny-randriantsarafara/certs.git")
+type("appstore")
+app_identifier("com.nyhasinavalona.perfectpitch")
