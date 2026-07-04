@@ -124,6 +124,12 @@ abstract class AppLocalizations {
   /// **'Exercises'**
   String get navExercises;
 
+  /// No description provided for @navLearn.
+  ///
+  /// In en, this message translates to:
+  /// **'Learn'**
+  String get navLearn;
+
   /// No description provided for @navGuitar.
   ///
   /// In en, this message translates to:
@@ -855,6 +861,1074 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Same identity, different height'**
   String get intervalOctaveSensation;
+
+  /// No description provided for @coursePrevious.
+  ///
+  /// In en, this message translates to:
+  /// **'Previous'**
+  String get coursePrevious;
+
+  /// No description provided for @courseNext.
+  ///
+  /// In en, this message translates to:
+  /// **'Next'**
+  String get courseNext;
+
+  /// No description provided for @courseStartDrill.
+  ///
+  /// In en, this message translates to:
+  /// **'Start drill'**
+  String get courseStartDrill;
+
+  /// No description provided for @courseRecommended.
+  ///
+  /// In en, this message translates to:
+  /// **'Recommended'**
+  String get courseRecommended;
+
+  /// No description provided for @courseCompleted.
+  ///
+  /// In en, this message translates to:
+  /// **'Completed'**
+  String get courseCompleted;
+
+  /// No description provided for @courseLearnFirst.
+  ///
+  /// In en, this message translates to:
+  /// **'Learn first'**
+  String get courseLearnFirst;
+
+  /// No description provided for @coursePlayDemo.
+  ///
+  /// In en, this message translates to:
+  /// **'Play example'**
+  String get coursePlayDemo;
+
+  /// No description provided for @courseEstimatedMinutes.
+  ///
+  /// In en, this message translates to:
+  /// **'{minutes} min'**
+  String courseEstimatedMinutes(int minutes);
+
+  /// No description provided for @learnTabTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Learn'**
+  String get learnTabTitle;
+
+  /// No description provided for @learnTabSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Short lessons before each drill.'**
+  String get learnTabSubtitle;
+
+  /// No description provided for @courseEarTrainingBasicsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'How to train your ear'**
+  String get courseEarTrainingBasicsTitle;
+
+  /// No description provided for @courseEarTrainingBasicsGoal.
+  ///
+  /// In en, this message translates to:
+  /// **'Learn the app routine before the first exercise.'**
+  String get courseEarTrainingBasicsGoal;
+
+  /// No description provided for @courseEarTrainingBasicsCard1Title.
+  ///
+  /// In en, this message translates to:
+  /// **'Concept'**
+  String get courseEarTrainingBasicsCard1Title;
+
+  /// No description provided for @courseEarTrainingBasicsCard1Body.
+  ///
+  /// In en, this message translates to:
+  /// **'An interval is the distance between two notes. In this app, your job is to name that distance by ear.'**
+  String get courseEarTrainingBasicsCard1Body;
+
+  /// No description provided for @courseEarTrainingBasicsCard2Title.
+  ///
+  /// In en, this message translates to:
+  /// **'Ear clue'**
+  String get courseEarTrainingBasicsCard2Title;
+
+  /// No description provided for @courseEarTrainingBasicsCard2Body.
+  ///
+  /// In en, this message translates to:
+  /// **'Do not hunt for the note names. Listen for size, color, and stability: small/large, tense/calm, dark/bright.'**
+  String get courseEarTrainingBasicsCard2Body;
+
+  /// No description provided for @courseEarTrainingBasicsCard3Title.
+  ///
+  /// In en, this message translates to:
+  /// **'Mini drill'**
+  String get courseEarTrainingBasicsCard3Title;
+
+  /// No description provided for @courseEarTrainingBasicsCard3Body.
+  ///
+  /// In en, this message translates to:
+  /// **'Play the example, pause, then say whether it feels same, close, open, or far before choosing an answer.'**
+  String get courseEarTrainingBasicsCard3Body;
+
+  /// No description provided for @courseIntervalDirectionTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Ascending, descending, harmonic'**
+  String get courseIntervalDirectionTitle;
+
+  /// No description provided for @courseIntervalDirectionGoal.
+  ///
+  /// In en, this message translates to:
+  /// **'Know the three ways the same interval can be played.'**
+  String get courseIntervalDirectionGoal;
+
+  /// No description provided for @courseIntervalDirectionCard1Title.
+  ///
+  /// In en, this message translates to:
+  /// **'Concept'**
+  String get courseIntervalDirectionCard1Title;
+
+  /// No description provided for @courseIntervalDirectionCard1Body.
+  ///
+  /// In en, this message translates to:
+  /// **'Ascending goes low to high. Descending goes high to low. Harmonic plays both notes together.'**
+  String get courseIntervalDirectionCard1Body;
+
+  /// No description provided for @courseIntervalDirectionCard2Title.
+  ///
+  /// In en, this message translates to:
+  /// **'Ear clue'**
+  String get courseIntervalDirectionCard2Title;
+
+  /// No description provided for @courseIntervalDirectionCard2Body.
+  ///
+  /// In en, this message translates to:
+  /// **'The interval name stays the same even when the direction changes. Direction changes the feeling, not the distance.'**
+  String get courseIntervalDirectionCard2Body;
+
+  /// No description provided for @courseIntervalDirectionCard3Title.
+  ///
+  /// In en, this message translates to:
+  /// **'Mini drill'**
+  String get courseIntervalDirectionCard3Title;
+
+  /// No description provided for @courseIntervalDirectionCard3Body.
+  ///
+  /// In en, this message translates to:
+  /// **'Play the same interval in all three directions and answer only the direction first, then the interval.'**
+  String get courseIntervalDirectionCard3Body;
+
+  /// No description provided for @coursePracticeStrategyTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Practice without guessing'**
+  String get coursePracticeStrategyTitle;
+
+  /// No description provided for @coursePracticeStrategyGoal.
+  ///
+  /// In en, this message translates to:
+  /// **'Use replay and hesitation markers the right way.'**
+  String get coursePracticeStrategyGoal;
+
+  /// No description provided for @coursePracticeStrategyCard1Title.
+  ///
+  /// In en, this message translates to:
+  /// **'Concept'**
+  String get coursePracticeStrategyCard1Title;
+
+  /// No description provided for @coursePracticeStrategyCard1Body.
+  ///
+  /// In en, this message translates to:
+  /// **'Accuracy matters more than speed. A slow correct answer builds the map; a fast guess adds noise.'**
+  String get coursePracticeStrategyCard1Body;
+
+  /// No description provided for @coursePracticeStrategyCard2Title.
+  ///
+  /// In en, this message translates to:
+  /// **'Ear clue'**
+  String get coursePracticeStrategyCard2Title;
+
+  /// No description provided for @coursePracticeStrategyCard2Body.
+  ///
+  /// In en, this message translates to:
+  /// **'Replay once for the shape, once for the feeling. After that, answer and learn from the comparison.'**
+  String get coursePracticeStrategyCard2Body;
+
+  /// No description provided for @coursePracticeStrategyCard3Title.
+  ///
+  /// In en, this message translates to:
+  /// **'Mini drill'**
+  String get coursePracticeStrategyCard3Title;
+
+  /// No description provided for @coursePracticeStrategyCard3Body.
+  ///
+  /// In en, this message translates to:
+  /// **'When unsure, mark hesitation after answering. This keeps correct-but-fragile intervals visible in progress.'**
+  String get coursePracticeStrategyCard3Body;
+
+  /// No description provided for @courseUnisonTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Unison'**
+  String get courseUnisonTitle;
+
+  /// No description provided for @courseUnisonGoal.
+  ///
+  /// In en, this message translates to:
+  /// **'Recognize Unison by its sound.'**
+  String get courseUnisonGoal;
+
+  /// No description provided for @courseUnisonCard1Title.
+  ///
+  /// In en, this message translates to:
+  /// **'What to hear'**
+  String get courseUnisonCard1Title;
+
+  /// No description provided for @courseUnisonCard1Body.
+  ///
+  /// In en, this message translates to:
+  /// **'Focus on the feeling: same note, no distance'**
+  String get courseUnisonCard1Body;
+
+  /// No description provided for @courseUnisonCard2Title.
+  ///
+  /// In en, this message translates to:
+  /// **'Compare it'**
+  String get courseUnisonCard2Title;
+
+  /// No description provided for @courseUnisonCard2Body.
+  ///
+  /// In en, this message translates to:
+  /// **'Compare Unison with Octave. Name the size first, then the color.'**
+  String get courseUnisonCard2Body;
+
+  /// No description provided for @courseUnisonCard3Title.
+  ///
+  /// In en, this message translates to:
+  /// **'Mini drill'**
+  String get courseUnisonCard3Title;
+
+  /// No description provided for @courseUnisonCard3Body.
+  ///
+  /// In en, this message translates to:
+  /// **'Start with 5 questions using only this interval and its closest confusion. Then add it back to the normal exercise.'**
+  String get courseUnisonCard3Body;
+
+  /// No description provided for @courseOctaveTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Octave'**
+  String get courseOctaveTitle;
+
+  /// No description provided for @courseOctaveGoal.
+  ///
+  /// In en, this message translates to:
+  /// **'Recognize Octave by its sound.'**
+  String get courseOctaveGoal;
+
+  /// No description provided for @courseOctaveCard1Title.
+  ///
+  /// In en, this message translates to:
+  /// **'What to hear'**
+  String get courseOctaveCard1Title;
+
+  /// No description provided for @courseOctaveCard1Body.
+  ///
+  /// In en, this message translates to:
+  /// **'Focus on the feeling: same identity, different height'**
+  String get courseOctaveCard1Body;
+
+  /// No description provided for @courseOctaveCard2Title.
+  ///
+  /// In en, this message translates to:
+  /// **'Compare it'**
+  String get courseOctaveCard2Title;
+
+  /// No description provided for @courseOctaveCard2Body.
+  ///
+  /// In en, this message translates to:
+  /// **'Compare Octave with Unison. Name the size first, then the color.'**
+  String get courseOctaveCard2Body;
+
+  /// No description provided for @courseOctaveCard3Title.
+  ///
+  /// In en, this message translates to:
+  /// **'Mini drill'**
+  String get courseOctaveCard3Title;
+
+  /// No description provided for @courseOctaveCard3Body.
+  ///
+  /// In en, this message translates to:
+  /// **'Start with 5 questions using only this interval and its closest confusion. Then add it back to the normal exercise.'**
+  String get courseOctaveCard3Body;
+
+  /// No description provided for @coursePerfectFifthTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Perfect fifth'**
+  String get coursePerfectFifthTitle;
+
+  /// No description provided for @coursePerfectFifthGoal.
+  ///
+  /// In en, this message translates to:
+  /// **'Recognize Perfect fifth by its sound.'**
+  String get coursePerfectFifthGoal;
+
+  /// No description provided for @coursePerfectFifthCard1Title.
+  ///
+  /// In en, this message translates to:
+  /// **'What to hear'**
+  String get coursePerfectFifthCard1Title;
+
+  /// No description provided for @coursePerfectFifthCard1Body.
+  ///
+  /// In en, this message translates to:
+  /// **'Focus on the feeling: stable, open, powerful'**
+  String get coursePerfectFifthCard1Body;
+
+  /// No description provided for @coursePerfectFifthCard2Title.
+  ///
+  /// In en, this message translates to:
+  /// **'Compare it'**
+  String get coursePerfectFifthCard2Title;
+
+  /// No description provided for @coursePerfectFifthCard2Body.
+  ///
+  /// In en, this message translates to:
+  /// **'Compare Perfect fifth with Perfect fourth. Name the size first, then the color.'**
+  String get coursePerfectFifthCard2Body;
+
+  /// No description provided for @coursePerfectFifthCard3Title.
+  ///
+  /// In en, this message translates to:
+  /// **'Mini drill'**
+  String get coursePerfectFifthCard3Title;
+
+  /// No description provided for @coursePerfectFifthCard3Body.
+  ///
+  /// In en, this message translates to:
+  /// **'Start with 5 questions using only this interval and its closest confusion. Then add it back to the normal exercise.'**
+  String get coursePerfectFifthCard3Body;
+
+  /// No description provided for @courseMinorThirdTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Minor third'**
+  String get courseMinorThirdTitle;
+
+  /// No description provided for @courseMinorThirdGoal.
+  ///
+  /// In en, this message translates to:
+  /// **'Recognize Minor third by its sound.'**
+  String get courseMinorThirdGoal;
+
+  /// No description provided for @courseMinorThirdCard1Title.
+  ///
+  /// In en, this message translates to:
+  /// **'What to hear'**
+  String get courseMinorThirdCard1Title;
+
+  /// No description provided for @courseMinorThirdCard1Body.
+  ///
+  /// In en, this message translates to:
+  /// **'Focus on the feeling: small leap, darker color'**
+  String get courseMinorThirdCard1Body;
+
+  /// No description provided for @courseMinorThirdCard2Title.
+  ///
+  /// In en, this message translates to:
+  /// **'Compare it'**
+  String get courseMinorThirdCard2Title;
+
+  /// No description provided for @courseMinorThirdCard2Body.
+  ///
+  /// In en, this message translates to:
+  /// **'Compare Minor third with Major third. Name the size first, then the color.'**
+  String get courseMinorThirdCard2Body;
+
+  /// No description provided for @courseMinorThirdCard3Title.
+  ///
+  /// In en, this message translates to:
+  /// **'Mini drill'**
+  String get courseMinorThirdCard3Title;
+
+  /// No description provided for @courseMinorThirdCard3Body.
+  ///
+  /// In en, this message translates to:
+  /// **'Start with 5 questions using only this interval and its closest confusion. Then add it back to the normal exercise.'**
+  String get courseMinorThirdCard3Body;
+
+  /// No description provided for @courseMajorThirdTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Major third'**
+  String get courseMajorThirdTitle;
+
+  /// No description provided for @courseMajorThirdGoal.
+  ///
+  /// In en, this message translates to:
+  /// **'Recognize Major third by its sound.'**
+  String get courseMajorThirdGoal;
+
+  /// No description provided for @courseMajorThirdCard1Title.
+  ///
+  /// In en, this message translates to:
+  /// **'What to hear'**
+  String get courseMajorThirdCard1Title;
+
+  /// No description provided for @courseMajorThirdCard1Body.
+  ///
+  /// In en, this message translates to:
+  /// **'Focus on the feeling: small leap, brighter color'**
+  String get courseMajorThirdCard1Body;
+
+  /// No description provided for @courseMajorThirdCard2Title.
+  ///
+  /// In en, this message translates to:
+  /// **'Compare it'**
+  String get courseMajorThirdCard2Title;
+
+  /// No description provided for @courseMajorThirdCard2Body.
+  ///
+  /// In en, this message translates to:
+  /// **'Compare Major third with Minor third. Name the size first, then the color.'**
+  String get courseMajorThirdCard2Body;
+
+  /// No description provided for @courseMajorThirdCard3Title.
+  ///
+  /// In en, this message translates to:
+  /// **'Mini drill'**
+  String get courseMajorThirdCard3Title;
+
+  /// No description provided for @courseMajorThirdCard3Body.
+  ///
+  /// In en, this message translates to:
+  /// **'Start with 5 questions using only this interval and its closest confusion. Then add it back to the normal exercise.'**
+  String get courseMajorThirdCard3Body;
+
+  /// No description provided for @coursePerfectFourthTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Perfect fourth'**
+  String get coursePerfectFourthTitle;
+
+  /// No description provided for @coursePerfectFourthGoal.
+  ///
+  /// In en, this message translates to:
+  /// **'Recognize Perfect fourth by its sound.'**
+  String get coursePerfectFourthGoal;
+
+  /// No description provided for @coursePerfectFourthCard1Title.
+  ///
+  /// In en, this message translates to:
+  /// **'What to hear'**
+  String get coursePerfectFourthCard1Title;
+
+  /// No description provided for @coursePerfectFourthCard1Body.
+  ///
+  /// In en, this message translates to:
+  /// **'Focus on the feeling: open, suspended, waiting'**
+  String get coursePerfectFourthCard1Body;
+
+  /// No description provided for @coursePerfectFourthCard2Title.
+  ///
+  /// In en, this message translates to:
+  /// **'Compare it'**
+  String get coursePerfectFourthCard2Title;
+
+  /// No description provided for @coursePerfectFourthCard2Body.
+  ///
+  /// In en, this message translates to:
+  /// **'Compare Perfect fourth with Perfect fifth. Name the size first, then the color.'**
+  String get coursePerfectFourthCard2Body;
+
+  /// No description provided for @coursePerfectFourthCard3Title.
+  ///
+  /// In en, this message translates to:
+  /// **'Mini drill'**
+  String get coursePerfectFourthCard3Title;
+
+  /// No description provided for @coursePerfectFourthCard3Body.
+  ///
+  /// In en, this message translates to:
+  /// **'Start with 5 questions using only this interval and its closest confusion. Then add it back to the normal exercise.'**
+  String get coursePerfectFourthCard3Body;
+
+  /// No description provided for @courseMinorSecondTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Minor second'**
+  String get courseMinorSecondTitle;
+
+  /// No description provided for @courseMinorSecondGoal.
+  ///
+  /// In en, this message translates to:
+  /// **'Recognize Minor second by its sound.'**
+  String get courseMinorSecondGoal;
+
+  /// No description provided for @courseMinorSecondCard1Title.
+  ///
+  /// In en, this message translates to:
+  /// **'What to hear'**
+  String get courseMinorSecondCard1Title;
+
+  /// No description provided for @courseMinorSecondCard1Body.
+  ///
+  /// In en, this message translates to:
+  /// **'Focus on the feeling: very close and tense'**
+  String get courseMinorSecondCard1Body;
+
+  /// No description provided for @courseMinorSecondCard2Title.
+  ///
+  /// In en, this message translates to:
+  /// **'Compare it'**
+  String get courseMinorSecondCard2Title;
+
+  /// No description provided for @courseMinorSecondCard2Body.
+  ///
+  /// In en, this message translates to:
+  /// **'Compare Minor second with Major second. Name the size first, then the color.'**
+  String get courseMinorSecondCard2Body;
+
+  /// No description provided for @courseMinorSecondCard3Title.
+  ///
+  /// In en, this message translates to:
+  /// **'Mini drill'**
+  String get courseMinorSecondCard3Title;
+
+  /// No description provided for @courseMinorSecondCard3Body.
+  ///
+  /// In en, this message translates to:
+  /// **'Start with 5 questions using only this interval and its closest confusion. Then add it back to the normal exercise.'**
+  String get courseMinorSecondCard3Body;
+
+  /// No description provided for @courseMajorSecondTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Major second'**
+  String get courseMajorSecondTitle;
+
+  /// No description provided for @courseMajorSecondGoal.
+  ///
+  /// In en, this message translates to:
+  /// **'Recognize Major second by its sound.'**
+  String get courseMajorSecondGoal;
+
+  /// No description provided for @courseMajorSecondCard1Title.
+  ///
+  /// In en, this message translates to:
+  /// **'What to hear'**
+  String get courseMajorSecondCard1Title;
+
+  /// No description provided for @courseMajorSecondCard1Body.
+  ///
+  /// In en, this message translates to:
+  /// **'Focus on the feeling: small natural movement'**
+  String get courseMajorSecondCard1Body;
+
+  /// No description provided for @courseMajorSecondCard2Title.
+  ///
+  /// In en, this message translates to:
+  /// **'Compare it'**
+  String get courseMajorSecondCard2Title;
+
+  /// No description provided for @courseMajorSecondCard2Body.
+  ///
+  /// In en, this message translates to:
+  /// **'Compare Major second with Minor second. Name the size first, then the color.'**
+  String get courseMajorSecondCard2Body;
+
+  /// No description provided for @courseMajorSecondCard3Title.
+  ///
+  /// In en, this message translates to:
+  /// **'Mini drill'**
+  String get courseMajorSecondCard3Title;
+
+  /// No description provided for @courseMajorSecondCard3Body.
+  ///
+  /// In en, this message translates to:
+  /// **'Start with 5 questions using only this interval and its closest confusion. Then add it back to the normal exercise.'**
+  String get courseMajorSecondCard3Body;
+
+  /// No description provided for @courseMinorSixthTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Minor sixth'**
+  String get courseMinorSixthTitle;
+
+  /// No description provided for @courseMinorSixthGoal.
+  ///
+  /// In en, this message translates to:
+  /// **'Recognize Minor sixth by its sound.'**
+  String get courseMinorSixthGoal;
+
+  /// No description provided for @courseMinorSixthCard1Title.
+  ///
+  /// In en, this message translates to:
+  /// **'What to hear'**
+  String get courseMinorSixthCard1Title;
+
+  /// No description provided for @courseMinorSixthCard1Body.
+  ///
+  /// In en, this message translates to:
+  /// **'Focus on the feeling: wide, soft, nostalgic'**
+  String get courseMinorSixthCard1Body;
+
+  /// No description provided for @courseMinorSixthCard2Title.
+  ///
+  /// In en, this message translates to:
+  /// **'Compare it'**
+  String get courseMinorSixthCard2Title;
+
+  /// No description provided for @courseMinorSixthCard2Body.
+  ///
+  /// In en, this message translates to:
+  /// **'Compare Minor sixth with Major sixth. Name the size first, then the color.'**
+  String get courseMinorSixthCard2Body;
+
+  /// No description provided for @courseMinorSixthCard3Title.
+  ///
+  /// In en, this message translates to:
+  /// **'Mini drill'**
+  String get courseMinorSixthCard3Title;
+
+  /// No description provided for @courseMinorSixthCard3Body.
+  ///
+  /// In en, this message translates to:
+  /// **'Start with 5 questions using only this interval and its closest confusion. Then add it back to the normal exercise.'**
+  String get courseMinorSixthCard3Body;
+
+  /// No description provided for @courseMajorSixthTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Major sixth'**
+  String get courseMajorSixthTitle;
+
+  /// No description provided for @courseMajorSixthGoal.
+  ///
+  /// In en, this message translates to:
+  /// **'Recognize Major sixth by its sound.'**
+  String get courseMajorSixthGoal;
+
+  /// No description provided for @courseMajorSixthCard1Title.
+  ///
+  /// In en, this message translates to:
+  /// **'What to hear'**
+  String get courseMajorSixthCard1Title;
+
+  /// No description provided for @courseMajorSixthCard1Body.
+  ///
+  /// In en, this message translates to:
+  /// **'Focus on the feeling: wide, bright, open'**
+  String get courseMajorSixthCard1Body;
+
+  /// No description provided for @courseMajorSixthCard2Title.
+  ///
+  /// In en, this message translates to:
+  /// **'Compare it'**
+  String get courseMajorSixthCard2Title;
+
+  /// No description provided for @courseMajorSixthCard2Body.
+  ///
+  /// In en, this message translates to:
+  /// **'Compare Major sixth with Minor sixth. Name the size first, then the color.'**
+  String get courseMajorSixthCard2Body;
+
+  /// No description provided for @courseMajorSixthCard3Title.
+  ///
+  /// In en, this message translates to:
+  /// **'Mini drill'**
+  String get courseMajorSixthCard3Title;
+
+  /// No description provided for @courseMajorSixthCard3Body.
+  ///
+  /// In en, this message translates to:
+  /// **'Start with 5 questions using only this interval and its closest confusion. Then add it back to the normal exercise.'**
+  String get courseMajorSixthCard3Body;
+
+  /// No description provided for @courseMinorSeventhTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Minor seventh'**
+  String get courseMinorSeventhTitle;
+
+  /// No description provided for @courseMinorSeventhGoal.
+  ///
+  /// In en, this message translates to:
+  /// **'Recognize Minor seventh by its sound.'**
+  String get courseMinorSeventhGoal;
+
+  /// No description provided for @courseMinorSeventhCard1Title.
+  ///
+  /// In en, this message translates to:
+  /// **'What to hear'**
+  String get courseMinorSeventhCard1Title;
+
+  /// No description provided for @courseMinorSeventhCard1Body.
+  ///
+  /// In en, this message translates to:
+  /// **'Focus on the feeling: wide, tense, unresolved'**
+  String get courseMinorSeventhCard1Body;
+
+  /// No description provided for @courseMinorSeventhCard2Title.
+  ///
+  /// In en, this message translates to:
+  /// **'Compare it'**
+  String get courseMinorSeventhCard2Title;
+
+  /// No description provided for @courseMinorSeventhCard2Body.
+  ///
+  /// In en, this message translates to:
+  /// **'Compare Minor seventh with Major seventh. Name the size first, then the color.'**
+  String get courseMinorSeventhCard2Body;
+
+  /// No description provided for @courseMinorSeventhCard3Title.
+  ///
+  /// In en, this message translates to:
+  /// **'Mini drill'**
+  String get courseMinorSeventhCard3Title;
+
+  /// No description provided for @courseMinorSeventhCard3Body.
+  ///
+  /// In en, this message translates to:
+  /// **'Start with 5 questions using only this interval and its closest confusion. Then add it back to the normal exercise.'**
+  String get courseMinorSeventhCard3Body;
+
+  /// No description provided for @courseMajorSeventhTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Major seventh'**
+  String get courseMajorSeventhTitle;
+
+  /// No description provided for @courseMajorSeventhGoal.
+  ///
+  /// In en, this message translates to:
+  /// **'Recognize Major seventh by its sound.'**
+  String get courseMajorSeventhGoal;
+
+  /// No description provided for @courseMajorSeventhCard1Title.
+  ///
+  /// In en, this message translates to:
+  /// **'What to hear'**
+  String get courseMajorSeventhCard1Title;
+
+  /// No description provided for @courseMajorSeventhCard1Body.
+  ///
+  /// In en, this message translates to:
+  /// **'Focus on the feeling: almost octave, very tense'**
+  String get courseMajorSeventhCard1Body;
+
+  /// No description provided for @courseMajorSeventhCard2Title.
+  ///
+  /// In en, this message translates to:
+  /// **'Compare it'**
+  String get courseMajorSeventhCard2Title;
+
+  /// No description provided for @courseMajorSeventhCard2Body.
+  ///
+  /// In en, this message translates to:
+  /// **'Compare Major seventh with Octave. Name the size first, then the color.'**
+  String get courseMajorSeventhCard2Body;
+
+  /// No description provided for @courseMajorSeventhCard3Title.
+  ///
+  /// In en, this message translates to:
+  /// **'Mini drill'**
+  String get courseMajorSeventhCard3Title;
+
+  /// No description provided for @courseMajorSeventhCard3Body.
+  ///
+  /// In en, this message translates to:
+  /// **'Start with 5 questions using only this interval and its closest confusion. Then add it back to the normal exercise.'**
+  String get courseMajorSeventhCard3Body;
+
+  /// No description provided for @courseTritoneTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Tritone'**
+  String get courseTritoneTitle;
+
+  /// No description provided for @courseTritoneGoal.
+  ///
+  /// In en, this message translates to:
+  /// **'Recognize Tritone by its sound.'**
+  String get courseTritoneGoal;
+
+  /// No description provided for @courseTritoneCard1Title.
+  ///
+  /// In en, this message translates to:
+  /// **'What to hear'**
+  String get courseTritoneCard1Title;
+
+  /// No description provided for @courseTritoneCard1Body.
+  ///
+  /// In en, this message translates to:
+  /// **'Focus on the feeling: unstable, strange, split'**
+  String get courseTritoneCard1Body;
+
+  /// No description provided for @courseTritoneCard2Title.
+  ///
+  /// In en, this message translates to:
+  /// **'Compare it'**
+  String get courseTritoneCard2Title;
+
+  /// No description provided for @courseTritoneCard2Body.
+  ///
+  /// In en, this message translates to:
+  /// **'Compare Tritone with Perfect fifth. Name the size first, then the color.'**
+  String get courseTritoneCard2Body;
+
+  /// No description provided for @courseTritoneCard3Title.
+  ///
+  /// In en, this message translates to:
+  /// **'Mini drill'**
+  String get courseTritoneCard3Title;
+
+  /// No description provided for @courseTritoneCard3Body.
+  ///
+  /// In en, this message translates to:
+  /// **'Start with 5 questions using only this interval and its closest confusion. Then add it back to the normal exercise.'**
+  String get courseTritoneCard3Body;
+
+  /// No description provided for @courseAscendingIntervalsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Master ascending intervals'**
+  String get courseAscendingIntervalsTitle;
+
+  /// No description provided for @courseAscendingIntervalsGoal.
+  ///
+  /// In en, this message translates to:
+  /// **'Hear the distance when the melody goes upward.'**
+  String get courseAscendingIntervalsGoal;
+
+  /// No description provided for @courseAscendingIntervalsCard1Title.
+  ///
+  /// In en, this message translates to:
+  /// **'Concept'**
+  String get courseAscendingIntervalsCard1Title;
+
+  /// No description provided for @courseAscendingIntervalsCard1Body.
+  ///
+  /// In en, this message translates to:
+  /// **'The first note is the root. The second note tells you the interval size upward.'**
+  String get courseAscendingIntervalsCard1Body;
+
+  /// No description provided for @courseAscendingIntervalsCard2Title.
+  ///
+  /// In en, this message translates to:
+  /// **'Ear clue'**
+  String get courseAscendingIntervalsCard2Title;
+
+  /// No description provided for @courseAscendingIntervalsCard2Body.
+  ///
+  /// In en, this message translates to:
+  /// **'Sing the first note in your head, then feel how far the second note climbs.'**
+  String get courseAscendingIntervalsCard2Body;
+
+  /// No description provided for @courseAscendingIntervalsCard3Title.
+  ///
+  /// In en, this message translates to:
+  /// **'Mini drill'**
+  String get courseAscendingIntervalsCard3Title;
+
+  /// No description provided for @courseAscendingIntervalsCard3Body.
+  ///
+  /// In en, this message translates to:
+  /// **'Start with unison, octave, fifth, and thirds before adding seconds and sevenths.'**
+  String get courseAscendingIntervalsCard3Body;
+
+  /// No description provided for @courseDescendingIntervalsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Master descending intervals'**
+  String get courseDescendingIntervalsTitle;
+
+  /// No description provided for @courseDescendingIntervalsGoal.
+  ///
+  /// In en, this message translates to:
+  /// **'Recognize the same distance when the melody falls.'**
+  String get courseDescendingIntervalsGoal;
+
+  /// No description provided for @courseDescendingIntervalsCard1Title.
+  ///
+  /// In en, this message translates to:
+  /// **'Concept'**
+  String get courseDescendingIntervalsCard1Title;
+
+  /// No description provided for @courseDescendingIntervalsCard1Body.
+  ///
+  /// In en, this message translates to:
+  /// **'The first note is high, then the sound falls to the root. The interval name is still the distance.'**
+  String get courseDescendingIntervalsCard1Body;
+
+  /// No description provided for @courseDescendingIntervalsCard2Title.
+  ///
+  /// In en, this message translates to:
+  /// **'Ear clue'**
+  String get courseDescendingIntervalsCard2Title;
+
+  /// No description provided for @courseDescendingIntervalsCard2Body.
+  ///
+  /// In en, this message translates to:
+  /// **'Do not answer “lower” automatically. Keep the first note in memory and measure the fall.'**
+  String get courseDescendingIntervalsCard2Body;
+
+  /// No description provided for @courseDescendingIntervalsCard3Title.
+  ///
+  /// In en, this message translates to:
+  /// **'Mini drill'**
+  String get courseDescendingIntervalsCard3Title;
+
+  /// No description provided for @courseDescendingIntervalsCard3Body.
+  ///
+  /// In en, this message translates to:
+  /// **'Practice the same interval ascending then descending until the distance feels identical.'**
+  String get courseDescendingIntervalsCard3Body;
+
+  /// No description provided for @courseHarmonicIntervalsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Hear two notes together'**
+  String get courseHarmonicIntervalsTitle;
+
+  /// No description provided for @courseHarmonicIntervalsGoal.
+  ///
+  /// In en, this message translates to:
+  /// **'Identify intervals when both notes sound at the same time.'**
+  String get courseHarmonicIntervalsGoal;
+
+  /// No description provided for @courseHarmonicIntervalsCard1Title.
+  ///
+  /// In en, this message translates to:
+  /// **'Concept'**
+  String get courseHarmonicIntervalsCard1Title;
+
+  /// No description provided for @courseHarmonicIntervalsCard1Body.
+  ///
+  /// In en, this message translates to:
+  /// **'Both notes arrive together, so you hear color more than melody.'**
+  String get courseHarmonicIntervalsCard1Body;
+
+  /// No description provided for @courseHarmonicIntervalsCard2Title.
+  ///
+  /// In en, this message translates to:
+  /// **'Ear clue'**
+  String get courseHarmonicIntervalsCard2Title;
+
+  /// No description provided for @courseHarmonicIntervalsCard2Body.
+  ///
+  /// In en, this message translates to:
+  /// **'Listen for stability and tension: calm, open, bright, dark, rubbing, unresolved.'**
+  String get courseHarmonicIntervalsCard2Body;
+
+  /// No description provided for @courseHarmonicIntervalsCard3Title.
+  ///
+  /// In en, this message translates to:
+  /// **'Mini drill'**
+  String get courseHarmonicIntervalsCard3Title;
+
+  /// No description provided for @courseHarmonicIntervalsCard3Body.
+  ///
+  /// In en, this message translates to:
+  /// **'After a wrong answer, replay the correct interval and name its color before moving on.'**
+  String get courseHarmonicIntervalsCard3Body;
+
+  /// No description provided for @courseMixedIntervalsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Mixed interval survival'**
+  String get courseMixedIntervalsTitle;
+
+  /// No description provided for @courseMixedIntervalsGoal.
+  ///
+  /// In en, this message translates to:
+  /// **'Answer by distance, even when the direction changes every question.'**
+  String get courseMixedIntervalsGoal;
+
+  /// No description provided for @courseMixedIntervalsCard1Title.
+  ///
+  /// In en, this message translates to:
+  /// **'Concept'**
+  String get courseMixedIntervalsCard1Title;
+
+  /// No description provided for @courseMixedIntervalsCard1Body.
+  ///
+  /// In en, this message translates to:
+  /// **'Mixed mode removes the training wheels. Every question can change direction.'**
+  String get courseMixedIntervalsCard1Body;
+
+  /// No description provided for @courseMixedIntervalsCard2Title.
+  ///
+  /// In en, this message translates to:
+  /// **'Ear clue'**
+  String get courseMixedIntervalsCard2Title;
+
+  /// No description provided for @courseMixedIntervalsCard2Body.
+  ///
+  /// In en, this message translates to:
+  /// **'First identify direction, then distance. Do not let direction steal the answer.'**
+  String get courseMixedIntervalsCard2Body;
+
+  /// No description provided for @courseMixedIntervalsCard3Title.
+  ///
+  /// In en, this message translates to:
+  /// **'Mini drill'**
+  String get courseMixedIntervalsCard3Title;
+
+  /// No description provided for @courseMixedIntervalsCard3Body.
+  ///
+  /// In en, this message translates to:
+  /// **'Use easier intervals first, then unlock the full set when accuracy is stable.'**
+  String get courseMixedIntervalsCard3Body;
+
+  /// No description provided for @courseMistakeReviewTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Turn mistakes into training'**
+  String get courseMistakeReviewTitle;
+
+  /// No description provided for @courseMistakeReviewGoal.
+  ///
+  /// In en, this message translates to:
+  /// **'Use the summary screen to attack your real weak spots.'**
+  String get courseMistakeReviewGoal;
+
+  /// No description provided for @courseMistakeReviewCard1Title.
+  ///
+  /// In en, this message translates to:
+  /// **'Concept'**
+  String get courseMistakeReviewCard1Title;
+
+  /// No description provided for @courseMistakeReviewCard1Body.
+  ///
+  /// In en, this message translates to:
+  /// **'A wrong answer is a clue. The confusion tells you which two sounds your ear merges.'**
+  String get courseMistakeReviewCard1Body;
+
+  /// No description provided for @courseMistakeReviewCard2Title.
+  ///
+  /// In en, this message translates to:
+  /// **'Ear clue'**
+  String get courseMistakeReviewCard2Title;
+
+  /// No description provided for @courseMistakeReviewCard2Body.
+  ///
+  /// In en, this message translates to:
+  /// **'Use “Review my mistakes” while the sound is still fresh in memory.'**
+  String get courseMistakeReviewCard2Body;
+
+  /// No description provided for @courseMistakeReviewCard3Title.
+  ///
+  /// In en, this message translates to:
+  /// **'Mini drill'**
+  String get courseMistakeReviewCard3Title;
+
+  /// No description provided for @courseMistakeReviewCard3Body.
+  ///
+  /// In en, this message translates to:
+  /// **'Train only the missed intervals for one short session, then return to mixed practice.'**
+  String get courseMistakeReviewCard3Body;
 }
 
 class _AppLocalizationsDelegate

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:perfect_pitch/app/app_controller.dart';
 import 'package:perfect_pitch/app/app_navigation.dart';
 import 'package:perfect_pitch/app/app_palette.dart';
+import 'package:perfect_pitch/features/courses/course_tab.dart';
 import 'package:perfect_pitch/features/guitar/guitar_tab.dart';
 import 'package:perfect_pitch/features/home/home_tab.dart';
 import 'package:perfect_pitch/features/practice/practice_tab.dart';
@@ -46,6 +47,14 @@ Widget _buildTabContent(AppController controller, LayoutMode mode) {
         controller: controller.practice,
         progress: controller.progress,
         mode: mode,
+        onOpenCourse: controller.openRecommendedCourseForExercise,
+      );
+    case AppTab.learn:
+      child = CourseTab(
+        controller: controller.course,
+        audioEngine: controller.audioEngine,
+        mode: mode,
+        onStartDrill: controller.startCourseDrill,
       );
     case AppTab.guitar:
       child = GuitarTab(controller: controller.guitar, mode: mode);

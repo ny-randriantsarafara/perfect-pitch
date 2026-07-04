@@ -18,6 +18,8 @@ class _NavItem {
         return l10n.navHome;
       case AppTab.practice:
         return l10n.navExercises;
+      case AppTab.learn:
+        return l10n.navLearn;
       case AppTab.guitar:
         return l10n.navGuitar;
       case AppTab.stats:
@@ -29,6 +31,7 @@ class _NavItem {
 const List<_NavItem> _navItems = [
   _NavItem(tab: AppTab.home, icon: Icons.home_rounded),
   _NavItem(tab: AppTab.practice, icon: Icons.headphones_rounded),
+  _NavItem(tab: AppTab.learn, icon: Icons.school_rounded),
   _NavItem(tab: AppTab.guitar, icon: Icons.music_note_rounded),
   _NavItem(tab: AppTab.stats, icon: Icons.auto_awesome_rounded),
 ];
@@ -95,7 +98,7 @@ class _MobileNavButton extends StatelessWidget {
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 300),
         curve: Curves.easeOut,
-        width: 62,
+        width: 56,
         height: 54,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(999),

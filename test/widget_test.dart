@@ -3,6 +3,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:perfect_pitch/app/perfect_pitch_app.dart';
 import 'package:perfect_pitch/core/audio/audio_engine.dart';
 import 'package:perfect_pitch/core/audio/platform_audio_player_stub.dart';
+import 'package:perfect_pitch/core/courses/course_progress_repository.dart';
 import 'package:perfect_pitch/core/progress/interval_progress_repository.dart';
 import 'package:perfect_pitch/ui/layout_mode.dart';
 
@@ -10,6 +11,7 @@ PerfectPitchApp _buildApp() {
   return PerfectPitchApp(
     audioEngine: const AudioEngine(player: SilentAudioPlayer()),
     progressRepository: InMemoryIntervalProgressRepository(),
+    courseProgressRepository: InMemoryCourseProgressRepository(),
   );
 }
 
@@ -75,6 +77,19 @@ void main() {
     await tester.tap(find.byIcon(Icons.auto_awesome_rounded));
     await tester.pump();
     expect(find.text('Interval detail'), findsOneWidget);
+  });
+
+  testWidgets('mobile bottom navigation opens learn tab', (tester) async {
+    _setSurface(tester, const Size(500, 1000));
+
+    await tester.pumpWidget(_buildApp());
+    await tester.pump();
+
+    await tester.tap(find.byIcon(Icons.school_rounded));
+    await tester.pump();
+    await tester.pump(const Duration(milliseconds: 500));
+
+    expect(find.text('How to train your ear'), findsOneWidget);
   });
 
   testWidgets('desktop layout shows the side navigation rail', (tester) async {
