@@ -5,8 +5,8 @@ help: ## Show available targets
 
 setup: ## Install Flutter deps, iOS pods, and Fastlane gems
 	flutter pub get
-	cd ios && pod install
 	bundle install
+	cd ios && bundle exec pod install
 
 analyze: ## Run Flutter static analysis
 	flutter analyze
