@@ -15,7 +15,10 @@ void main() {
       'prepare_flutter_ios_release_artifacts',
       laneStart,
     );
-    final archiveCall = fastfile.indexOf('build_app(**build_options)', laneStart);
+    final archiveCall = fastfile.indexOf(
+      'build_app(**build_options)',
+      laneStart,
+    );
 
     expect(laneStart, isNonNegative);
     expect(prepareCall, greaterThan(laneStart));
@@ -32,29 +35,64 @@ void main() {
     expect(targetBody, isNot(contains('--config-only')));
   });
 
-  test('Apple deployment workflow deploys when required secrets are present', () {
-    final workflow = File(
-      '.github/workflows/deploy-apple.yml',
+  test(
+    'Apple deployment workflow deploys when required secrets are present',
+    () {
+      final workflow = File(
+        '.github/workflows/deploy-apple.yml',
+      ).readAsStringSync();
+
+      expect(workflow, isNot(contains('ENABLE_TESTFLIGHT_DEPLOY')));
+      expect(workflow, contains('id: prerequisites'));
+      expect(workflow, contains("deploy_ready=true"));
+      expect(workflow, contains("deploy_ready != 'true'"));
+      expect(
+        workflow,
+        contains(
+          "needs.deployment-prerequisites.outputs.deploy_ready == 'true'",
+        ),
+      );
+
+      for (final secret in [
+        'APP_STORE_CONNECT_API_KEY_ID',
+        'APP_STORE_CONNECT_ISSUER_ID',
+        'APP_STORE_CONNECT_API_KEY',
+        'MATCH_GIT_PRIVATE_KEY',
+        'MATCH_GIT_URL',
+        'MATCH_PASSWORD',
+      ]) {
+        expect(workflow, contains('secrets.$secret'));
+      }
+    },
+  );
+
+  test('Runner release archives use Match App Store signing', () {
+    final project = File(
+      'ios/Runner.xcodeproj/project.pbxproj',
     ).readAsStringSync();
 
-    expect(workflow, isNot(contains('ENABLE_TESTFLIGHT_DEPLOY')));
-    expect(workflow, contains('id: prerequisites'));
-    expect(workflow, contains("deploy_ready=true"));
-    expect(workflow, contains("deploy_ready != 'true'"));
-    expect(
-      workflow,
-      contains("needs.deployment-prerequisites.outputs.deploy_ready == 'true'"),
-    );
+    final blocks =
+        RegExp(
+          r'\b\w+ /\* (?:Release|Profile) \*/ = \{.*?\n\t\t\tname = (?:Release|Profile);\n\t\t\};',
+          dotAll: true,
+        ).allMatches(project).map((match) => match.group(0)!).where((block) {
+          return block.contains(
+            'PRODUCT_BUNDLE_IDENTIFIER = com.nyhasinavalona.perfectpitch;',
+          );
+        }).toList();
 
-    for (final secret in [
-      'APP_STORE_CONNECT_API_KEY_ID',
-      'APP_STORE_CONNECT_ISSUER_ID',
-      'APP_STORE_CONNECT_API_KEY',
-      'MATCH_GIT_PRIVATE_KEY',
-      'MATCH_GIT_URL',
-      'MATCH_PASSWORD',
-    ]) {
-      expect(workflow, contains('secrets.$secret'));
+    expect(blocks, hasLength(2));
+
+    for (final block in blocks) {
+      expect(block, contains('CODE_SIGN_IDENTITY = "Apple Distribution";'));
+      expect(block, contains('CODE_SIGN_STYLE = Manual;'));
+      expect(block, contains('DEVELOPMENT_TEAM = 6B673XM2ST;'));
+      expect(
+        block,
+        contains(
+          'PROVISIONING_PROFILE_SPECIFIER = "match AppStore com.nyhasinavalona.perfectpitch";',
+        ),
+      );
     }
   });
 }
