@@ -20,12 +20,14 @@ network-dependent learning features.
 
 ## Navigation
 
-The app has four primary areas:
+The app has five primary areas:
 
 - **Home**: greeting, daily streak, quick access to a session, and a short
   progress overview.
 - **Exercises**: the exercise catalogue, shared setup, and the active session
   and summary flow (the heart of the product).
+- **Learn**: short micro-courses that teach interval-listening concepts and
+  launch focused drills through the existing exercise engine.
 - **Instrument**: the guitar fretboard drill, where the learner finds an
   interval on the neck. Advanced instrument expansion is out of scope for now.
 - **Progress**: richer statistics derived from recorded attempts.
@@ -110,6 +112,35 @@ After the final question the app shows a summary:
 Summary actions let the learner retry the mistakes, repeat the same session,
 increase difficulty, or return to the catalogue.
 
+## Learn
+
+The Learn area contains short micro-courses that teach interval-listening
+concepts before launching a focused drill. V1 ships 21 courses covering:
+
+- three foundation courses (ear-training basics, interval direction, practice
+  strategy);
+- thirteen interval courses that each target one interval and its confusion
+  neighbor;
+- four exercise-direction courses aligned to the four catalogue exercises;
+- one mistake-review strategy course.
+
+`course_guitar_intervals` is deferred; guitar practice remains outside the
+course system in v1.
+
+Each course opens up to three lesson cards (concept, ear clue or compare demo,
+mini drill). Interval courses can play a demo of the target interval directly
+from the lesson. The final card launches a focused drill through the existing
+`ExerciseConfig` and practice session engine — no second exercise engine
+exists. Course completion is stored locally and is separate from interval
+mastery.
+
+The Exercises catalogue exposes a small "Learn first" chip on each exercise
+card that jumps to the best-fit uncompleted course for that exercise type.
+
+All course copy is localized through ARB files (EN, FR, ES, DE, IT, PT). The
+runtime course structure — IDs, order, kinds, stages, exercise links, and step
+metadata — is typed Dart data under `lib/core/courses/`.
+
 ## Difficulty Defaults
 
 Difficulty controls the interval set, choice count, replay limit, and how much
@@ -177,7 +208,8 @@ The app is mobile-first:
 - readable text and keyboard-friendly buttons;
 - reduced reliance on animation for understanding.
 
-All user-facing copy is in French.
+All user-facing copy is localized. UI copy and course content are supplied for
+English, French, Spanish, German, Italian, and Portuguese through ARB files.
 
 ## Explicit Non-Goals
 
