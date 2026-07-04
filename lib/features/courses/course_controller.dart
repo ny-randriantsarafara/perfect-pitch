@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:flutter/foundation.dart';
 import 'package:perfect_pitch/core/audio/audio_engine.dart';
 import 'package:perfect_pitch/core/audio/instrument.dart';
@@ -130,9 +128,9 @@ class CourseController extends ChangeNotifier {
     CourseSpec course, {
     ExerciseType? contextType,
   }) {
-    final type = contextType ?? ExerciseType.ascendingIntervals;
     final target = course.intervals.first;
-    final intervals = _intervalChoicesFor(course, target, type);
+    final type = _intervalExerciseTypeFor(target, contextType);
+    final intervals = _intervalChoicesFor(course, target);
 
     return ExerciseConfig.defaults(type).copyWith(
       intervals: intervals,
@@ -145,12 +143,11 @@ class CourseController extends ChangeNotifier {
   List<MusicInterval> _intervalChoicesFor(
     CourseSpec course,
     MusicInterval target,
-    ExerciseType type,
   ) {
     final choices = <MusicInterval>{target};
     final candidates =
         MusicInterval.upToStage(
-          max(1, course.stage),
+          course.stage,
         ).where((interval) => interval != target).toList()..sort((a, b) {
           final aDistance = (a.semitones - target.semitones).abs();
           final bDistance = (b.semitones - target.semitones).abs();
@@ -163,26 +160,26 @@ class CourseController extends ChangeNotifier {
           return a.semitones.compareTo(b.semitones);
         });
 
-    for (final candidate in candidates) {
-      choices.add(candidate);
-
-      if (choices.length == 3) {
-        break;
-      }
-    }
-
-    if (choices.length == 1 &&
-        type.defaultDirections.length == 1 &&
-        type.defaultDirections.contains(IntervalDirection.descending) &&
-        choices.contains(MusicInterval.unison)) {
-      choices.add(MusicInterval.octave);
-    }
-
-    if (choices.length == 1) {
-      choices.add(_nearestInterval(target));
-    }
+    choices.add(
+      candidates.isEmpty ? _nearestInterval(target) : candidates.first,
+    );
 
     return choices.toList()..sort((a, b) => a.semitones.compareTo(b.semitones));
+  }
+
+  ExerciseType _intervalExerciseTypeFor(
+    MusicInterval target,
+    ExerciseType? contextType,
+  ) {
+    final requested = contextType ?? ExerciseType.ascendingIntervals;
+
+    if (target == MusicInterval.unison &&
+        requested.defaultDirections.length == 1 &&
+        requested.defaultDirections.contains(IntervalDirection.descending)) {
+      return ExerciseType.ascendingIntervals;
+    }
+
+    return requested;
   }
 
   MusicInterval _nearestInterval(MusicInterval target) {

@@ -71,6 +71,21 @@ void main() {
     expect(subject.recommendedCourse.id, 'course_interval_direction');
   });
 
+  test(
+    'recommendation falls back to first course when all courses complete',
+    () async {
+      final subject = controller();
+      addTearDown(subject.dispose);
+      await subject.load();
+
+      for (final course in CourseCatalog.v1) {
+        await subject.completeCourse(course);
+      }
+
+      expect(subject.recommendedCourse.id, 'course_ear_training_basics');
+    },
+  );
+
   test('builds foundation drill config', () {
     final subject = controller();
     final config = subject.buildDrillConfig(CourseCatalog.v1.first);
@@ -81,7 +96,7 @@ void main() {
     expect(config.allowsUnlimitedReplays, isTrue);
   });
 
-  test('builds interval drill config with the target interval', () {
+  test('builds interval drill config with exact nearest-interval pool', () {
     final subject = controller();
     final course = CourseCatalog.v1.firstWhere(
       (course) => course.id == 'course_perfect_fifth',
@@ -93,7 +108,59 @@ void main() {
     );
 
     expect(config.type, ExerciseType.ascendingIntervals);
-    expect(config.intervals, contains(MusicInterval.perfectFifth));
+    expect(config.intervals, [
+      MusicInterval.perfectFifth,
+      MusicInterval.octave,
+    ]);
+    expect(config.questionCount, 5);
+    expect(config.choiceCount, 2);
+    expect(config.allowsUnlimitedReplays, isTrue);
+  });
+
+  test('builds descending unison as a valid ascending drill', () {
+    final subject = controller();
+    final course = CourseCatalog.v1.firstWhere(
+      (course) => course.id == 'course_unison',
+    );
+
+    final config = subject.buildDrillConfig(
+      course,
+      contextType: ExerciseType.descendingIntervals,
+    );
+
+    expect(config.type, ExerciseType.ascendingIntervals);
+    expect(config.directions, {IntervalDirection.ascending});
+    expect(config.intervals, [MusicInterval.unison, MusicInterval.octave]);
+    expect(config.questionCount, 5);
+    expect(config.choiceCount, 2);
+    expect(config.allowsUnlimitedReplays, isTrue);
+  });
+
+  test('builds exercise-course drill config', () {
+    final subject = controller();
+    final course = CourseCatalog.v1.firstWhere(
+      (course) => course.id == 'course_ascending_intervals',
+    );
+
+    final config = subject.buildDrillConfig(course);
+
+    expect(config.type, ExerciseType.ascendingIntervals);
+    expect(config.intervals, MusicInterval.upToStage(2));
+    expect(config.questionCount, 8);
+    expect(config.choiceCount, 4);
+    expect(config.allowsUnlimitedReplays, isFalse);
+  });
+
+  test('builds strategy-course drill config', () {
+    final subject = controller();
+    final course = CourseCatalog.v1.firstWhere(
+      (course) => course.id == 'course_mistake_review',
+    );
+
+    final config = subject.buildDrillConfig(course);
+
+    expect(config.type, ExerciseType.ascendingIntervals);
+    expect(config.intervals, MusicInterval.upToStage(2));
     expect(config.questionCount, 5);
     expect(config.choiceCount, 3);
     expect(config.allowsUnlimitedReplays, isTrue);
