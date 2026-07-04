@@ -3,16 +3,19 @@ import 'dart:math';
 
 import 'package:flutter/widgets.dart';
 import 'package:perfect_pitch/core/audio/audio_engine.dart';
+import 'package:perfect_pitch/core/courses/course.dart';
+import 'package:perfect_pitch/core/courses/course_progress_repository.dart';
 import 'package:perfect_pitch/core/exercises/exercise_attempt.dart';
 import 'package:perfect_pitch/core/exercises/exercise_type.dart';
 import 'package:perfect_pitch/core/music/music_interval.dart';
 import 'package:perfect_pitch/core/progress/interval_progress.dart';
 import 'package:perfect_pitch/core/progress/interval_progress_repository.dart';
+import 'package:perfect_pitch/features/courses/course_controller.dart';
 import 'package:perfect_pitch/features/guitar/guitar_controller.dart';
 import 'package:perfect_pitch/features/practice/practice_controller.dart';
 
-/// The four primary destinations mirrored from the designer navigation.
-enum AppTab { home, practice, guitar, stats }
+/// The five primary destinations mirrored from the designer navigation.
+enum AppTab { home, practice, learn, guitar, stats }
 
 /// Owns global app state: the active tab, the loaded progress snapshot, and the
 /// per-feature controllers. Feature controllers report their graded answers
@@ -21,6 +24,7 @@ class AppController extends ChangeNotifier {
   AppController({
     required this.audioEngine,
     IntervalProgressRepository? progressRepository,
+    CourseProgressRepository? courseProgressRepository,
   }) : _progressRepository =
            progressRepository ?? InMemoryIntervalProgressRepository() {
     practice = PracticeController(
@@ -31,7 +35,12 @@ class AppController extends ChangeNotifier {
       audioEngine: audioEngine,
       onAttemptRecorded: _handleGuitarAttempt,
     );
+    course = CourseController(
+      progressRepository:
+          courseProgressRepository ?? InMemoryCourseProgressRepository(),
+    );
     unawaited(_loadProgress());
+    unawaited(course.load());
   }
 
   final AudioEngine audioEngine;
@@ -39,6 +48,7 @@ class AppController extends ChangeNotifier {
 
   late final PracticeController practice;
   late final GuitarController guitar;
+  late final CourseController course;
 
   AppTab _tab = AppTab.home;
   ProgressSnapshot _progress = ProgressSnapshot.empty();
@@ -94,6 +104,28 @@ class AppController extends ChangeNotifier {
     selectTab(AppTab.practice);
   }
 
+  /// Opens the Learn tab focused on [courseSpec]'s lesson view.
+  void openCourse(CourseSpec courseSpec) {
+    course.openCourse(courseSpec);
+    selectTab(AppTab.learn);
+  }
+
+  /// Builds the drill for [courseSpec] and hands it to the practice engine.
+  /// Marks the course as complete because reaching the drill means the learner
+  /// walked through every lesson card.
+  Future<void> startCourseDrill(CourseSpec courseSpec) async {
+    final config = course.buildDrillConfig(courseSpec);
+    await course.completeCourse(courseSpec);
+    selectTab(AppTab.practice);
+    await practice.startExercise(config);
+  }
+
+  /// Returns the best-fit course to open before starting exercise [type] and
+  /// switches to the Learn tab positioned on that course.
+  void openRecommendedCourseForExercise(ExerciseType type) {
+    openCourse(course.recommendedCourseForExercise(type));
+  }
+
   Future<void> _loadProgress() async {
     _progress = await _progressRepository.load();
     notifyListeners();
@@ -132,6 +164,7 @@ class AppController extends ChangeNotifier {
   void dispose() {
     practice.dispose();
     guitar.dispose();
+    course.dispose();
     super.dispose();
   }
 }

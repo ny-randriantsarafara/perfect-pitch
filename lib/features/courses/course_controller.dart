@@ -32,6 +32,21 @@ class CourseController extends ChangeNotifier {
     );
   }
 
+  /// Best-fit course to recommend before a specific exercise: prefer an
+  /// uncompleted course that targets [type], otherwise return the first course
+  /// that targets [type], otherwise fall back to the overall recommendation.
+  CourseSpec recommendedCourseForExercise(ExerciseType type) {
+    return CourseCatalog.v1.firstWhere(
+      (course) =>
+          course.exerciseTypes.contains(type) &&
+          !progress.isCompleted(course.id),
+      orElse: () => CourseCatalog.v1.firstWhere(
+        (course) => course.exerciseTypes.contains(type),
+        orElse: () => recommendedCourse,
+      ),
+    );
+  }
+
   void openCourse(CourseSpec course) {
     selectedCourse = course;
     currentStepIndex = 0;

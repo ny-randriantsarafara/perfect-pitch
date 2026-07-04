@@ -4,6 +4,7 @@ import 'package:perfect_pitch/app/app_controller.dart';
 import 'package:perfect_pitch/app/app_shell.dart';
 import 'package:perfect_pitch/app/app_theme.dart';
 import 'package:perfect_pitch/core/audio/audio_engine.dart';
+import 'package:perfect_pitch/core/courses/course_progress_repository.dart';
 import 'package:perfect_pitch/core/progress/interval_progress_repository.dart';
 import 'package:perfect_pitch/l10n/app_localizations.dart';
 
@@ -11,12 +12,14 @@ class PerfectPitchApp extends StatefulWidget {
   const PerfectPitchApp({
     required this.audioEngine,
     this.progressRepository,
+    this.courseProgressRepository,
     this.locale,
     super.key,
   });
 
   final AudioEngine audioEngine;
   final IntervalProgressRepository? progressRepository;
+  final CourseProgressRepository? courseProgressRepository;
   final Locale? locale;
 
   @override
@@ -32,6 +35,7 @@ class _PerfectPitchAppState extends State<PerfectPitchApp> {
     _controller = AppController(
       audioEngine: widget.audioEngine,
       progressRepository: widget.progressRepository,
+      courseProgressRepository: widget.courseProgressRepository,
     );
   }
 
