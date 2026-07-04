@@ -112,10 +112,12 @@ class AppController extends ChangeNotifier {
 
   /// Builds the drill for [courseSpec] and hands it to the practice engine.
   /// Marks the course as complete because reaching the drill means the learner
-  /// walked through every lesson card.
+  /// walked through every lesson card. Also closes the lesson view so the Learn
+  /// tab returns to the course list next time it is opened.
   Future<void> startCourseDrill(CourseSpec courseSpec) async {
     final config = course.buildDrillConfig(courseSpec);
     await course.completeCourse(courseSpec);
+    course.closeCourse();
     selectTab(AppTab.practice);
     await practice.startExercise(config);
   }

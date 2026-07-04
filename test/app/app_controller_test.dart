@@ -62,6 +62,9 @@ void main() {
     expect(controller.practice.stage, PracticeStage.active);
     expect(controller.practice.config, isNotNull);
     expect(controller.course.progress.isCompleted(course.id), isTrue);
+    // Starting a drill must close the lesson so the Learn tab reopens on the
+    // course list, letting the learner pick a different course afterwards.
+    expect(controller.course.selectedCourse, isNull);
   });
 
   test(

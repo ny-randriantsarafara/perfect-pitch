@@ -65,6 +65,18 @@ Widget _buildTabContent(AppController controller, LayoutMode mode) {
   return AnimatedSwitcher(
     duration: const Duration(milliseconds: 250),
     switchInCurve: Curves.easeOut,
+    // Fill the tab area so short tabs (setup, lesson) don't shrink to
+    // intrinsic size and get vertically centered by the default Stack layout.
+    layoutBuilder: (currentChild, previousChildren) {
+      return Stack(
+        alignment: Alignment.topLeft,
+        fit: StackFit.expand,
+        children: [
+          ...previousChildren,
+          ?currentChild,
+        ],
+      );
+    },
     child: KeyedSubtree(key: ValueKey(controller.tab), child: child),
   );
 }
