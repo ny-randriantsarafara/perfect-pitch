@@ -4,6 +4,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:perfect_pitch/app/app_palette.dart';
 import 'package:perfect_pitch/core/audio/audio_engine.dart';
 import 'package:perfect_pitch/core/audio/platform_audio_player_stub.dart';
+import 'package:perfect_pitch/core/exercises/exercise_type.dart';
 import 'package:perfect_pitch/core/music/music_interval.dart';
 import 'package:perfect_pitch/core/progress/interval_progress.dart';
 import 'package:perfect_pitch/features/practice/practice_controller.dart';
@@ -21,6 +22,7 @@ PracticeController _controller() {
 Widget _host(
   PracticeController controller, {
   Locale locale = const Locale('fr'),
+  void Function(ExerciseType type)? onOpenCourse,
 }) {
   return MaterialApp(
     locale: locale,
@@ -37,6 +39,7 @@ Widget _host(
         controller: controller,
         progress: ProgressSnapshot.empty(),
         mode: LayoutMode.mobile,
+        onOpenCourse: onOpenCourse,
       ),
     ),
   );
@@ -162,5 +165,28 @@ void main() {
 
     expect(find.text('Quel est cet intervalle ?'), findsOneWidget);
     expect(find.byKey(const ValueKey('direction-badge')), findsOneWidget);
+  });
+
+  testWidgets('catalogue cards expose a learn action', (tester) async {
+    _setSurface(tester, const Size(500, 1200));
+
+    final controller = _controller();
+    ExerciseType? opened;
+
+    await tester.pumpWidget(
+      _host(
+        controller,
+        locale: const Locale('en'),
+        onOpenCourse: (type) => opened = type,
+      ),
+    );
+    await tester.pump();
+
+    expect(find.text('Learn first'), findsWidgets);
+
+    await tester.tap(find.text('Learn first').first);
+    await tester.pump();
+
+    expect(opened, ExerciseType.ascendingIntervals);
   });
 }

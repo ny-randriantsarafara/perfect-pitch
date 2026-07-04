@@ -23,12 +23,14 @@ class PracticeTab extends StatelessWidget {
     required this.controller,
     required this.progress,
     required this.mode,
+    this.onOpenCourse,
     super.key,
   });
 
   final PracticeController controller;
   final ProgressSnapshot progress;
   final LayoutMode mode;
+  final void Function(ExerciseType type)? onOpenCourse;
 
   bool get _isDesktop {
     return mode == LayoutMode.desktop;
@@ -47,6 +49,7 @@ class PracticeTab extends StatelessWidget {
               controller: controller,
               progress: progress,
               isDesktop: _isDesktop,
+              onOpenCourse: onOpenCourse,
             );
           case PracticeStage.setup:
             child = _SetupView(controller: controller, isDesktop: _isDesktop);
@@ -109,11 +112,13 @@ class _CatalogueView extends StatelessWidget {
     required this.controller,
     required this.progress,
     required this.isDesktop,
+    required this.onOpenCourse,
   });
 
   final PracticeController controller;
   final ProgressSnapshot progress;
   final bool isDesktop;
+  final void Function(ExerciseType type)? onOpenCourse;
 
   @override
   Widget build(BuildContext context) {
@@ -153,6 +158,9 @@ class _CatalogueView extends StatelessWidget {
               type: type,
               mastery: _masteryForType(progress, type),
               onStart: () => controller.configureExercise(type),
+              onLearn: onOpenCourse == null
+                  ? null
+                  : () => onOpenCourse!(type),
             ),
             const SizedBox(height: 16),
           ],
@@ -167,11 +175,13 @@ class _CatalogueCard extends StatelessWidget {
     required this.type,
     required this.mastery,
     required this.onStart,
+    required this.onLearn,
   });
 
   final ExerciseType type;
   final int mastery;
   final VoidCallback onStart;
+  final VoidCallback? onLearn;
 
   @override
   Widget build(BuildContext context) {
@@ -216,6 +226,8 @@ class _CatalogueCard extends StatelessWidget {
                 _DifficultyChip(
                   label: SessionDifficulty.initial.localizedLabel(l10n),
                 ),
+                const SizedBox(width: 8),
+                if (onLearn != null) _LearnChip(onTap: onLearn!),
                 const Spacer(),
                 Row(
                   mainAxisSize: MainAxisSize.min,
@@ -237,6 +249,52 @@ class _CatalogueCard extends StatelessWidget {
                   ],
                 ),
               ],
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _LearnChip extends StatelessWidget {
+  const _LearnChip({required this.onTap});
+
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
+
+    return Pressable(
+      onTap: onTap,
+      pressedScale: 0.97,
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(999),
+          color: AppPalette.violet600.withValues(alpha: 0.15),
+          border: Border.all(
+            color: AppPalette.violet400.withValues(alpha: 0.3),
+          ),
+        ),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            const Icon(
+              Icons.school_rounded,
+              size: 14,
+              color: AppPalette.violet300,
+            ),
+            const SizedBox(width: 6),
+            Text(
+              l10n.courseLearnFirst,
+              style: const TextStyle(
+                fontSize: 11,
+                fontWeight: FontWeight.w700,
+                letterSpacing: 0.6,
+                color: AppPalette.violet300,
+              ),
             ),
           ],
         ),
