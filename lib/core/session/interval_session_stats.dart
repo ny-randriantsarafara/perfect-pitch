@@ -33,7 +33,9 @@ class IntervalSessionStats {
     }
 
     final correctAnswers = attempts.where((attempt) => attempt.correct).length;
-    final skippedQuestions = attempts.where((attempt) => attempt.skipped).length;
+    final skippedQuestions = attempts
+        .where((attempt) => attempt.skipped)
+        .length;
     final totalResponseMillis = attempts.fold<int>(
       0,
       (total, attempt) => total + attempt.responseTime.inMilliseconds,
@@ -142,9 +144,7 @@ class IntervalSessionStats {
       return null;
     }
 
-    final best = counts.entries.reduce(
-      (a, b) => b.value > a.value ? b : a,
-    );
+    final best = counts.entries.reduce((a, b) => b.value > a.value ? b : a);
 
     return IntervalConfusion(
       expected: best.key.$1,

@@ -102,8 +102,6 @@ class ExerciseConfig {
       return base;
     }
 
-    return base
-        .where((interval) => interval != MusicInterval.unison)
-        .toList();
+    return base.where((interval) => interval != MusicInterval.unison).toList();
   }
 }

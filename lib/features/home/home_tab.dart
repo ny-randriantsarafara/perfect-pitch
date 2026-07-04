@@ -3,6 +3,7 @@ import 'package:perfect_pitch/app/app_controller.dart';
 import 'package:perfect_pitch/app/app_palette.dart';
 import 'package:perfect_pitch/core/exercises/exercise_type.dart';
 import 'package:perfect_pitch/l10n/app_localizations.dart';
+import 'package:perfect_pitch/l10n/localized_labels.dart';
 import 'package:perfect_pitch/ui/gradient_text.dart';
 import 'package:perfect_pitch/ui/layout_mode.dart';
 import 'package:perfect_pitch/ui/pressable.dart';
@@ -21,7 +22,12 @@ class HomeTab extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
-      padding: EdgeInsets.fromLTRB(24, _isDesktop ? 32 : 16, 24, _isDesktop ? 48 : 128),
+      padding: EdgeInsets.fromLTRB(
+        24,
+        _isDesktop ? 32 : 16,
+        24,
+        _isDesktop ? 48 : 128,
+      ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -226,7 +232,10 @@ class _MobileBody extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        _SessionCard(onStart: controller.startPractice, mode: LayoutMode.mobile),
+        _SessionCard(
+          onStart: controller.startPractice,
+          mode: LayoutMode.mobile,
+        ),
         const SizedBox(height: 28),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -239,13 +248,19 @@ class _MobileBody extends StatelessWidget {
               ),
             ),
             const SizedBox(width: 12),
-            Text(
-              l10n.homeSeeAll,
-              style: TextStyle(
-                fontSize: 12,
-                fontWeight: FontWeight.w700,
-                letterSpacing: 0.8,
-                color: AppPalette.violet400,
+            Pressable(
+              onTap: controller.startPractice,
+              child: Padding(
+                padding: const EdgeInsets.symmetric(vertical: 8),
+                child: Text(
+                  l10n.homeSeeAll,
+                  style: TextStyle(
+                    fontSize: 12,
+                    fontWeight: FontWeight.w700,
+                    letterSpacing: 0.8,
+                    color: AppPalette.violet400,
+                  ),
+                ),
               ),
             ),
           ],
@@ -404,7 +419,10 @@ class _SessionCard extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(height: 32),
-                  _startButton(isDesktop: isDesktop, label: l10n.homeStartFiveMinutes),
+                  _startButton(
+                    isDesktop: isDesktop,
+                    label: l10n.homeStartFiveMinutes,
+                  ),
                 ],
               ),
             ],
@@ -462,7 +480,11 @@ class _SessionCard extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          const Icon(Icons.play_arrow_rounded, size: 22, color: AppPalette.violet900),
+          const Icon(
+            Icons.play_arrow_rounded,
+            size: 22,
+            color: AppPalette.violet900,
+          ),
           const SizedBox(width: 8),
           Flexible(
             child: Text(
@@ -538,6 +560,7 @@ class _ExerciseRecommendationCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final accent = _accentPalette[_paletteIndex];
     final icon = _iconPalette[_paletteIndex];
+    final l10n = AppLocalizations.of(context);
 
     return Pressable(
       key: recommendation.key,
@@ -557,7 +580,7 @@ class _ExerciseRecommendationCard extends StatelessWidget {
             Icon(icon, size: 32, color: accent),
             const SizedBox(height: 16),
             Text(
-              recommendation.type.labelFr,
+              recommendation.type.localizedLabel(l10n),
               style: const TextStyle(
                 fontSize: 20,
                 fontWeight: FontWeight.w700,
@@ -567,7 +590,7 @@ class _ExerciseRecommendationCard extends StatelessWidget {
             ),
             const SizedBox(height: 8),
             Text(
-              recommendation.type.descriptionFr,
+              recommendation.type.localizedDescription(l10n),
               style: TextStyle(
                 fontSize: 14,
                 fontWeight: FontWeight.w500,

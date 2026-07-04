@@ -71,10 +71,10 @@ class _MobileFrame extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.sizeOf(context);
-    final isCompact = size.width < 640;
+    final shouldStretch = size.shortestSide < 600 || size.width < 640;
     final contents = _MobileFrameContents(controller: controller);
 
-    if (isCompact) {
+    if (shouldStretch) {
       return ColoredBox(color: AppPalette.frame, child: contents);
     }
 
@@ -114,14 +114,7 @@ class _MobileFrameContents extends StatelessWidget {
       children: [
         const Positioned(left: -250, top: -250, child: _violetGlow),
         const Positioned(right: -210, bottom: -210, child: _fuchsiaGlow),
-        SafeArea(
-          child: Column(
-            children: [
-              const _StatusBar(),
-              Expanded(child: _buildTabContent(controller, LayoutMode.mobile)),
-            ],
-          ),
-        ),
+        SafeArea(child: _buildTabContent(controller, LayoutMode.mobile)),
         Positioned(
           left: 0,
           right: 0,
@@ -164,61 +157,6 @@ class _DesktopFrame extends StatelessWidget {
             ],
           ),
         ],
-      ),
-    );
-  }
-}
-
-/// The mock iOS status bar from the designer reference (mobile only).
-class _StatusBar extends StatelessWidget {
-  const _StatusBar();
-
-  @override
-  Widget build(BuildContext context) {
-    return SizedBox(
-      height: 40,
-      child: Padding(
-        padding: const EdgeInsets.fromLTRB(24, 8, 24, 0),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text(
-              '9:41',
-              style: TextStyle(
-                fontSize: 14,
-                fontWeight: FontWeight.w500,
-                color: AppPalette.whiteAlpha(0.7),
-              ),
-            ),
-            Row(
-              children: [
-                _statusDot(),
-                const SizedBox(width: 8),
-                _statusDot(),
-                const SizedBox(width: 8),
-                Container(
-                  width: 20,
-                  height: 12,
-                  decoration: BoxDecoration(
-                    color: AppPalette.whiteAlpha(0.7),
-                    borderRadius: BorderRadius.circular(3),
-                  ),
-                ),
-              ],
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _statusDot() {
-    return Container(
-      width: 16,
-      height: 16,
-      decoration: BoxDecoration(
-        shape: BoxShape.circle,
-        border: Border.all(color: AppPalette.whiteAlpha(0.7), width: 2),
       ),
     );
   }

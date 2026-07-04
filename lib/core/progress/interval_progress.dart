@@ -4,16 +4,7 @@ import 'package:perfect_pitch/core/music/music_interval.dart';
 
 /// A context in which an interval can be practiced. These map directly to the
 /// columns of the mastery matrix on the progress screen.
-enum TrainingMode {
-  ascending(labelFr: 'Ascendant'),
-  descending(labelFr: 'Descendant'),
-  harmonic(labelFr: 'Harmonique'),
-  guitar(labelFr: 'Guitare');
-
-  const TrainingMode({required this.labelFr});
-
-  final String labelFr;
-}
+enum TrainingMode { ascending, descending, harmonic, guitar }
 
 /// A single graded answer, fed to the repository to update mastery.
 class IntervalAttempt {
@@ -65,7 +56,8 @@ class IntervalProgress {
     return IntervalProgress(
       interval: interval,
       scores: {
-        for (final mode in TrainingMode.values) mode: const MasteryScore.empty(),
+        for (final mode in TrainingMode.values)
+          mode: const MasteryScore.empty(),
       },
     );
   }

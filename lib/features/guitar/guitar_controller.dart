@@ -117,8 +117,8 @@ class GuitarController extends ChangeNotifier {
           continue;
         }
 
-        final distance = (string - _root.string).abs() +
-            (fret - _root.fret).abs();
+        final distance =
+            (string - _root.string).abs() + (fret - _root.fret).abs();
 
         if (distance < bestDistance) {
           bestDistance = distance;

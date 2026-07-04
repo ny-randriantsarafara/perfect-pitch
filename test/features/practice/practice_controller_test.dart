@@ -64,33 +64,41 @@ void main() {
       expect(controller.isPlaying, isFalse);
     });
 
-    test('an ascending config behaves like the classic practice loop', () async {
-      final controller = _buildController();
+    test(
+      'an ascending config behaves like the classic practice loop',
+      () async {
+        final controller = _buildController();
 
-      await controller.startExercise(_config(ExerciseType.ascendingIntervals));
+        await controller.startExercise(
+          _config(ExerciseType.ascendingIntervals),
+        );
 
-      expect(controller.stage, PracticeStage.active);
-      expect(controller.question, isNotNull);
-      expect(controller.question!.direction, IntervalDirection.ascending);
-      expect(controller.showResult, isFalse);
+        expect(controller.stage, PracticeStage.active);
+        expect(controller.question, isNotNull);
+        expect(controller.question!.direction, IntervalDirection.ascending);
+        expect(controller.showResult, isFalse);
 
-      controller.selectAnswer(controller.question!.interval);
+        controller.selectAnswer(controller.question!.interval);
 
-      expect(controller.showResult, isTrue);
-      expect(controller.isCorrect, isTrue);
-    });
+        expect(controller.showResult, isTrue);
+        expect(controller.isCorrect, isTrue);
+      },
+    );
 
-    test('descending and harmonic configs match their playback direction', () async {
-      final descending = _buildController();
-      await descending.startExercise(
-        _config(ExerciseType.descendingIntervals),
-      );
-      expect(descending.question!.direction, IntervalDirection.descending);
+    test(
+      'descending and harmonic configs match their playback direction',
+      () async {
+        final descending = _buildController();
+        await descending.startExercise(
+          _config(ExerciseType.descendingIntervals),
+        );
+        expect(descending.question!.direction, IntervalDirection.descending);
 
-      final harmonic = _buildController();
-      await harmonic.startExercise(_config(ExerciseType.harmonicIntervals));
-      expect(harmonic.question!.direction, IntervalDirection.harmonic);
-    });
+        final harmonic = _buildController();
+        await harmonic.startExercise(_config(ExerciseType.harmonicIntervals));
+        expect(harmonic.question!.direction, IntervalDirection.harmonic);
+      },
+    );
 
     test('a mixed config reads the direction from each question', () async {
       final controller = _buildController();
@@ -159,26 +167,29 @@ void main() {
       expect(controller.attempts.first.hesitated, isTrue);
     });
 
-    test('the final question opens the summary instead of restarting', () async {
-      List<ExerciseAttempt>? completed;
-      final controller = _buildController(
-        onCompleted: (attempts) => completed = attempts,
-      );
+    test(
+      'the final question opens the summary instead of restarting',
+      () async {
+        List<ExerciseAttempt>? completed;
+        final controller = _buildController(
+          onCompleted: (attempts) => completed = attempts,
+        );
 
-      await controller.startExercise(
-        _config(ExerciseType.ascendingIntervals, questionCount: 3),
-      );
+        await controller.startExercise(
+          _config(ExerciseType.ascendingIntervals, questionCount: 3),
+        );
 
-      for (var i = 0; i < 3; i += 1) {
-        controller.selectAnswer(controller.question!.interval);
-        await controller.next();
-      }
+        for (var i = 0; i < 3; i += 1) {
+          controller.selectAnswer(controller.question!.interval);
+          await controller.next();
+        }
 
-      expect(controller.stage, PracticeStage.summary);
-      expect(controller.question, isNull);
-      expect(completed, isNotNull);
-      expect(completed, hasLength(3));
-    });
+        expect(controller.stage, PracticeStage.summary);
+        expect(controller.question, isNull);
+        expect(completed, isNotNull);
+        expect(completed, hasLength(3));
+      },
+    );
 
     test('retry mistakes builds a session from the missed intervals', () async {
       final controller = _buildController();

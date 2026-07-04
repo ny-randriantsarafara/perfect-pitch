@@ -29,6 +29,21 @@ void main() {
 
     expect(find.text('Hello!'), findsOneWidget);
     expect(find.text('Your repertoire'), findsOneWidget);
+    expect(find.text('The Perfect Pitch'), findsNothing);
+  });
+
+  testWidgets('renders home recommendations in English by default', (
+    tester,
+  ) async {
+    _setSurface(tester, const Size(500, 1000));
+
+    await tester.pumpWidget(_buildApp());
+    await tester.pump();
+
+    expect(find.text('Intervalles ascendants'), findsNothing);
+    expect(find.text('Intervalles descendants'), findsNothing);
+    expect(find.text('Intervalles harmoniques'), findsNothing);
+    expect(find.text('Intervalles mixtes'), findsNothing);
   });
 
   testWidgets('renders the home screen in French', (tester) async {

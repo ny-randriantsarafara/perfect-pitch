@@ -3,6 +3,7 @@ import 'package:perfect_pitch/app/app_palette.dart';
 import 'package:perfect_pitch/core/music/music_interval.dart';
 import 'package:perfect_pitch/features/guitar/guitar_controller.dart';
 import 'package:perfect_pitch/l10n/app_localizations.dart';
+import 'package:perfect_pitch/l10n/localized_labels.dart';
 import 'package:perfect_pitch/ui/layout_mode.dart';
 import 'package:perfect_pitch/ui/pressable.dart';
 
@@ -22,7 +23,12 @@ class GuitarTab extends StatelessWidget {
       animation: controller,
       builder: (context, _) {
         return Padding(
-          padding: EdgeInsets.fromLTRB(24, _isDesktop ? 32 : 16, 24, _isDesktop ? 48 : 128),
+          padding: EdgeInsets.fromLTRB(
+            24,
+            _isDesktop ? 32 : 16,
+            24,
+            _isDesktop ? 48 : 128,
+          ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -32,7 +38,10 @@ class GuitarTab extends StatelessWidget {
                 child: Center(
                   child: SingleChildScrollView(
                     scrollDirection: Axis.horizontal,
-                    child: _Fretboard(controller: controller, isDesktop: _isDesktop),
+                    child: _Fretboard(
+                      controller: controller,
+                      isDesktop: _isDesktop,
+                    ),
                   ),
                 ),
               ),
@@ -99,7 +108,7 @@ class _Header extends StatelessWidget {
             children: [
               TextSpan(text: l10n.guitarPromptPrefix),
               TextSpan(
-                text: interval.labelFr,
+                text: interval.localizedLabel(l10n),
                 style: const TextStyle(
                   fontWeight: FontWeight.w700,
                   color: AppPalette.fuchsia400,
@@ -158,9 +167,7 @@ class _Fretboard extends StatelessWidget {
             inlayFrets: _inlayFrets,
             isDesktop: isDesktop,
           ),
-          _StringsLayer(
-            stringCount: GuitarController.openStringMidi.length,
-          ),
+          _StringsLayer(stringCount: GuitarController.openStringMidi.length),
           _DotsLayer(
             controller: controller,
             fretCount: _fretCount,
@@ -286,9 +293,11 @@ class _DotsLayer extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        for (var string = 0;
-            string < GuitarController.openStringMidi.length;
-            string += 1)
+        for (
+          var string = 0;
+          string < GuitarController.openStringMidi.length;
+          string += 1
+        )
           Expanded(
             child: Row(
               children: [

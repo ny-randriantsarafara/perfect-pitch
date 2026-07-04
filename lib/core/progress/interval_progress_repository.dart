@@ -132,7 +132,11 @@ class InMemoryIntervalProgressRepository implements IntervalProgressRepository {
     );
   }
 
-  void _applyAggregate(MusicInterval interval, TrainingMode mode, bool correct) {
+  void _applyAggregate(
+    MusicInterval interval,
+    TrainingMode mode,
+    bool correct,
+  ) {
     final current = _intervals[interval] ?? IntervalProgress.empty(interval);
     final scores = Map<TrainingMode, MasteryScore>.from(current.scores);
     scores[mode] = current.scoreFor(mode).add(correct: correct);
@@ -142,25 +146,22 @@ class InMemoryIntervalProgressRepository implements IntervalProgressRepository {
   void _applyDetailed(ExerciseAttempt attempt) {
     final responseMillis = attempt.responseTime.inMilliseconds;
 
-    _byInterval[attempt.expected] = (_byInterval[attempt.expected] ??
-            const AttemptTotals())
-        .add(
+    _byInterval[attempt.expected] =
+        (_byInterval[attempt.expected] ?? const AttemptTotals()).add(
           correct: attempt.correct,
           skipped: attempt.skipped,
           replays: attempt.replayCount,
           responseMillis: responseMillis,
         );
-    _byDirection[attempt.direction] = (_byDirection[attempt.direction] ??
-            const AttemptTotals())
-        .add(
+    _byDirection[attempt.direction] =
+        (_byDirection[attempt.direction] ?? const AttemptTotals()).add(
           correct: attempt.correct,
           skipped: attempt.skipped,
           replays: attempt.replayCount,
           responseMillis: responseMillis,
         );
-    _byExerciseType[attempt.type] = (_byExerciseType[attempt.type] ??
-            const AttemptTotals())
-        .add(
+    _byExerciseType[attempt.type] =
+        (_byExerciseType[attempt.type] ?? const AttemptTotals()).add(
           correct: attempt.correct,
           skipped: attempt.skipped,
           replays: attempt.replayCount,
@@ -313,8 +314,7 @@ class SharedPreferencesIntervalProgressRepository
     final selected = attempt.selected;
 
     if (selected != null && !attempt.correct) {
-      final key =
-          'exstats.confusion.${attempt.expected.name}.${selected.name}';
+      final key = 'exstats.confusion.${attempt.expected.name}.${selected.name}';
       await preferences.setInt(key, (preferences.getInt(key) ?? 0) + 1);
     }
   }

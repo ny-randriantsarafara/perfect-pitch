@@ -1,6 +1,6 @@
 {
   "@@locale": "en",
-  "appTitle": "Intervals.pro",
+  "appTitle": "The Perfect Pitch",
   "navHome": "Home",
   "navExercises": "Exercises",
   "navGuitar": "Guitar",
@@ -46,5 +46,138 @@
   "startSession": "Start session",
   "settings": "SETTINGS",
   "intervalQuestionPrompt": "What interval is this?",
-  "languagePickerTooltip": "Choose language"
+  "languagePickerTooltip": "Choose language",
+  "exerciseAscendingLabel": "Ascending intervals",
+  "exerciseAscendingDescription": "Low note, then high note.",
+  "exerciseDescendingLabel": "Descending intervals",
+  "exerciseDescendingDescription": "High note, then low note.",
+  "exerciseHarmonicLabel": "Harmonic intervals",
+  "exerciseHarmonicDescription": "Both notes played together.",
+  "exerciseMixedLabel": "Mixed intervals",
+  "exerciseMixedDescription": "Ascending, descending, or harmonic on each question.",
+  "difficultyBeginner": "Beginner",
+  "difficultyEasy": "Easy",
+  "difficultyMedium": "Medium",
+  "difficultyHard": "Hard",
+  "trainingModeAscending": "Ascending",
+  "trainingModeDescending": "Descending",
+  "trainingModeHarmonic": "Harmonic",
+  "trainingModeGuitar": "Guitar",
+  "directionAscending": "ASCENDING",
+  "directionDescending": "DESCENDING",
+  "directionHarmonic": "HARMONIC",
+  "instrumentSine": "Sine",
+  "instrumentWarmSynth": "Warm synth",
+  "instrumentPiano": "Piano",
+  "instrumentGuitar": "Guitar",
+  "catalogueContinue": "Continue",
+  "catalogueStart": "Start",
+  "masteryLabel": "Mastery {percentage}%",
+  "@masteryLabel": {
+    "placeholders": {
+      "percentage": {"type": "int"}
+    }
+  },
+  "setupQuestions": "Questions",
+  "setupAdvanced": "Advanced",
+  "setupIntervals": "Intervals",
+  "setupDirections": "Directions",
+  "setupChoicesPerQuestion": "Choices per question",
+  "setupUnlimitedReplays": "Unlimited replays",
+  "setupReplayLimit": "Replay limit",
+  "setupLowNoteMidi": "Low note (MIDI)",
+  "setupHighNoteMidi": "High note (MIDI)",
+  "setupAutoPlay": "Auto-play",
+  "setupImmediateFeedback": "Immediate feedback",
+  "setupAnnounceDirection": "Announce direction",
+  "questionProgress": "QUESTION {current}/{total}",
+  "@questionProgress": {
+    "placeholders": {
+      "current": {"type": "int"},
+      "total": {"type": "int"}
+    }
+  },
+  "skipQuestion": "SKIP",
+  "replayUnlimited": "Unlimited replays",
+  "replayCount": "Replays: {count}/{limit}",
+  "@replayCount": {
+    "placeholders": {
+      "count": {"type": "int"},
+      "limit": {"type": "int"}
+    }
+  },
+  "directionUnknown": "DIRECTION?",
+  "resultSkippedAnswer": "Skipped - the answer was {expected}.",
+  "@resultSkippedAnswer": {
+    "placeholders": {
+      "expected": {"type": "String"}
+    }
+  },
+  "resultWrongAnswer": "You chose {selected}; it was {expected} ({delta} semitones away).",
+  "@resultWrongAnswer": {
+    "placeholders": {
+      "selected": {"type": "String"},
+      "expected": {"type": "String"},
+      "delta": {"type": "int"}
+    }
+  },
+  "resultHesitation": "HESITATION?",
+  "resultNext": "Next",
+  "summaryTitle": "Session complete",
+  "summaryScore": "{correct}/{total} correct answers",
+  "@summaryScore": {
+    "placeholders": {
+      "correct": {"type": "int"},
+      "total": {"type": "int"}
+    }
+  },
+  "summaryReplaySession": "Replay this session",
+  "summaryRetryMistakes": "Review my mistakes",
+  "summaryIncreaseDifficulty": "Increase difficulty",
+  "summaryBackToExercises": "Back to exercises",
+  "summaryAccuracy": "Accuracy",
+  "summaryAverageTime": "Average time",
+  "summaryReplays": "Replays",
+  "summaryBestStreak": "Best streak",
+  "summarySkipped": "Skipped",
+  "summaryHardest": "Hardest",
+  "summaryCommonConfusion": "Common confusion",
+  "statsTitle": "Progress",
+  "statsSubtitle": "Analysis of your performance",
+  "statsIntervalDetail": "Interval detail",
+  "statsDays": "Days",
+  "statsIntervals": "Intervals",
+  "statsLevels": "Levels",
+  "statsAverage": "Avg. {percentage}%",
+  "@statsAverage": {
+    "placeholders": {
+      "percentage": {"type": "int"}
+    }
+  },
+  "intervalUnisonLabel": "Unison",
+  "intervalUnisonSensation": "Same identity, same pitch",
+  "intervalMinorSecondLabel": "Minor Second",
+  "intervalMinorSecondSensation": "Very close, tense",
+  "intervalMajorSecondLabel": "Major Second",
+  "intervalMajorSecondSensation": "Small melodic movement",
+  "intervalMinorThirdLabel": "Minor Third",
+  "intervalMinorThirdSensation": "Minor color",
+  "intervalMajorThirdLabel": "Major Third",
+  "intervalMajorThirdSensation": "Major color",
+  "intervalPerfectFourthLabel": "Perfect Fourth",
+  "intervalPerfectFourthSensation": "Open, suspended",
+  "intervalTritoneLabel": "Tritone",
+  "intervalTritoneSensation": "Unstable, very tense",
+  "intervalPerfectFifthLabel": "Perfect Fifth",
+  "intervalPerfectFifthSensation": "Stable, powerful",
+  "intervalMinorSixthLabel": "Minor Sixth",
+  "intervalMinorSixthSensation": "Nostalgic, soft",
+  "intervalMajorSixthLabel": "Major Sixth",
+  "intervalMajorSixthSensation": "Open, bright",
+  "intervalMinorSeventhLabel": "Minor Seventh",
+  "intervalMinorSeventhSensation": "Tense, unresolved",
+  "intervalMajorSeventhLabel": "Major Seventh",
+  "intervalMajorSeventhSensation": "Very tense, bright",
+  "intervalOctaveLabel": "Octave",
+  "intervalOctaveSensation": "Same identity, different height"
 }

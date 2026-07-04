@@ -109,7 +109,7 @@ abstract class AppLocalizations {
   /// No description provided for @appTitle.
   ///
   /// In en, this message translates to:
-  /// **'Intervals.pro'**
+  /// **'The Perfect Pitch'**
   String get appTitle;
 
   /// No description provided for @navHome.
@@ -297,6 +297,564 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Choose language'**
   String get languagePickerTooltip;
+
+  /// No description provided for @exerciseAscendingLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Ascending intervals'**
+  String get exerciseAscendingLabel;
+
+  /// No description provided for @exerciseAscendingDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Low note, then high note.'**
+  String get exerciseAscendingDescription;
+
+  /// No description provided for @exerciseDescendingLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Descending intervals'**
+  String get exerciseDescendingLabel;
+
+  /// No description provided for @exerciseDescendingDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'High note, then low note.'**
+  String get exerciseDescendingDescription;
+
+  /// No description provided for @exerciseHarmonicLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Harmonic intervals'**
+  String get exerciseHarmonicLabel;
+
+  /// No description provided for @exerciseHarmonicDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Both notes played together.'**
+  String get exerciseHarmonicDescription;
+
+  /// No description provided for @exerciseMixedLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Mixed intervals'**
+  String get exerciseMixedLabel;
+
+  /// No description provided for @exerciseMixedDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Ascending, descending, or harmonic on each question.'**
+  String get exerciseMixedDescription;
+
+  /// No description provided for @difficultyBeginner.
+  ///
+  /// In en, this message translates to:
+  /// **'Beginner'**
+  String get difficultyBeginner;
+
+  /// No description provided for @difficultyEasy.
+  ///
+  /// In en, this message translates to:
+  /// **'Easy'**
+  String get difficultyEasy;
+
+  /// No description provided for @difficultyMedium.
+  ///
+  /// In en, this message translates to:
+  /// **'Medium'**
+  String get difficultyMedium;
+
+  /// No description provided for @difficultyHard.
+  ///
+  /// In en, this message translates to:
+  /// **'Hard'**
+  String get difficultyHard;
+
+  /// No description provided for @trainingModeAscending.
+  ///
+  /// In en, this message translates to:
+  /// **'Ascending'**
+  String get trainingModeAscending;
+
+  /// No description provided for @trainingModeDescending.
+  ///
+  /// In en, this message translates to:
+  /// **'Descending'**
+  String get trainingModeDescending;
+
+  /// No description provided for @trainingModeHarmonic.
+  ///
+  /// In en, this message translates to:
+  /// **'Harmonic'**
+  String get trainingModeHarmonic;
+
+  /// No description provided for @trainingModeGuitar.
+  ///
+  /// In en, this message translates to:
+  /// **'Guitar'**
+  String get trainingModeGuitar;
+
+  /// No description provided for @directionAscending.
+  ///
+  /// In en, this message translates to:
+  /// **'ASCENDING'**
+  String get directionAscending;
+
+  /// No description provided for @directionDescending.
+  ///
+  /// In en, this message translates to:
+  /// **'DESCENDING'**
+  String get directionDescending;
+
+  /// No description provided for @directionHarmonic.
+  ///
+  /// In en, this message translates to:
+  /// **'HARMONIC'**
+  String get directionHarmonic;
+
+  /// No description provided for @instrumentSine.
+  ///
+  /// In en, this message translates to:
+  /// **'Sine'**
+  String get instrumentSine;
+
+  /// No description provided for @instrumentWarmSynth.
+  ///
+  /// In en, this message translates to:
+  /// **'Warm synth'**
+  String get instrumentWarmSynth;
+
+  /// No description provided for @instrumentPiano.
+  ///
+  /// In en, this message translates to:
+  /// **'Piano'**
+  String get instrumentPiano;
+
+  /// No description provided for @instrumentGuitar.
+  ///
+  /// In en, this message translates to:
+  /// **'Guitar'**
+  String get instrumentGuitar;
+
+  /// No description provided for @catalogueContinue.
+  ///
+  /// In en, this message translates to:
+  /// **'Continue'**
+  String get catalogueContinue;
+
+  /// No description provided for @catalogueStart.
+  ///
+  /// In en, this message translates to:
+  /// **'Start'**
+  String get catalogueStart;
+
+  /// No description provided for @masteryLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Mastery {percentage}%'**
+  String masteryLabel(int percentage);
+
+  /// No description provided for @setupQuestions.
+  ///
+  /// In en, this message translates to:
+  /// **'Questions'**
+  String get setupQuestions;
+
+  /// No description provided for @setupAdvanced.
+  ///
+  /// In en, this message translates to:
+  /// **'Advanced'**
+  String get setupAdvanced;
+
+  /// No description provided for @setupIntervals.
+  ///
+  /// In en, this message translates to:
+  /// **'Intervals'**
+  String get setupIntervals;
+
+  /// No description provided for @setupDirections.
+  ///
+  /// In en, this message translates to:
+  /// **'Directions'**
+  String get setupDirections;
+
+  /// No description provided for @setupChoicesPerQuestion.
+  ///
+  /// In en, this message translates to:
+  /// **'Choices per question'**
+  String get setupChoicesPerQuestion;
+
+  /// No description provided for @setupUnlimitedReplays.
+  ///
+  /// In en, this message translates to:
+  /// **'Unlimited replays'**
+  String get setupUnlimitedReplays;
+
+  /// No description provided for @setupReplayLimit.
+  ///
+  /// In en, this message translates to:
+  /// **'Replay limit'**
+  String get setupReplayLimit;
+
+  /// No description provided for @setupLowNoteMidi.
+  ///
+  /// In en, this message translates to:
+  /// **'Low note (MIDI)'**
+  String get setupLowNoteMidi;
+
+  /// No description provided for @setupHighNoteMidi.
+  ///
+  /// In en, this message translates to:
+  /// **'High note (MIDI)'**
+  String get setupHighNoteMidi;
+
+  /// No description provided for @setupAutoPlay.
+  ///
+  /// In en, this message translates to:
+  /// **'Auto-play'**
+  String get setupAutoPlay;
+
+  /// No description provided for @setupImmediateFeedback.
+  ///
+  /// In en, this message translates to:
+  /// **'Immediate feedback'**
+  String get setupImmediateFeedback;
+
+  /// No description provided for @setupAnnounceDirection.
+  ///
+  /// In en, this message translates to:
+  /// **'Announce direction'**
+  String get setupAnnounceDirection;
+
+  /// No description provided for @questionProgress.
+  ///
+  /// In en, this message translates to:
+  /// **'QUESTION {current}/{total}'**
+  String questionProgress(int current, int total);
+
+  /// No description provided for @skipQuestion.
+  ///
+  /// In en, this message translates to:
+  /// **'SKIP'**
+  String get skipQuestion;
+
+  /// No description provided for @replayUnlimited.
+  ///
+  /// In en, this message translates to:
+  /// **'Unlimited replays'**
+  String get replayUnlimited;
+
+  /// No description provided for @replayCount.
+  ///
+  /// In en, this message translates to:
+  /// **'Replays: {count}/{limit}'**
+  String replayCount(int count, int limit);
+
+  /// No description provided for @directionUnknown.
+  ///
+  /// In en, this message translates to:
+  /// **'DIRECTION?'**
+  String get directionUnknown;
+
+  /// No description provided for @resultSkippedAnswer.
+  ///
+  /// In en, this message translates to:
+  /// **'Skipped - the answer was {expected}.'**
+  String resultSkippedAnswer(String expected);
+
+  /// No description provided for @resultWrongAnswer.
+  ///
+  /// In en, this message translates to:
+  /// **'You chose {selected}; it was {expected} ({delta} semitones away).'**
+  String resultWrongAnswer(String selected, String expected, int delta);
+
+  /// No description provided for @resultHesitation.
+  ///
+  /// In en, this message translates to:
+  /// **'HESITATION?'**
+  String get resultHesitation;
+
+  /// No description provided for @resultNext.
+  ///
+  /// In en, this message translates to:
+  /// **'Next'**
+  String get resultNext;
+
+  /// No description provided for @summaryTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Session complete'**
+  String get summaryTitle;
+
+  /// No description provided for @summaryScore.
+  ///
+  /// In en, this message translates to:
+  /// **'{correct}/{total} correct answers'**
+  String summaryScore(int correct, int total);
+
+  /// No description provided for @summaryReplaySession.
+  ///
+  /// In en, this message translates to:
+  /// **'Replay this session'**
+  String get summaryReplaySession;
+
+  /// No description provided for @summaryRetryMistakes.
+  ///
+  /// In en, this message translates to:
+  /// **'Review my mistakes'**
+  String get summaryRetryMistakes;
+
+  /// No description provided for @summaryIncreaseDifficulty.
+  ///
+  /// In en, this message translates to:
+  /// **'Increase difficulty'**
+  String get summaryIncreaseDifficulty;
+
+  /// No description provided for @summaryBackToExercises.
+  ///
+  /// In en, this message translates to:
+  /// **'Back to exercises'**
+  String get summaryBackToExercises;
+
+  /// No description provided for @summaryAccuracy.
+  ///
+  /// In en, this message translates to:
+  /// **'Accuracy'**
+  String get summaryAccuracy;
+
+  /// No description provided for @summaryAverageTime.
+  ///
+  /// In en, this message translates to:
+  /// **'Average time'**
+  String get summaryAverageTime;
+
+  /// No description provided for @summaryReplays.
+  ///
+  /// In en, this message translates to:
+  /// **'Replays'**
+  String get summaryReplays;
+
+  /// No description provided for @summaryBestStreak.
+  ///
+  /// In en, this message translates to:
+  /// **'Best streak'**
+  String get summaryBestStreak;
+
+  /// No description provided for @summarySkipped.
+  ///
+  /// In en, this message translates to:
+  /// **'Skipped'**
+  String get summarySkipped;
+
+  /// No description provided for @summaryHardest.
+  ///
+  /// In en, this message translates to:
+  /// **'Hardest'**
+  String get summaryHardest;
+
+  /// No description provided for @summaryCommonConfusion.
+  ///
+  /// In en, this message translates to:
+  /// **'Common confusion'**
+  String get summaryCommonConfusion;
+
+  /// No description provided for @statsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Progress'**
+  String get statsTitle;
+
+  /// No description provided for @statsSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Analysis of your performance'**
+  String get statsSubtitle;
+
+  /// No description provided for @statsIntervalDetail.
+  ///
+  /// In en, this message translates to:
+  /// **'Interval detail'**
+  String get statsIntervalDetail;
+
+  /// No description provided for @statsDays.
+  ///
+  /// In en, this message translates to:
+  /// **'Days'**
+  String get statsDays;
+
+  /// No description provided for @statsIntervals.
+  ///
+  /// In en, this message translates to:
+  /// **'Intervals'**
+  String get statsIntervals;
+
+  /// No description provided for @statsLevels.
+  ///
+  /// In en, this message translates to:
+  /// **'Levels'**
+  String get statsLevels;
+
+  /// No description provided for @statsAverage.
+  ///
+  /// In en, this message translates to:
+  /// **'Avg. {percentage}%'**
+  String statsAverage(int percentage);
+
+  /// No description provided for @intervalUnisonLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Unison'**
+  String get intervalUnisonLabel;
+
+  /// No description provided for @intervalUnisonSensation.
+  ///
+  /// In en, this message translates to:
+  /// **'Same identity, same pitch'**
+  String get intervalUnisonSensation;
+
+  /// No description provided for @intervalMinorSecondLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Minor Second'**
+  String get intervalMinorSecondLabel;
+
+  /// No description provided for @intervalMinorSecondSensation.
+  ///
+  /// In en, this message translates to:
+  /// **'Very close, tense'**
+  String get intervalMinorSecondSensation;
+
+  /// No description provided for @intervalMajorSecondLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Major Second'**
+  String get intervalMajorSecondLabel;
+
+  /// No description provided for @intervalMajorSecondSensation.
+  ///
+  /// In en, this message translates to:
+  /// **'Small melodic movement'**
+  String get intervalMajorSecondSensation;
+
+  /// No description provided for @intervalMinorThirdLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Minor Third'**
+  String get intervalMinorThirdLabel;
+
+  /// No description provided for @intervalMinorThirdSensation.
+  ///
+  /// In en, this message translates to:
+  /// **'Minor color'**
+  String get intervalMinorThirdSensation;
+
+  /// No description provided for @intervalMajorThirdLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Major Third'**
+  String get intervalMajorThirdLabel;
+
+  /// No description provided for @intervalMajorThirdSensation.
+  ///
+  /// In en, this message translates to:
+  /// **'Major color'**
+  String get intervalMajorThirdSensation;
+
+  /// No description provided for @intervalPerfectFourthLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Perfect Fourth'**
+  String get intervalPerfectFourthLabel;
+
+  /// No description provided for @intervalPerfectFourthSensation.
+  ///
+  /// In en, this message translates to:
+  /// **'Open, suspended'**
+  String get intervalPerfectFourthSensation;
+
+  /// No description provided for @intervalTritoneLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Tritone'**
+  String get intervalTritoneLabel;
+
+  /// No description provided for @intervalTritoneSensation.
+  ///
+  /// In en, this message translates to:
+  /// **'Unstable, very tense'**
+  String get intervalTritoneSensation;
+
+  /// No description provided for @intervalPerfectFifthLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Perfect Fifth'**
+  String get intervalPerfectFifthLabel;
+
+  /// No description provided for @intervalPerfectFifthSensation.
+  ///
+  /// In en, this message translates to:
+  /// **'Stable, powerful'**
+  String get intervalPerfectFifthSensation;
+
+  /// No description provided for @intervalMinorSixthLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Minor Sixth'**
+  String get intervalMinorSixthLabel;
+
+  /// No description provided for @intervalMinorSixthSensation.
+  ///
+  /// In en, this message translates to:
+  /// **'Nostalgic, soft'**
+  String get intervalMinorSixthSensation;
+
+  /// No description provided for @intervalMajorSixthLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Major Sixth'**
+  String get intervalMajorSixthLabel;
+
+  /// No description provided for @intervalMajorSixthSensation.
+  ///
+  /// In en, this message translates to:
+  /// **'Open, bright'**
+  String get intervalMajorSixthSensation;
+
+  /// No description provided for @intervalMinorSeventhLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Minor Seventh'**
+  String get intervalMinorSeventhLabel;
+
+  /// No description provided for @intervalMinorSeventhSensation.
+  ///
+  /// In en, this message translates to:
+  /// **'Tense, unresolved'**
+  String get intervalMinorSeventhSensation;
+
+  /// No description provided for @intervalMajorSeventhLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Major Seventh'**
+  String get intervalMajorSeventhLabel;
+
+  /// No description provided for @intervalMajorSeventhSensation.
+  ///
+  /// In en, this message translates to:
+  /// **'Very tense, bright'**
+  String get intervalMajorSeventhSensation;
+
+  /// No description provided for @intervalOctaveLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Octave'**
+  String get intervalOctaveLabel;
+
+  /// No description provided for @intervalOctaveSensation.
+  ///
+  /// In en, this message translates to:
+  /// **'Same identity, different height'**
+  String get intervalOctaveSensation;
 }
 
 class _AppLocalizationsDelegate

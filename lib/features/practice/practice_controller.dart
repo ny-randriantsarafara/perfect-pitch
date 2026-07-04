@@ -311,7 +311,9 @@ class PracticeController extends ChangeNotifier {
   }
 
   Future<void> next() async {
-    if (_currentAttempt == null || _isPlaying || _stage != PracticeStage.active) {
+    if (_currentAttempt == null ||
+        _isPlaying ||
+        _stage != PracticeStage.active) {
       return;
     }
 

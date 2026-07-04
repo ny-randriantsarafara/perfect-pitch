@@ -10,28 +10,24 @@ import 'package:perfect_pitch/core/music/music_interval.dart';
 /// exercise's type, directions, instrument, and question count untouched.
 enum SessionDifficulty {
   beginner(
-    labelFr: 'Débutant',
     stage: 2,
     choiceCount: 3,
     replayLimit: null,
     showDirectionBeforeAnswer: true,
   ),
   easy(
-    labelFr: 'Facile',
     stage: 3,
     choiceCount: 4,
     replayLimit: 3,
     showDirectionBeforeAnswer: true,
   ),
   medium(
-    labelFr: 'Moyen',
     stage: 6,
     choiceCount: 4,
     replayLimit: 2,
     showDirectionBeforeAnswer: false,
   ),
   hard(
-    labelFr: 'Difficile',
     stage: MusicInterval.maxStage,
     choiceCount: 5,
     replayLimit: 1,
@@ -39,14 +35,12 @@ enum SessionDifficulty {
   );
 
   const SessionDifficulty({
-    required this.labelFr,
     required this.stage,
     required this.choiceCount,
     required this.replayLimit,
     required this.showDirectionBeforeAnswer,
   });
 
-  final String labelFr;
   final int stage;
   final int choiceCount;
   final int? replayLimit;
@@ -77,8 +71,6 @@ enum SessionDifficulty {
       return base;
     }
 
-    return base
-        .where((interval) => interval != MusicInterval.unison)
-        .toList();
+    return base.where((interval) => interval != MusicInterval.unison).toList();
   }
 }

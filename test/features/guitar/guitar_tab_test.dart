@@ -16,10 +16,7 @@ GuitarController _controller() {
   );
 }
 
-Widget _host({
-  required GuitarController controller,
-  required LayoutMode mode,
-}) {
+Widget _host({required GuitarController controller, required LayoutMode mode}) {
   return MaterialApp(
     locale: const Locale('en'),
     localizationsDelegates: const [
@@ -68,5 +65,26 @@ void main() {
     await tester.pump();
 
     expect(tester.takeException(), isNull);
+  });
+
+  testWidgets('English guitar prompt uses English interval labels', (
+    tester,
+  ) async {
+    _setSurface(tester, const Size(400, 770));
+
+    await tester.pumpWidget(
+      _host(controller: _controller(), mode: LayoutMode.mobile),
+    );
+    await tester.pump();
+
+    expect(
+      find.byWidgetPredicate(
+        (widget) =>
+            widget is RichText &&
+            widget.text.toPlainText().contains('Perfect Fifth'),
+      ),
+      findsOneWidget,
+    );
+    expect(find.text('Quinte Juste'), findsNothing);
   });
 }

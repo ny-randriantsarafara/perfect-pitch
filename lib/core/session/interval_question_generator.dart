@@ -99,10 +99,8 @@ class IntervalQuestionGenerator {
     final distractors = pool.where((interval) => interval != correct).toList()
       ..shuffle(_random);
     final count = min(choiceCount, pool.length);
-    final choices = <MusicInterval>[
-      correct,
-      ...distractors.take(count - 1),
-    ]..sort((a, b) => a.semitones.compareTo(b.semitones));
+    final choices = <MusicInterval>[correct, ...distractors.take(count - 1)]
+      ..sort((a, b) => a.semitones.compareTo(b.semitones));
 
     return List.unmodifiable(choices);
   }

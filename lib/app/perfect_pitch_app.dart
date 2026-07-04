@@ -48,7 +48,7 @@ class _PerfectPitchAppState extends State<PerfectPitchApp> {
       builder: (context, _) {
         return MaterialApp(
           debugShowCheckedModeBanner: false,
-          title: 'Intervals.pro',
+          onGenerateTitle: (context) => AppLocalizations.of(context).appTitle,
           locale: widget.locale ?? _controller.locale,
           localizationsDelegates: const [
             AppLocalizations.delegate,

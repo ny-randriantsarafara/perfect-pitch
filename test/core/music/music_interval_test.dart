@@ -25,7 +25,10 @@ void main() {
     test('unlocks progressively by stage', () {
       final stageOne = MusicInterval.upToStage(1);
 
-      expect(stageOne, containsAll([MusicInterval.unison, MusicInterval.octave]));
+      expect(
+        stageOne,
+        containsAll([MusicInterval.unison, MusicInterval.octave]),
+      );
       expect(stageOne, isNot(contains(MusicInterval.perfectFifth)));
 
       final stageTwo = MusicInterval.upToStage(2);

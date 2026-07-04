@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:perfect_pitch/app/app_palette.dart';
 import 'package:perfect_pitch/core/music/music_interval.dart';
 import 'package:perfect_pitch/core/progress/interval_progress.dart';
+import 'package:perfect_pitch/l10n/app_localizations.dart';
+import 'package:perfect_pitch/l10n/localized_labels.dart';
 import 'package:perfect_pitch/ui/layout_mode.dart';
 
 class StatsTab extends StatelessWidget {
@@ -21,20 +23,25 @@ class StatsTab extends StatelessWidget {
       return attempted;
     }
 
-    return MusicInterval.upToStage(3)
-        .map(IntervalProgress.empty)
-        .toList();
+    return MusicInterval.upToStage(3).map(IntervalProgress.empty).toList();
   }
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
+
     return SingleChildScrollView(
-      padding: EdgeInsets.fromLTRB(24, _isDesktop ? 32 : 16, 24, _isDesktop ? 48 : 128),
+      padding: EdgeInsets.fromLTRB(
+        24,
+        _isDesktop ? 32 : 16,
+        24,
+        _isDesktop ? 48 : 128,
+      ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            'Progrès',
+            l10n.statsTitle,
             style: TextStyle(
               fontSize: _isDesktop ? 48 : 30,
               fontWeight: FontWeight.w800,
@@ -44,7 +51,7 @@ class StatsTab extends StatelessWidget {
           ),
           const SizedBox(height: 8),
           Text(
-            'Analyse de tes performances',
+            l10n.statsSubtitle,
             style: TextStyle(
               fontSize: _isDesktop ? 18 : 14,
               fontWeight: FontWeight.w500,
@@ -55,7 +62,7 @@ class StatsTab extends StatelessWidget {
           _SummaryRow(progress: progress, isDesktop: _isDesktop),
           SizedBox(height: _isDesktop ? 40 : 28),
           Text(
-            'Détail par intervalle',
+            l10n.statsIntervalDetail,
             style: TextStyle(
               fontSize: _isDesktop ? 24 : 18,
               fontWeight: FontWeight.w700,
@@ -78,26 +85,27 @@ class _SummaryRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     final cards = [
       _SummaryCard(
         icon: Icons.local_fire_department_rounded,
         accent: AppPalette.orange400,
         value: '${progress.streakDays}',
-        label: 'Jours',
+        label: l10n.statsDays,
         isDesktop: isDesktop,
       ),
       _SummaryCard(
         icon: Icons.track_changes_rounded,
         accent: AppPalette.violet400,
         value: '${progress.attemptedIntervalCount}',
-        label: 'Intervalles',
+        label: l10n.statsIntervals,
         isDesktop: isDesktop,
       ),
       _SummaryCard(
         icon: Icons.workspace_premium_rounded,
         accent: AppPalette.green400,
         value: '${progress.masteredIntervalCount}',
-        label: 'Niveaux',
+        label: l10n.statsLevels,
         isDesktop: isDesktop,
       ),
     ];
@@ -242,6 +250,8 @@ class _IntervalCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
+
     return Container(
       padding: EdgeInsets.all(isDesktop ? 28 : 24),
       decoration: BoxDecoration(
@@ -257,7 +267,7 @@ class _IntervalCard extends StatelessWidget {
             children: [
               Flexible(
                 child: Text(
-                  progress.interval.labelFr,
+                  progress.interval.localizedLabel(l10n),
                   style: TextStyle(
                     fontSize: isDesktop ? 22 : 18,
                     fontWeight: FontWeight.w700,
@@ -266,13 +276,16 @@ class _IntervalCard extends StatelessWidget {
                 ),
               ),
               Container(
-                padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 6),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 14,
+                  vertical: 6,
+                ),
                 decoration: BoxDecoration(
                   color: AppPalette.whiteAlpha(0.1),
                   borderRadius: BorderRadius.circular(999),
                 ),
                 child: Text(
-                  'Moy. ${progress.averagePercentage}%',
+                  l10n.statsAverage(progress.averagePercentage),
                   style: TextStyle(
                     fontSize: isDesktop ? 14 : 12,
                     fontWeight: FontWeight.w700,
@@ -285,7 +298,7 @@ class _IntervalCard extends StatelessWidget {
           SizedBox(height: isDesktop ? 24 : 20),
           for (final mode in TrainingMode.values) ...[
             _ModeBar(
-              label: mode.labelFr,
+              label: mode.localizedLabel(l10n),
               value: progress.scoreFor(mode).percentage,
               isDesktop: isDesktop,
             ),

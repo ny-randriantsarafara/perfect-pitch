@@ -6,27 +6,10 @@ import 'package:perfect_pitch/core/audio/audio_engine.dart';
 /// directions its questions may use (see [defaultDirections]). Mixed mode picks
 /// a direction per question, while the others stay on a single direction.
 enum ExerciseType {
-  ascendingIntervals(
-    labelFr: 'Intervalles ascendants',
-    descriptionFr: 'La note grave puis la note aiguë.',
-  ),
-  descendingIntervals(
-    labelFr: 'Intervalles descendants',
-    descriptionFr: 'La note aiguë puis la note grave.',
-  ),
-  harmonicIntervals(
-    labelFr: 'Intervalles harmoniques',
-    descriptionFr: 'Les deux notes jouées ensemble.',
-  ),
-  mixedIntervals(
-    labelFr: 'Intervalles mixtes',
-    descriptionFr: 'Ascendant, descendant ou harmonique à chaque question.',
-  );
-
-  const ExerciseType({required this.labelFr, required this.descriptionFr});
-
-  final String labelFr;
-  final String descriptionFr;
+  ascendingIntervals,
+  descendingIntervals,
+  harmonicIntervals,
+  mixedIntervals;
 
   /// The playback directions a fresh session of this exercise may use.
   Set<IntervalDirection> get defaultDirections {

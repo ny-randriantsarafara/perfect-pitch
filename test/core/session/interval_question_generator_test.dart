@@ -13,7 +13,10 @@ void main() {
       final pool = MusicInterval.upToStage(3);
 
       for (var i = 0; i < 30; i += 1) {
-        final question = generator.next(pool: pool, instrument: Instrument.piano);
+        final question = generator.next(
+          pool: pool,
+          instrument: Instrument.piano,
+        );
 
         expect(question.choices, contains(question.interval));
       }

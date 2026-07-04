@@ -10,6 +10,7 @@ import 'package:perfect_pitch/core/progress/interval_progress.dart';
 import 'package:perfect_pitch/core/session/interval_session_stats.dart';
 import 'package:perfect_pitch/features/practice/practice_controller.dart';
 import 'package:perfect_pitch/l10n/app_localizations.dart';
+import 'package:perfect_pitch/l10n/localized_labels.dart';
 import 'package:perfect_pitch/ui/glass_panel.dart';
 import 'package:perfect_pitch/ui/layout_mode.dart';
 import 'package:perfect_pitch/ui/pressable.dart';
@@ -101,30 +102,6 @@ List<TrainingMode> _modesForType(ExerciseType type) {
   }
 }
 
-String _directionLabel(IntervalDirection direction) {
-  switch (direction) {
-    case IntervalDirection.ascending:
-      return 'ASCENDANT';
-    case IntervalDirection.descending:
-      return 'DESCENDANT';
-    case IntervalDirection.harmonic:
-      return 'HARMONIQUE';
-  }
-}
-
-String _instrumentLabel(Instrument instrument) {
-  switch (instrument) {
-    case Instrument.sine:
-      return 'Sinus';
-    case Instrument.warmSynth:
-      return 'Synthé';
-    case Instrument.piano:
-      return 'Piano';
-    case Instrument.guitar:
-      return 'Guitare';
-  }
-}
-
 // --- Catalogue ---
 
 class _CatalogueView extends StatelessWidget {
@@ -143,7 +120,12 @@ class _CatalogueView extends StatelessWidget {
     final l10n = AppLocalizations.of(context);
 
     return SingleChildScrollView(
-      padding: EdgeInsets.fromLTRB(24, isDesktop ? 32 : 16, 24, isDesktop ? 48 : 128),
+      padding: EdgeInsets.fromLTRB(
+        24,
+        isDesktop ? 32 : 16,
+        24,
+        isDesktop ? 48 : 128,
+      ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -194,6 +176,7 @@ class _CatalogueCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final started = mastery > 0;
+    final l10n = AppLocalizations.of(context);
 
     return Pressable(
       onTap: onStart,
@@ -207,7 +190,7 @@ class _CatalogueCard extends StatelessWidget {
               children: [
                 Expanded(
                   child: Text(
-                    type.labelFr,
+                    type.localizedLabel(l10n),
                     style: const TextStyle(
                       fontSize: 20,
                       fontWeight: FontWeight.w700,
@@ -220,7 +203,7 @@ class _CatalogueCard extends StatelessWidget {
             ),
             const SizedBox(height: 8),
             Text(
-              type.descriptionFr,
+              type.localizedDescription(l10n),
               style: TextStyle(
                 fontSize: 14,
                 fontWeight: FontWeight.w500,
@@ -230,13 +213,15 @@ class _CatalogueCard extends StatelessWidget {
             const SizedBox(height: 20),
             Row(
               children: [
-                _DifficultyChip(label: SessionDifficulty.initial.labelFr),
+                _DifficultyChip(
+                  label: SessionDifficulty.initial.localizedLabel(l10n),
+                ),
                 const Spacer(),
                 Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     Text(
-                      started ? 'Continuer' : 'Commencer',
+                      started ? l10n.catalogueContinue : l10n.catalogueStart,
                       style: const TextStyle(
                         fontSize: 14,
                         fontWeight: FontWeight.w700,
@@ -274,7 +259,7 @@ class _MasteryBadge extends StatelessWidget {
         borderRadius: BorderRadius.circular(999),
       ),
       child: Text(
-        'Maîtrise $mastery%',
+        AppLocalizations.of(context).masteryLabel(mastery),
         style: TextStyle(
           fontSize: 12,
           fontWeight: FontWeight.w700,
@@ -379,12 +364,17 @@ class _SetupViewState extends State<_SetupView> {
     final l10n = AppLocalizations.of(context);
 
     return SingleChildScrollView(
-      padding: EdgeInsets.fromLTRB(24, widget.isDesktop ? 32 : 16, 24, widget.isDesktop ? 48 : 128),
+      padding: EdgeInsets.fromLTRB(
+        24,
+        widget.isDesktop ? 32 : 16,
+        24,
+        widget.isDesktop ? 48 : 128,
+      ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           _SetupHeader(
-            title: config.type.labelFr,
+            title: config.type.localizedLabel(l10n),
             onBack: widget.controller.returnToExercises,
           ),
           const SizedBox(height: 24),
@@ -396,7 +386,7 @@ class _SetupViewState extends State<_SetupView> {
           ),
           const SizedBox(height: 16),
           _StepperRow(
-            label: 'Questions',
+            label: l10n.setupQuestions,
             value: '${config.questionCount}',
             onDecrement: config.questionCount > 3
                 ? () => _update(
@@ -519,7 +509,7 @@ class _DifficultySelector extends StatelessWidget {
       children: [
         for (final difficulty in SessionDifficulty.values)
           _SegmentChip(
-            label: difficulty.labelFr,
+            label: difficulty.localizedLabel(AppLocalizations.of(context)),
             selected: difficulty == selected,
             onTap: () => onSelect(difficulty),
           ),
@@ -542,7 +532,7 @@ class _InstrumentSelector extends StatelessWidget {
       children: [
         for (final instrument in Instrument.values)
           _SegmentChip(
-            label: _instrumentLabel(instrument),
+            label: instrument.localizedLabel(AppLocalizations.of(context)),
             selected: instrument == selected,
             onTap: () => onSelect(instrument),
           ),
@@ -563,7 +553,7 @@ class _AdvancedToggle extends StatelessWidget {
       onTap: onToggle,
       child: Row(
         children: [
-          _SetupSectionTitle('Avancé'),
+          _SetupSectionTitle(AppLocalizations.of(context).setupAdvanced),
           const SizedBox(width: 8),
           Icon(
             expanded ? Icons.expand_less_rounded : Icons.expand_more_rounded,
@@ -592,12 +582,13 @@ class _AdvancedSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final maxChoices = config.intervals.length.clamp(2, 6);
+    final l10n = AppLocalizations.of(context);
 
     return GlassPanel(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          _SetupSectionTitle('Intervalles'),
+          _SetupSectionTitle(l10n.setupIntervals),
           const SizedBox(height: 12),
           Wrap(
             spacing: 8,
@@ -605,7 +596,7 @@ class _AdvancedSection extends StatelessWidget {
             children: [
               for (final interval in MusicInterval.values)
                 _SegmentChip(
-                  label: interval.labelFr,
+                  label: interval.localizedLabel(l10n),
                   selected: config.intervals.contains(interval),
                   onTap: () => onToggleInterval(interval),
                 ),
@@ -613,7 +604,7 @@ class _AdvancedSection extends StatelessWidget {
           ),
           if (config.type.isMixed) ...[
             const SizedBox(height: 20),
-            _SetupSectionTitle('Directions'),
+            _SetupSectionTitle(l10n.setupDirections),
             const SizedBox(height: 12),
             Wrap(
               spacing: 8,
@@ -621,7 +612,7 @@ class _AdvancedSection extends StatelessWidget {
               children: [
                 for (final direction in IntervalDirection.values)
                   _SegmentChip(
-                    label: _directionLabel(direction),
+                    label: direction.localizedLabel(l10n),
                     selected: config.directions.contains(direction),
                     onTap: () => onToggleDirection(direction),
                   ),
@@ -630,7 +621,7 @@ class _AdvancedSection extends StatelessWidget {
           ],
           const SizedBox(height: 20),
           _StepperRow(
-            label: 'Choix par question',
+            label: l10n.setupChoicesPerQuestion,
             value: '${config.choiceCount}',
             onDecrement: config.choiceCount > 2
                 ? () => onChanged(
@@ -645,7 +636,7 @@ class _AdvancedSection extends StatelessWidget {
           ),
           const SizedBox(height: 12),
           _SwitchRow(
-            label: 'Réécoutes illimitées',
+            label: l10n.setupUnlimitedReplays,
             value: config.allowsUnlimitedReplays,
             onChanged: (unlimited) => onChanged(
               unlimited
@@ -655,7 +646,7 @@ class _AdvancedSection extends StatelessWidget {
           ),
           if (!config.allowsUnlimitedReplays)
             _StepperRow(
-              label: 'Réécoutes max',
+              label: l10n.setupReplayLimit,
               value: '${config.replayLimit}',
               onDecrement: config.replayLimit! > 0
                   ? () => onChanged(
@@ -670,7 +661,7 @@ class _AdvancedSection extends StatelessWidget {
             ),
           const SizedBox(height: 12),
           _StepperRow(
-            label: 'Note grave (MIDI)',
+            label: l10n.setupLowNoteMidi,
             value: '${config.minimumRootMidi}',
             onDecrement: config.minimumRootMidi > 40
                 ? () => onChanged(
@@ -689,7 +680,7 @@ class _AdvancedSection extends StatelessWidget {
           ),
           const SizedBox(height: 12),
           _StepperRow(
-            label: 'Note aiguë (MIDI)',
+            label: l10n.setupHighNoteMidi,
             value: '${config.maximumRootMidi}',
             onDecrement: config.maximumRootMidi > config.minimumRootMidi
                 ? () => onChanged(
@@ -708,18 +699,18 @@ class _AdvancedSection extends StatelessWidget {
           ),
           const SizedBox(height: 12),
           _SwitchRow(
-            label: 'Lecture automatique',
+            label: l10n.setupAutoPlay,
             value: config.autoPlay,
             onChanged: (value) => onChanged(config.copyWith(autoPlay: value)),
           ),
           _SwitchRow(
-            label: 'Correction immédiate',
+            label: l10n.setupImmediateFeedback,
             value: config.immediateFeedback,
             onChanged: (value) =>
                 onChanged(config.copyWith(immediateFeedback: value)),
           ),
           _SwitchRow(
-            label: 'Direction annoncée',
+            label: l10n.setupAnnounceDirection,
             value: config.showDirectionBeforeAnswer,
             onChanged: (value) =>
                 onChanged(config.copyWith(showDirectionBeforeAnswer: value)),
@@ -749,14 +740,10 @@ class _SegmentChip extends StatelessWidget {
         duration: const Duration(milliseconds: 200),
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
         decoration: BoxDecoration(
-          color: selected
-              ? AppPalette.violet600
-              : AppPalette.whiteAlpha(0.05),
+          color: selected ? AppPalette.violet600 : AppPalette.whiteAlpha(0.05),
           borderRadius: BorderRadius.circular(999),
           border: Border.all(
-            color: selected
-                ? AppPalette.violet500
-                : AppPalette.whiteAlpha(0.1),
+            color: selected ? AppPalette.violet500 : AppPalette.whiteAlpha(0.1),
           ),
         ),
         child: Text(
@@ -931,12 +918,13 @@ class _TopBar extends StatelessWidget {
     final questionCount = controller.questionCount;
     final canSkip = !controller.showResult && !controller.isPlaying;
     final fraction = questionCount == 0 ? 0.0 : questionNumber / questionCount;
+    final l10n = AppLocalizations.of(context);
 
     return Row(
       children: [
         Expanded(
           child: Text(
-            'QUESTION $questionNumber/$questionCount',
+            l10n.questionProgress(questionNumber, questionCount),
             overflow: TextOverflow.ellipsis,
             maxLines: 1,
             style: TextStyle(
@@ -958,7 +946,7 @@ class _TopBar extends StatelessWidget {
                 children: [
                   if (isDesktop) ...[
                     Text(
-                      'PASSER',
+                      l10n.skipQuestion,
                       style: TextStyle(
                         fontSize: 12,
                         fontWeight: FontWeight.w700,
@@ -1115,8 +1103,16 @@ class _PlayArea extends StatelessWidget {
       child: Stack(
         alignment: Alignment.center,
         children: [
-          _Ring(size: outerSize, color: AppPalette.violet500.withValues(alpha: 0.2), active: isPlaying),
-          _Ring(size: innerSize, color: AppPalette.fuchsia500.withValues(alpha: 0.3), active: isPlaying),
+          _Ring(
+            size: outerSize,
+            color: AppPalette.violet500.withValues(alpha: 0.2),
+            active: isPlaying,
+          ),
+          _Ring(
+            size: innerSize,
+            color: AppPalette.fuchsia500.withValues(alpha: 0.3),
+            active: isPlaying,
+          ),
           Pressable(
             onTap: controller.canReplay
                 ? () => controller.playCurrent(isReplay: true)
@@ -1177,9 +1173,11 @@ class _ReplayHint extends StatelessWidget {
       return const SizedBox.shrink();
     }
 
-    final text = config.allowsUnlimitedReplays
-        ? 'Réécoutes illimitées'
-        : 'Réécoutes : ${controller.replayCount}/${config.replayLimit}';
+    final l10n = AppLocalizations.of(context);
+    final replayLimit = config.replayLimit;
+    final text = config.allowsUnlimitedReplays || replayLimit == null
+        ? l10n.replayUnlimited
+        : l10n.replayCount(controller.replayCount, replayLimit);
 
     return Text(
       text,
@@ -1324,7 +1322,9 @@ class _Prompt extends StatelessWidget {
             border: Border.all(color: AppPalette.whiteAlpha(0.1)),
           ),
           child: Text(
-            reveal ? _directionLabel(controller.question!.direction) : 'DIRECTION ?',
+            reveal
+                ? controller.question!.direction.localizedLabel(l10n)
+                : l10n.directionUnknown,
             style: TextStyle(
               fontSize: isDesktop ? 14 : 12,
               fontWeight: FontWeight.w700,
@@ -1352,7 +1352,11 @@ class _Options extends StatelessWidget {
       return Column(
         children: [
           for (final choice in choices) ...[
-            _OptionButton(controller: controller, choice: choice, isDesktop: true),
+            _OptionButton(
+              controller: controller,
+              choice: choice,
+              isDesktop: true,
+            ),
             if (choice != choices.last) const SizedBox(height: 16),
           ],
         ],
@@ -1368,7 +1372,11 @@ class _Options extends StatelessWidget {
       childAspectRatio: 2.4,
       children: [
         for (final choice in choices)
-          _OptionButton(controller: controller, choice: choice, isDesktop: false),
+          _OptionButton(
+            controller: controller,
+            choice: choice,
+            isDesktop: false,
+          ),
       ],
     );
   }
@@ -1452,6 +1460,7 @@ class _OptionButton extends StatelessWidget {
   Widget build(BuildContext context) {
     final state = _resolveState();
     final enabled = !controller.showResult && !controller.isPlaying;
+    final l10n = AppLocalizations.of(context);
 
     return Pressable(
       onTap: enabled ? () => controller.selectAnswer(choice) : null,
@@ -1474,7 +1483,7 @@ class _OptionButton extends StatelessWidget {
           children: [
             Expanded(
               child: Text(
-                choice.labelFr,
+                choice.localizedLabel(l10n),
                 style: TextStyle(
                   fontSize: isDesktop ? 18 : 14,
                   fontWeight: FontWeight.w700,
@@ -1505,19 +1514,18 @@ class _Explanation extends StatelessWidget {
 
     final selected = controller.selected;
     final expected = controller.question!.interval;
+    final l10n = AppLocalizations.of(context);
+    final expectedLabel = expected.localizedLabel(l10n);
 
     if (selected == null) {
-      return _ExplanationSurface(
-        text: 'Passé — la réponse était ${expected.labelFr}.',
-      );
+      return _ExplanationSurface(text: l10n.resultSkippedAnswer(expectedLabel));
     }
 
     final delta = (selected.semitones - expected.semitones).abs();
+    final selectedLabel = selected.localizedLabel(l10n);
 
     return _ExplanationSurface(
-      text:
-          'Tu as choisi ${selected.labelFr}, c\'était ${expected.labelFr} '
-          '(écart de $delta demi-ton${delta > 1 ? 's' : ''}).',
+      text: l10n.resultWrongAnswer(selectedLabel, expectedLabel, delta),
     );
   }
 }
@@ -1562,6 +1570,7 @@ class _ResultActions extends StatelessWidget {
     }
 
     final canAdvance = !controller.isPlaying;
+    final l10n = AppLocalizations.of(context);
 
     return Row(
       children: [
@@ -1572,7 +1581,7 @@ class _ResultActions extends StatelessWidget {
               color: AppPalette.whiteAlpha(controller.hesitated ? 0.15 : 0.05),
               border: AppPalette.whiteAlpha(0.1),
               child: Text(
-                'HÉSITATION ?',
+                l10n.resultHesitation,
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   fontSize: 12,
@@ -1591,19 +1600,19 @@ class _ResultActions extends StatelessWidget {
             onTap: canAdvance ? controller.next : null,
             child: _actionSurface(
               color: AppPalette.whiteAlpha(canAdvance ? 1 : 0.4),
-              child: const Row(
+              child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    'Suivant',
-                    style: TextStyle(
+                    l10n.resultNext,
+                    style: const TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.w700,
                       color: AppPalette.violet900,
                     ),
                   ),
-                  SizedBox(width: 8),
-                  Icon(
+                  const SizedBox(width: 8),
+                  const Icon(
                     Icons.arrow_forward_rounded,
                     size: 20,
                     color: AppPalette.violet900,
@@ -1646,14 +1655,20 @@ class _SummaryView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final stats = IntervalSessionStats.fromAttempts(controller.attempts);
+    final l10n = AppLocalizations.of(context);
 
     return SingleChildScrollView(
-      padding: EdgeInsets.fromLTRB(24, isDesktop ? 32 : 16, 24, isDesktop ? 48 : 128),
+      padding: EdgeInsets.fromLTRB(
+        24,
+        isDesktop ? 32 : 16,
+        24,
+        isDesktop ? 48 : 128,
+      ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           Text(
-            'Session terminée',
+            l10n.summaryTitle,
             textAlign: TextAlign.center,
             style: TextStyle(
               fontSize: isDesktop ? 40 : 28,
@@ -1664,7 +1679,7 @@ class _SummaryView extends StatelessWidget {
           ),
           const SizedBox(height: 8),
           Text(
-            '${stats.correctAnswers}/${stats.totalQuestions} bonnes réponses',
+            l10n.summaryScore(stats.correctAnswers, stats.totalQuestions),
             textAlign: TextAlign.center,
             style: TextStyle(
               fontSize: 16,
@@ -1676,24 +1691,24 @@ class _SummaryView extends StatelessWidget {
           _SummaryGrid(stats: stats),
           const SizedBox(height: 24),
           _PrimaryButton(
-            label: 'Rejouer cette session',
+            label: l10n.summaryReplaySession,
             onTap: controller.repeatSession,
           ),
           const SizedBox(height: 12),
           _SecondaryButton(
-            label: 'Revoir mes erreurs',
+            label: l10n.summaryRetryMistakes,
             enabled: stats.correctAnswers < stats.totalQuestions,
             onTap: controller.retryMistakes,
           ),
           const SizedBox(height: 12),
           _SecondaryButton(
-            label: 'Monter en difficulté',
+            label: l10n.summaryIncreaseDifficulty,
             enabled: true,
             onTap: controller.increaseDifficulty,
           ),
           const SizedBox(height: 12),
           _SecondaryButton(
-            label: 'Retour aux exercices',
+            label: l10n.summaryBackToExercises,
             enabled: true,
             onTap: controller.returnToExercises,
           ),
@@ -1714,25 +1729,38 @@ class _SummaryGrid extends StatelessWidget {
     final hardest = stats.hardestInterval;
     final seconds = (stats.averageResponseTime.inMilliseconds / 1000)
         .toStringAsFixed(1);
+    final l10n = AppLocalizations.of(context);
 
     return Wrap(
       spacing: 12,
       runSpacing: 12,
       children: [
-        _SummaryStat(label: 'Précision', value: '${stats.accuracyPercentage}%'),
-        _SummaryStat(label: 'Temps moyen', value: '$seconds s'),
-        _SummaryStat(label: 'Réécoutes', value: '${stats.manualReplays}'),
-        _SummaryStat(label: 'Meilleure série', value: '${stats.bestStreak}'),
-        _SummaryStat(label: 'Passées', value: '${stats.skippedQuestions}'),
         _SummaryStat(
-          label: 'Plus difficile',
-          value: hardest?.labelFr ?? '—',
+          label: l10n.summaryAccuracy,
+          value: '${stats.accuracyPercentage}%',
+        ),
+        _SummaryStat(label: l10n.summaryAverageTime, value: '$seconds s'),
+        _SummaryStat(
+          label: l10n.summaryReplays,
+          value: '${stats.manualReplays}',
         ),
         _SummaryStat(
-          label: 'Confusion fréquente',
+          label: l10n.summaryBestStreak,
+          value: '${stats.bestStreak}',
+        ),
+        _SummaryStat(
+          label: l10n.summarySkipped,
+          value: '${stats.skippedQuestions}',
+        ),
+        _SummaryStat(
+          label: l10n.summaryHardest,
+          value: hardest?.localizedLabel(l10n) ?? '—',
+        ),
+        _SummaryStat(
+          label: l10n.summaryCommonConfusion,
           value: confusion == null
               ? '—'
-              : '${confusion.expected.labelFr} → ${confusion.selected.labelFr}',
+              : '${confusion.expected.localizedLabel(l10n)} → ${confusion.selected.localizedLabel(l10n)}',
         ),
       ],
     );

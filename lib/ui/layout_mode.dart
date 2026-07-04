@@ -14,6 +14,7 @@ enum LayoutMode { mobile, desktop }
 class LayoutResolver {
   const LayoutResolver._();
 
+  static const double _desktopMinWidth = 1024;
   static const double _tabletShortestSide = 600;
 
   static LayoutMode of(BuildContext context) {
@@ -24,9 +25,10 @@ class LayoutResolver {
 
   static LayoutMode fromSize(Size size) {
     final isLandscape = size.width >= size.height;
+    final isWideEnough = size.width >= _desktopMinWidth;
     final isTabletOrLarger = size.shortestSide >= _tabletShortestSide;
 
-    if (isLandscape && isTabletOrLarger) {
+    if (isLandscape && isWideEnough && isTabletOrLarger) {
       return LayoutMode.desktop;
     }
 

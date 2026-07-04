@@ -162,9 +162,7 @@ class DesktopNavigationRail extends StatelessWidget {
       height: double.infinity,
       decoration: BoxDecoration(
         color: AppPalette.whiteAlpha(0.02),
-        border: Border(
-          right: BorderSide(color: AppPalette.whiteAlpha(0.05)),
-        ),
+        border: Border(right: BorderSide(color: AppPalette.whiteAlpha(0.05))),
       ),
       padding: const EdgeInsets.all(24),
       child: Column(
@@ -180,20 +178,11 @@ class DesktopNavigationRail extends StatelessWidget {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   GradientText(
-                    'Intervals',
+                    AppLocalizations.of(context).appTitle,
                     style: Theme.of(context).textTheme.titleLarge!.copyWith(
                       fontSize: 24,
                       fontWeight: FontWeight.w900,
-                      letterSpacing: -0.5,
-                    ),
-                  ),
-                  Text(
-                    '.pro',
-                    style: Theme.of(context).textTheme.titleLarge!.copyWith(
-                      fontSize: 24,
-                      fontWeight: FontWeight.w900,
-                      letterSpacing: -0.5,
-                      color: AppPalette.fuchsia400,
+                      letterSpacing: 0,
                     ),
                   ),
                 ],
@@ -267,9 +256,7 @@ class _DesktopNavButton extends StatelessWidget {
                 fontSize: 14,
                 fontWeight: FontWeight.w700,
                 letterSpacing: 1,
-                color: isActive
-                    ? AppPalette.white
-                    : AppPalette.whiteAlpha(0.5),
+                color: isActive ? AppPalette.white : AppPalette.whiteAlpha(0.5),
               ),
             ),
           ],
