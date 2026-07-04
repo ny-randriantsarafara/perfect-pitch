@@ -107,8 +107,10 @@ class CourseController extends ChangeNotifier {
       case CourseKind.interval:
         return _buildIntervalDrillConfig(course, contextType: contextType);
       case CourseKind.exercise:
-        return ExerciseConfig.defaults(course.primaryExerciseType).copyWith(
-          intervals: MusicInterval.upToStage(course.stage),
+        final type = course.primaryExerciseType;
+
+        return ExerciseConfig.defaults(type).copyWith(
+          intervals: _stageIntervalsFor(type, course.stage),
           questionCount: 8,
           choiceCount: 4,
         );
@@ -130,7 +132,7 @@ class CourseController extends ChangeNotifier {
   }) {
     final target = course.intervals.first;
     final type = _intervalExerciseTypeFor(target, contextType);
-    final intervals = _intervalChoicesFor(course, target);
+    final intervals = _intervalChoicesFor(course, target, type);
 
     return ExerciseConfig.defaults(type).copyWith(
       intervals: intervals,
@@ -143,12 +145,17 @@ class CourseController extends ChangeNotifier {
   List<MusicInterval> _intervalChoicesFor(
     CourseSpec course,
     MusicInterval target,
+    ExerciseType type,
   ) {
     final choices = <MusicInterval>{target};
     final candidates =
-        MusicInterval.upToStage(
-          course.stage,
-        ).where((interval) => interval != target).toList()..sort((a, b) {
+        MusicInterval.upToStage(course.stage).where((interval) {
+          if (interval == target) {
+            return false;
+          }
+
+          return !_isInvalidDescendingInterval(type, interval);
+        }).toList()..sort((a, b) {
           final aDistance = (a.semitones - target.semitones).abs();
           final bDistance = (b.semitones - target.semitones).abs();
           final distanceComparison = aDistance.compareTo(bDistance);
@@ -161,7 +168,14 @@ class CourseController extends ChangeNotifier {
         });
 
     choices.add(
-      candidates.isEmpty ? _nearestInterval(target) : candidates.first,
+      candidates.isEmpty
+          ? _nearestInterval(
+              target,
+              excludeUnison: _usesOnlyDescendingDirections(
+                type.defaultDirections,
+              ),
+            )
+          : candidates.first,
     );
 
     return choices.toList()..sort((a, b) => a.semitones.compareTo(b.semitones));
@@ -182,19 +196,39 @@ class CourseController extends ChangeNotifier {
     return requested;
   }
 
-  MusicInterval _nearestInterval(MusicInterval target) {
-    return MusicInterval.values.where((interval) => interval != target).reduce((
-      nearest,
-      candidate,
-    ) {
-      final nearestDistance = (nearest.semitones - target.semitones).abs();
-      final candidateDistance = (candidate.semitones - target.semitones).abs();
+  List<MusicInterval> _stageIntervalsFor(ExerciseType type, int stage) {
+    return MusicInterval.upToStage(stage)
+        .where((interval) => !_isInvalidDescendingInterval(type, interval))
+        .toList();
+  }
 
-      if (candidateDistance < nearestDistance) {
-        return candidate;
-      }
+  bool _isInvalidDescendingInterval(ExerciseType type, MusicInterval interval) {
+    return interval == MusicInterval.unison &&
+        _usesOnlyDescendingDirections(type.defaultDirections);
+  }
 
-      return nearest;
-    });
+  bool _usesOnlyDescendingDirections(Set<IntervalDirection> directions) {
+    return directions.length == 1 &&
+        directions.contains(IntervalDirection.descending);
+  }
+
+  MusicInterval _nearestInterval(
+    MusicInterval target, {
+    bool excludeUnison = false,
+  }) {
+    return MusicInterval.values
+        .where((interval) => interval != target)
+        .where((interval) => !excludeUnison || interval != MusicInterval.unison)
+        .reduce((nearest, candidate) {
+          final nearestDistance = (nearest.semitones - target.semitones).abs();
+          final candidateDistance = (candidate.semitones - target.semitones)
+              .abs();
+
+          if (candidateDistance < nearestDistance) {
+            return candidate;
+          }
+
+          return nearest;
+        });
   }
 }

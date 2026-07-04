@@ -151,6 +151,27 @@ void main() {
     expect(config.allowsUnlimitedReplays, isFalse);
   });
 
+  test('builds descending exercise drill config without unison', () {
+    final subject = controller();
+    final course = CourseCatalog.v1.firstWhere(
+      (course) => course.id == 'course_descending_intervals',
+    );
+
+    final config = subject.buildDrillConfig(course);
+
+    expect(config.type, ExerciseType.descendingIntervals);
+    expect(config.directions, {IntervalDirection.descending});
+    expect(config.intervals, isNot(contains(MusicInterval.unison)));
+    expect(config.intervals, [
+      MusicInterval.minorThird,
+      MusicInterval.majorThird,
+      MusicInterval.perfectFifth,
+      MusicInterval.octave,
+    ]);
+    expect(config.questionCount, 8);
+    expect(config.choiceCount, 4);
+  });
+
   test('builds strategy-course drill config', () {
     final subject = controller();
     final course = CourseCatalog.v1.firstWhere(
