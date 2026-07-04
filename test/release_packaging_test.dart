@@ -35,6 +35,18 @@ void main() {
     expect(targetBody, isNot(contains('--config-only')));
   });
 
+  test('TestFlight upload waits, expires previous builds, and distributes', () {
+    final fastfile = File('fastlane/Fastfile').readAsStringSync();
+    final uploadStart = fastfile.indexOf('upload_to_testflight(');
+    final laneEnd = fastfile.indexOf('\n    )', uploadStart);
+    final uploadOptions = fastfile.substring(uploadStart, laneEnd);
+
+    expect(uploadStart, isNonNegative);
+    expect(uploadOptions, contains('skip_waiting_for_build_processing: false'));
+    expect(uploadOptions, contains('expire_previous_builds: true'));
+    expect(uploadOptions, isNot(contains('skip_submission: true')));
+  });
+
   test(
     'Apple deployment workflow deploys when required secrets are present',
     () {
