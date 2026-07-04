@@ -1,11 +1,12 @@
 class CourseProgressSnapshot {
-  const CourseProgressSnapshot({
-    required this.completedIds,
-    required this.lastSeenVersions,
-  });
+  CourseProgressSnapshot({
+    required Set<String> completedIds,
+    required Map<String, int> lastSeenVersions,
+  }) : completedIds = Set.unmodifiable(completedIds),
+       lastSeenVersions = Map.unmodifiable(lastSeenVersions);
 
   factory CourseProgressSnapshot.empty() {
-    return const CourseProgressSnapshot(completedIds: {}, lastSeenVersions: {});
+    return CourseProgressSnapshot(completedIds: {}, lastSeenVersions: {});
   }
 
   final Set<String> completedIds;
