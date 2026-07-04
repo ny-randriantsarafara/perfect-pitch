@@ -69,5 +69,20 @@ void main() {
         isTrue,
       );
     });
+
+    test('nested catalogue collections are immutable', () {
+      final course = CourseCatalog.v1.firstWhere(
+        (course) => course.kind == CourseKind.interval,
+      );
+
+      expect(
+        () => course.steps.add(
+          const CourseStepSpec(id: 'mutation', type: CourseStepType.concept),
+        ),
+        throwsUnsupportedError,
+      );
+      expect(() => course.intervals.clear(), throwsUnsupportedError);
+      expect(() => course.exerciseTypes.clear(), throwsUnsupportedError);
+    });
   });
 }

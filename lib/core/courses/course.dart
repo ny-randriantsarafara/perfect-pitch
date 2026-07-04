@@ -7,17 +7,19 @@ enum CourseKind { foundation, interval, exercise, strategy }
 enum CourseStepType { concept, earClue, listenDemo, compareDemo, miniDrill }
 
 class CourseSpec {
-  const CourseSpec({
+  CourseSpec({
     required this.id,
     required this.version,
     required this.order,
     required this.kind,
     required this.stage,
-    required this.exerciseTypes,
-    required this.intervals,
+    required Set<ExerciseType> exerciseTypes,
+    required Set<MusicInterval> intervals,
     required this.estimatedSeconds,
-    required this.steps,
-  });
+    required List<CourseStepSpec> steps,
+  }) : exerciseTypes = Set.unmodifiable(exerciseTypes),
+       intervals = Set.unmodifiable(intervals),
+       steps = List.unmodifiable(steps);
 
   final String id;
   final int version;
